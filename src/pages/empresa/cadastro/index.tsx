@@ -25,6 +25,7 @@ const CadastroEmpresa = ({}: Props) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
   const onSubmit = (data) => {
     console.log(data);
   };

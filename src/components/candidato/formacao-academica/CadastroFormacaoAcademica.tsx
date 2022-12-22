@@ -1,5 +1,4 @@
 import InputField from '@/components/atoms/InputField';
-import { useEffect } from 'react';
 import ToggleField from '@/components/atoms/ToggleField';
 
 type Props = {
@@ -9,10 +8,6 @@ type Props = {
 };
 
 const CadastroFormacaoAcademica = ({ register, errors, watch }: Props) => {
-  useEffect(() => {
-    console.log(watch('data_atual', false));
-  }, []);
-
   return (
     <>
       <InputField

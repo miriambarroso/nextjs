@@ -5,11 +5,12 @@ type Props = {
   label: string;
   name: string;
   register: any;
-  placeholder?: string;
-  options?: any;
-  type?: string;
-  className?: string;
   error?: any;
+  className?: string;
+  type?: string;
+  options?: any;
+  placeholder?: string;
+  inputProps?: any;
 };
 
 const InputField = ({
@@ -21,6 +22,7 @@ const InputField = ({
   type = 'text',
   className,
   error,
+  inputProps,
 }: Props) => {
   return (
     <div className={classNames('form-control', className)}>
@@ -40,6 +42,7 @@ const InputField = ({
       <input
         {...register(name, options)}
         type={type}
+        {...inputProps}
         placeholder={placeholder}
         className={classNames('input', error && 'input-error')}
       />

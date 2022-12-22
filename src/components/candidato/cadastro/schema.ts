@@ -3,6 +3,8 @@ import * as yup from 'yup';
 
 import { cpfMask } from '@/utils/masks';
 
+export interface ICadastroCandidato {}
+
 export const schema = yup.object().shape({
   nome: yup
     .string()
@@ -16,8 +18,8 @@ export const schema = yup.object().shape({
     .transform(cpfMask.transform)
     .required('CPF é obrigatório')
     .test('validateCpfOrCnpj', 'CPF Inválido', isValidCPF),
-  sexo: yup.string().required('Sexo é obrigatório'),
-  estado_civil: yup.string().required('Estado civil é obrigatório'),
+  sexo: yup.string().nullable().required('Sexo é obrigatório'),
+  estado_civil: yup.string().nullable().required('Estado civil é obrigatório'),
   email: yup.string().email('Email inválido').required('Email é obrigatório'),
   telefone: yup
     .string()

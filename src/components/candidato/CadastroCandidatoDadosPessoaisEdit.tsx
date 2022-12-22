@@ -1,31 +1,15 @@
 import InputField from '@/components/atoms/InputField';
-import { cpfMask } from '@/utils/masks';
+import { cpfMask, phoneMask } from '@/utils/masks';
 import RadioField from '@/components/atoms/RadioField';
+import {
+  EstadoCivilChoices,
+  PossuiDeficienciaChoices,
+  SexoChoices,
+} from '@/components/candidato/cadastro/CadastroCandidatoDadosPessoais';
 
 type Props = { register: any; errors: any };
 
-export const SexoChoices = [
-  { label: 'Feminino', value: '1', checked: true },
-  { label: 'Masculino', value: '2' },
-  { label: 'Não Informar', value: '3' },
-];
-
-export const EstadoCivilChoices = [
-  { label: 'Solteiro(a)', value: '1', checked: true },
-  { label: 'Casado(a)', value: '2' },
-  { label: 'Separado(a)', value: '3' },
-  { label: 'Divorciado(a)', value: '4' },
-  { label: 'Viúvo(a)', value: '5' },
-  { label: 'União Estável', value: '6' },
-  { label: 'Outro', value: '7' },
-];
-
-export const PossuiDeficienciaChoices = [
-  { label: 'Não', value: 'false', checked: true },
-  { label: 'Sim', value: 'true' },
-];
-
-const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
+const CadastroCandidatoDadosPessoaisEdit = ({ register, errors }: Props) => {
   return (
     <>
       <InputField
@@ -36,8 +20,6 @@ const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
         error={errors.nome?.message}
         options={{
           required: true,
-          pattern:
-            /\b[A-Za-zÀ-ú][A-Za-zÀ-ú]+,?\s[A-Za-zÀ-ú][A-Za-zÀ-ú]{2,19}\b/gi,
         }}
       />
       <InputField
@@ -58,6 +40,28 @@ const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
         placeholder="Insira seu CPF"
         error={errors.cpf?.message}
         options={{ required: true, onChange: cpfMask.onChange }}
+      />
+      <InputField
+        label="Email"
+        name="email"
+        type="email"
+        register={register}
+        placeholder="email@email.com"
+        error={errors.email?.message}
+        options={{
+          required: true,
+        }}
+      />
+      <InputField
+        label="Celular"
+        name="telefone"
+        register={register}
+        error={errors.telefone?.message}
+        type="phone"
+        options={{
+          required: true,
+          onChange: phoneMask.onChange,
+        }}
       />
       <RadioField
         label="Genêro"
@@ -80,7 +84,7 @@ const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
         }}
       />
       <RadioField
-        label="Possui deficiência (PCD)?"
+        label="Possui deficiência (PcD)?"
         name="possui_deficiencia"
         error={errors.possui_deficiencia?.message}
         register={register}
@@ -90,4 +94,4 @@ const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
   );
 };
 
-export default CadastroCandidatoDadosPessoais;
+export default CadastroCandidatoDadosPessoaisEdit;

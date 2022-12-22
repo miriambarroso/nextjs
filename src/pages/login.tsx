@@ -1,5 +1,8 @@
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
+import InputField from '@/components/atoms/InputField';
+import CardFormWrapper from '@/components/atoms/CardFormWrapper';
+import ToggleField from '@/components/atoms/ToggleField';
 
 type Props = {};
 
@@ -11,43 +14,27 @@ const Login = ({}: Props) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white py-12 px-8 my-20 text-base-content">
-      <h1 className="text-2xl font-noto-sans font-semibold">Login</h1>
-      <div className="divider divider-horizontal my-4"></div>
+    <CardFormWrapper title="Login">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">CPF</span>
-          </label>
-          <input
-            {...register('cpf')}
-            type="text"
-            placeholder="Insira seu CPF"
-            className="input"
-          />
-        </div>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Senha</span>
-          </label>
-          <input
-            {...register('password')}
-            type="password"
-            placeholder="Digite sua senha"
-            className="input "
-          />
-        </div>
+        <InputField
+          label={'CPF'}
+          name={'cpf'}
+          register={register}
+          placeholder={'Insira seu CPF'}
+        />
+        <InputField
+          label="Senha"
+          type="password"
+          placeholder="Insira sua senha"
+          register={register}
+          name="password"
+        />
         <div className="flex items-center mt-4">
-          <div className="form-control">
-            <label className="label cursor-pointer space-x-2">
-              <input
-                type="checkbox"
-                className="toggle toggle-sm toggle-primary"
-                {...register('remember')}
-              />
-              <span className="label-text">Mantenha-me logado</span>
-            </label>
-          </div>
+          <ToggleField
+            label={'Mantenha-me logado'}
+            name={'keep_logged'}
+            register={register}
+          />
           <Link
             href={'/recuperar-senha'}
             className="text-sm ml-auto link link-hover"
@@ -69,16 +56,16 @@ const Login = ({}: Props) => {
         </h2>
         <p className="text-center">
           Cadastre-se como{' '}
-          <Link href={'/cadastro-candidato'} className="text-primary">
+          <Link href={'/candidato/cadastro'} className="text-primary">
             Candidato
           </Link>{' '}
           ou{' '}
-          <Link href={'/cadastro-empresa'} className="text-primary">
+          <Link href={'/empresa/cadastro'} className="text-primary">
             Empresa
           </Link>
         </p>
       </div>
-    </div>
+    </CardFormWrapper>
   );
 };
 

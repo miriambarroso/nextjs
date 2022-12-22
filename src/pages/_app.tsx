@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import Layout from '@/components/layout';
+import DefaultLayout from '@/components/layout/DefaultLayout';
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import '@/styles/global.scss';
@@ -13,7 +13,8 @@ type AppPropsWithLayout = AppProps & {
 };
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
-  const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
+  const getLayout =
+    Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
 
   return getLayout(<Component {...pageProps} />);
 };

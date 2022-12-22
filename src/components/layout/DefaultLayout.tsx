@@ -6,7 +6,7 @@ import Footer from '@/components/layout/Footer';
 type Props = {
   children: ReactNode;
 };
-const Layout = ({ children }: Props) => {
+const DefaultLayout = ({ children }: Props) => {
   return (
     <div className="min-h-screen bg-base-100">
       <Head>
@@ -20,4 +20,4 @@ const Layout = ({ children }: Props) => {
   );
 };
 
-export default Layout;
+export default DefaultLayout;

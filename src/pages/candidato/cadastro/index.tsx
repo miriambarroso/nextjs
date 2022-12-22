@@ -3,15 +3,12 @@ import Link from 'next/link';
 import { clamp, classNames } from '@/utils';
 import { useRef, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from '@/components/cadastro-candidato/schema';
-import CadastroCandidatoDadosPessoais, {
-  EstadoCivilChoices,
-  PossuiDeficienciaChoices,
-  SexoChoices,
-} from '@/components/cadastro-candidato/CadastroCandidatoDadosPessoais';
+import { schema } from '@/components/candidato/cadastro/schema';
+import CadastroCandidatoDadosPessoais from '@/components/candidato/cadastro/CadastroCandidatoDadosPessoais';
 import Stepper from '@/components/atoms/Stepper';
-import CadastroCandidatoDadosContato from '@/components/cadastro-candidato/CadastroCandidatoDadosContato';
-import CadastroCandidatoCandidatura from '@/components/cadastro-candidato/CadastroCandidatoCandidatura';
+import CadastroCandidatoDadosContato from '@/components/candidato/cadastro/CadastroCandidatoDadosContato';
+import CadastroCandidatoCandidatura from '@/components/candidato/cadastro/CadastroCandidatoCandidatura';
+import CardFormWrapper from '@/components/atoms/CardFormWrapper';
 
 type Props = {};
 
@@ -33,7 +30,7 @@ type FormProps = {
   jornada_trabalho: string;
 };
 
-const CadastroCandidato = ({}: Props) => {
+const Index = ({}: Props) => {
   const [step, setStep] = useState(0);
   const startForm = useRef(null);
   const steps = ['Dados Pessoais', 'Dados de Contato', 'Candidatura'];
@@ -42,15 +39,8 @@ const CadastroCandidato = ({}: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
     trigger,
   } = useForm({
-    defaultValues: {
-      sexo: SexoChoices.find((c) => c.checked)?.value ?? '',
-      estado_civil: EstadoCivilChoices.find((c) => c.checked)?.value ?? '',
-      possui_deficiencia:
-        PossuiDeficienciaChoices.find((c) => c.checked)?.value ?? '',
-    } as FormProps,
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => {
@@ -91,23 +81,17 @@ const CadastroCandidato = ({}: Props) => {
     setStep(clamp(value, 0, 2));
   };
 
+  const subTitle = (
+    <p ref={startForm} className={classNames(step == 0 ? 'ml-auto' : 'hidden')}>
+      Cadastre-se como{' '}
+      <Link href={'/empresa/cadastro'} className="link link-hover text-primary">
+        Empresa
+      </Link>
+    </p>
+  );
+
   return (
-    <div className="max-w-2xl mx-auto bg-white py-12 px-8 my-20 text-base-content">
-      <div className="flex items-baseline">
-        <h1 ref={startForm} className="text-2xl font-noto-sans font-semibold">
-          Cadastro de Candidato
-        </h1>
-        <p className={classNames(step == 0 ? 'ml-auto' : 'hidden')}>
-          Cadastre-se como{' '}
-          <Link
-            href={'/cadastro-empresa'}
-            className="link link-hover text-primary"
-          >
-            Empresa
-          </Link>
-        </p>
-      </div>
-      <div className="divider divider-horizontal my-4"></div>
+    <CardFormWrapper title="Cadastro de Candidato" subtitle={subTitle}>
       <Stepper steps={steps} changeStep={changeStep} currentStep={step} />
       <div className="divider divider-horizontal my-4"></div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -151,8 +135,8 @@ const CadastroCandidato = ({}: Props) => {
           )}
         </div>
       </form>
-    </div>
+    </CardFormWrapper>
   );
 };
 
-export default CadastroCandidato;
+export default Index;

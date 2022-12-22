@@ -1,6 +1,6 @@
 import { classNames } from '@/utils';
 
-type ChoiceProp = {
+export type ChoiceProp = {
   label: string;
   value: string;
   disabled?: boolean;
@@ -38,7 +38,6 @@ const SelectField = ({
           <option
             key={`${name}-${choice.value}`}
             disabled={choice.disabled}
-            selected={choice.selected}
             value={choice.value}
           >
             {choice.label}

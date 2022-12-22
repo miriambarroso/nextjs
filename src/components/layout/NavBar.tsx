@@ -43,9 +43,12 @@ const NavBar = ({}: Props) => {
                 <Link href="/login">Login</Link>
               </li>
               <li className="items-center">
-                <a className="btn text-base-100 uppercase btn-sm py-0">
+                <Link
+                  href="/candidato/cadastro"
+                  className="btn text-base-100 uppercase btn-sm py-0"
+                >
                   Cadastre-se
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

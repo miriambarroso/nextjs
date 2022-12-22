@@ -3,15 +3,16 @@ import Link from 'next/link';
 import { clamp, classNames } from '@/utils';
 import { useRef, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from '@/components/cadastro-empresa/schema';
+import { schema } from '@/components/empresa/cadastro/schema';
 import Stepper from '@/components/atoms/Stepper';
-import CadastroEmpresaDadosPessoais from '@/components/cadastro-empresa/CadastroEmpresaDadosPessoais';
-import CadastroEmpresaDadosEmpresa from '@/components/cadastro-empresa/CadastroEmpresaDadosEmpresa';
-import CadastroEmpresaEnderecoContatos from '@/components/cadastro-empresa/CadastroEmpresaEnderecoContatos';
+import CadastroEmpresaDadosPessoais from '@/components/empresa/cadastro/CadastroEmpresaDadosPessoais';
+import CadastroEmpresaDadosEmpresa from '@/components/empresa/cadastro/CadastroEmpresaDadosEmpresa';
+import CadastroEmpresaEnderecoContatos from '@/components/empresa/cadastro/CadastroEmpresaEnderecoContatos';
+import CardFormWrapper from '@/components/atoms/CardFormWrapper';
 
 type Props = {};
 
-const CadastroCandidato = ({}: Props) => {
+const CadastroEmpresa = ({}: Props) => {
   const [step, setStep] = useState(0);
   const startForm = useRef(null);
   const steps = ['Dados Pessoais', 'Dados da Empresa', 'Endereço e Contatos'];
@@ -20,7 +21,6 @@ const CadastroCandidato = ({}: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
     trigger,
   } = useForm({
     resolver: yupResolver(schema),
@@ -70,30 +70,27 @@ const CadastroCandidato = ({}: Props) => {
 
       startForm.current.scrollIntoView({ behavior: 'smooth' });
 
-      // if (!result) return;
+      if (!result) return;
     }
 
     startForm.current.scrollIntoView({ behavior: 'smooth' });
     setStep(clamp(value, 0, 2));
   };
 
+  const subTitle = (
+    <p ref={startForm} className={classNames(step == 0 ? 'ml-auto' : 'hidden')}>
+      Cadastre-se como{' '}
+      <Link
+        href={'/candidato/cadastro'}
+        className="link link-hover text-primary"
+      >
+        Candidato
+      </Link>
+    </p>
+  );
+
   return (
-    <div className="max-w-2xl mx-auto bg-white py-12 px-8 my-20 text-base-content">
-      <div className="flex items-baseline">
-        <h1 ref={startForm} className="text-2xl font-noto-sans font-semibold">
-          Cadastro de Empresa
-        </h1>
-        <p className={classNames(step == 0 ? 'ml-auto' : 'hidden')}>
-          Cadastre-se como{' '}
-          <Link
-            href={'/cadastro-candidato'}
-            className="link link-hover text-primary"
-          >
-            Candidato
-          </Link>
-        </p>
-      </div>
-      <div className="divider divider-horizontal my-4"></div>
+    <CardFormWrapper title="Cadastro de Empresa" subtitle={subTitle}>
       <Stepper steps={steps} changeStep={changeStep} currentStep={step} />
       <div className="divider divider-horizontal my-4"></div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -140,8 +137,8 @@ const CadastroCandidato = ({}: Props) => {
           )}
         </div>
       </form>
-    </div>
+    </CardFormWrapper>
   );
 };
 
-export default CadastroCandidato;
+export default CadastroEmpresa;

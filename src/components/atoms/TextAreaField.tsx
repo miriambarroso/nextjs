@@ -11,7 +11,7 @@ type Props = {
   error?: any;
 };
 
-const InputField = ({
+const TextAreaField = ({
   label,
   name,
   register,
@@ -47,4 +47,4 @@ const InputField = ({
   );
 };
 
-export default InputField;
+export default TextAreaField;

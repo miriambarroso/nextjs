@@ -24,7 +24,6 @@ const Edit = ({}: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: fetchData(),
     resolver: yupResolver(schema),
   });
 

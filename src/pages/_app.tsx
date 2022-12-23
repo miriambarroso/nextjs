@@ -3,6 +3,7 @@ import DefaultLayout from '@/components/layout/DefaultLayout';
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import '@/styles/global.scss';
+import { Toaster } from 'react-hot-toast';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -16,7 +17,12 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout =
     Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
 
-  return getLayout(<Component {...pageProps} />);
+  return getLayout(
+    <>
+      <Component {...pageProps} />
+      <Toaster />
+    </>,
+  );
 };
 
 export default App;

@@ -1,11 +1,13 @@
 import InputField from '@/components/atoms/InputField';
 import { cpfMask, phoneMask } from '@/utils/masks';
-import RadioField from '@/components/atoms/RadioField';
+import ChoiceRadioField from '@/components/atoms/ChoiceRadioField';
 import {
   EstadoCivilChoices,
   PossuiDeficienciaChoices,
   SexoChoices,
-} from '@/components/candidato/cadastro/CadastroCandidatoDadosPessoais';
+  TipoDeficienciaChoices,
+} from '@/utils/choices';
+import ChoiceCheckboxField from '@/components/atoms/ChoiceCheckboxField';
 
 type Props = { register: any; errors: any };
 
@@ -63,32 +65,39 @@ const CadastroCandidatoDadosPessoaisEdit = ({ register, errors }: Props) => {
           onChange: phoneMask.onChange,
         }}
       />
-      <RadioField
+      <ChoiceRadioField
         label="Genêro"
         name="sexo"
         register={register}
         error={errors.sexo?.message}
-        choices={SexoChoices}
+        choices={SexoChoices.choices}
         options={{
           required: true,
         }}
       />
-      <RadioField
+      <ChoiceRadioField
         label="Estado Civil"
         name="estado_civil"
         error={errors.estado_civil?.message}
         register={register}
-        choices={EstadoCivilChoices}
+        choices={EstadoCivilChoices.choices}
         options={{
           required: true,
         }}
       />
-      <RadioField
+      <ChoiceRadioField
         label="Possui deficiência (PcD)?"
         name="possui_deficiencia"
         error={errors.possui_deficiencia?.message}
         register={register}
-        choices={PossuiDeficienciaChoices}
+        choices={PossuiDeficienciaChoices.choices}
+      />
+      <ChoiceCheckboxField
+        label="Tipo de deficiência"
+        name="tipo_deficiencia"
+        error={errors.tipo_deficiencia?.message}
+        register={register}
+        choices={TipoDeficienciaChoices.choices}
       />
     </>
   );

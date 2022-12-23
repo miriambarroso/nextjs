@@ -1,6 +1,8 @@
 import { useForm } from 'react-hook-form';
 import BasicForm from '@/components/atoms/BasicForm';
 import CadastroExperienciaProfissional from '@/components/candidato/experiencia-profissional/CadastroExperienciaProfissional';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from '@/components/candidato/experiencia-profissional/schema';
 
 type Props = {};
 
@@ -10,7 +12,9 @@ const Index = ({}: Props) => {
     formState: { errors },
     handleSubmit,
     watch,
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const onSubmit = (data) => {
     console.log(data);

@@ -9,6 +9,7 @@ type Props = {
   errors: any;
   title: string;
   watch?: any;
+  trigger?: any;
   data?: any;
 };
 
@@ -20,6 +21,7 @@ const BasicForm = ({
   errors,
   title,
   watch,
+  trigger,
   data,
 }: Props) => {
   const DynamicComponent: FunctionComponent<{}> = component;
@@ -29,6 +31,7 @@ const BasicForm = ({
     errors,
     watch,
     data,
+    trigger,
   };
 
   return (

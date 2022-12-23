@@ -3,6 +3,7 @@ import Link from 'next/link';
 import InputField from '@/components/atoms/InputField';
 import CardFormWrapper from '@/components/atoms/CardFormWrapper';
 import ToggleField from '@/components/atoms/ToggleField';
+import { cpfMask } from '@/utils/masks';
 
 type Props = {};
 
@@ -20,6 +21,9 @@ const Login = ({}: Props) => {
           label={'CPF'}
           name={'cpf'}
           register={register}
+          options={{
+            onChange: cpfMask.onChange,
+          }}
           placeholder={'000.000.000-00'}
         />
         <InputField

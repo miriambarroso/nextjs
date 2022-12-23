@@ -1,7 +1,7 @@
 import { isValidCPF, isValidPhone } from '@brazilian-utils/brazilian-utils';
 import * as yup from 'yup';
 
-import { cpfMask } from '@/utils/masks';
+import { cpfMask, trimMask } from '@/utils/masks';
 
 export interface ICadastroCandidato {}
 
@@ -11,7 +11,7 @@ export const schema = yup.object().shape({
     .required('Nome é obrigatório')
     // .matches(/^[a-zA-Z ]+$/, 'Nome deve conter apenas letras')
     .matches(/^[A-zÁ-ú]* [A-zÁ-ú]+( [A-zÁ-ú]*)*$/gi, 'Nome inválido')
-    .transform((value) => value?.trim()),
+    .transform(trimMask.transform),
   data_nascimento: yup.string().required('Data de nascimento é obrigatório'),
   cpf: yup
     .string()

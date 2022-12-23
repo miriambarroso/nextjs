@@ -71,7 +71,7 @@ const CadastroEmpresa = ({}: Props) => {
 
       startForm.current.scrollIntoView({ behavior: 'smooth' });
 
-      if (!result) return;
+      // if (!result) return;
     }
 
     startForm.current.scrollIntoView({ behavior: 'smooth' });

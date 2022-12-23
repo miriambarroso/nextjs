@@ -3,7 +3,7 @@ import Link from 'next/link';
 import LogoAnapolis from '@/components/layout/LogoAnapolis';
 import LogoEmprega from '@/components/layout/LogoEmprega';
 import { useState } from 'react';
-import Dropdown from '@/components/atoms/Dropdown';
+import DropdownNav from '@/components/layout/DropdownNav';
 
 type Props = {};
 
@@ -52,7 +52,7 @@ const NavBar = ({}: Props) => {
             <div className="form-control relative">
               <label>
                 <input
-                  type="search"
+                  type="text"
                   placeholder="Ex: Cargo, Empresa, Palavra-chave"
                   className="input rounded-full w-96 h-full py-2"
                   value={term}
@@ -73,10 +73,10 @@ const NavBar = ({}: Props) => {
             </label>
             <ul className="list hidden lg:flex items-center space-x-4 px-1 text-neutral ">
               <li>
-                <Dropdown name={'Empresas'} items={dropdownEmpresas} />
+                <DropdownNav name={'Empresas'} items={dropdownEmpresas} />
               </li>
               <li>
-                <Dropdown name={'Candidatos'} items={dropdownCandidatos} />
+                <DropdownNav name={'Candidatos'} items={dropdownCandidatos} />
               </li>
               <li>
                 <Link href="/login">Login</Link>
@@ -98,7 +98,7 @@ const NavBar = ({}: Props) => {
           <div className="form-control w-full relative">
             <label>
               <input
-                type="search"
+                type="text"
                 placeholder="Ex: Cargo, Empresa, Palavra-chave"
                 className="input rounded-full w-full py-2"
                 value={term}

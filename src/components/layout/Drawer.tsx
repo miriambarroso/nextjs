@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react';
 import { classNames } from '@/utils';
 import { BiX } from 'react-icons/bi';
 import LogoEmprega from '@/components/layout/LogoEmprega';
-import Accordion from '@/components/atoms/Accordion';
+import AccordionNav from '@/components/layout/AccordionNav';
 
 type Props = { children: ReactNode; className?: string };
 
@@ -61,12 +61,12 @@ const Drawer = ({ children, className }: Props) => {
             </label>
           </div>
           <div className="mt-4">
-            <Accordion
+            <AccordionNav
               items={accordionCandidatos}
               name={'Candidatos'}
               onClick={closeDrawer}
             />
-            <Accordion
+            <AccordionNav
               items={accordionEmpresas}
               name={'Empresas'}
               onClick={closeDrawer}

@@ -1,25 +1,61 @@
 import InputField from '@/components/atoms/InputField';
 import { currencyMask } from '@/utils/masks';
 import { IObjetivoProfissional } from '@/components/candidato/objetivo-profissional/schema';
+import SelectField from '@/components/atoms/SelectField';
+import {
+  JornadaTrabalhoChoices,
+  ModeloTrabalhoChoices,
+  RegimeContratualChoices,
+} from '@/utils/choices';
 
 type Props = {
   register: any;
   errors: any;
-  data: IObjetivoProfissional;
+  data?: IObjetivoProfissional;
 };
 
-const CadastroObjetivoProfissional = ({ register, errors }: Props) => {
+const CadastroObjetivoProfissional = ({ register, errors, data }: Props) => {
+  const modeloTrabalhoChoices = [
+    {
+      label: 'Selecione o modelo de trabalho',
+      value: '',
+      selected: true,
+      disabled: true,
+    },
+    ...ModeloTrabalhoChoices.choices,
+  ];
+
+  const regimeContratualChoices = [
+    {
+      label: 'Selecione o regime contratual',
+      value: '',
+      selected: true,
+      disabled: true,
+    },
+    ...RegimeContratualChoices.choices,
+  ];
+
+  const jornadaTrabalhoChoices = [
+    {
+      label: 'Selecione o jornada de trabalho',
+      value: '',
+      selected: true,
+      disabled: true,
+    },
+    ...JornadaTrabalhoChoices.choices,
+  ];
+
   return (
     <>
       <InputField
-        label="Cargo Desejado"
+        label="Cargo desejado"
         name="cargo"
         register={register}
         placeholder="Ex: Analista de Sistemas"
         error={errors.cargo?.message}
       />
       <InputField
-        label="Pretensão Salarial"
+        label="Pretensão salarial"
         name="salario"
         placeholder="Ex: 2.000,00"
         register={register}
@@ -28,26 +64,28 @@ const CadastroObjetivoProfissional = ({ register, errors }: Props) => {
         }}
         error={errors.salario?.message}
       />
-      <InputField
-        label="Modelo de Trabalho"
-        name="modelo_trabalho"
-        placeholder="Ex: Remoto"
+
+      <SelectField
+        label="Modelo de trabalho"
+        name={'modelo_trabalho'}
         register={register}
         error={errors.modelo_trabalho?.message}
+        choices={modeloTrabalhoChoices}
       />
-      <InputField
-        label="Regime de Contratação"
+      <SelectField
+        label="Regime de contratação"
         name="regime_contratual"
-        placeholder="Ex: CLT"
         register={register}
         error={errors.regime_contratual?.message}
+        choices={regimeContratualChoices}
       />
-      <InputField
-        label="Jornada de Trabalho"
+      <SelectField
+        label="Jornada de trabalho"
         name="jornada_trabalho"
         placeholder="Ex: 40 horas semanais"
         register={register}
         error={errors.jornada_trabalho?.message}
+        choices={jornadaTrabalhoChoices}
       />
     </>
   );

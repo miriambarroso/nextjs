@@ -40,9 +40,18 @@ export const schema = yup.object().shape({
     .transform(cnpjMask.transform)
     .required('CNPJ é obrigatório')
     .test('validateCNPJ', 'CNPJ Inválido', isValidCPF),
-  razao_social: yup.string().required('Razão social é obrigatório'),
-  nome_fantasia: yup.string().required('Nome fantasia é obrigatório'),
-  ramo_atividade: yup.string().required('Ramo de atividade é obrigatório'),
+  razao_social: yup
+    .string()
+    .required('Razão social é obrigatório')
+    .transform((value) => value?.trim()),
+  nome_fantasia: yup
+    .string()
+    .required('Nome fantasia é obrigatório')
+    .transform((value) => value?.trim()),
+  ramo_atividade: yup
+    .string()
+    .required('Ramo de atividade é obrigatório')
+    .transform((value) => value?.trim()),
   // currency: yup
   //   .number()
   //   .transform((_, originalValue) =>

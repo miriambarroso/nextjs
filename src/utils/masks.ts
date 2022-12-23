@@ -1,4 +1,5 @@
 import * as dateFns from "date-fns";
+import { add } from "date-fns";
 import IMask from "imask";
 
 /**
@@ -189,7 +190,7 @@ export const currencyMask = masker({
     },
   },
   transform: (value) => {
-    return Number(currencyMask.unmask(value).replace(',', '.'));
+    return currencyMask.unmask(value).replace(',', '.');
   },
   maskDefault: (value: number) => {
     return currencyMask.mask(value.toFixed(2).replace('.', ','));
@@ -198,10 +199,13 @@ export const currencyMask = masker({
 
 export const trimMask = masker({
   masked: {
-    mask: [],
-    transform: (value) => {
-      return value.trim();
+    mask: /^[\w./+'"&()[\]<>-]+(?:\s[\w./+'"&()[\]<>-]+)*$/,
+    dispatch: (appended, dynamicMasked) => {
+      return appended.trim();
     },
+  },
+  transform: (value) => {
+    return value.trim();
   },
 });
 
@@ -214,3 +218,7 @@ export const numberMask = masker({
     scale: 0,
   },
 });
+
+export function parseDateString(value, originalValue) {
+  return !!originalValue ? value : add(new Date(), { days: 1 });
+}

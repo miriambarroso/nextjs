@@ -11,7 +11,7 @@ const DefaultLayout = ({ children }: Props) => {
   return (
     <Drawer className={'bg-base-100 drawer-end'}>
       <Head>
-        <title>Next.js + TypeScript Example</title>
+        <title>IARANA - Agente Inteligente de Anápolis</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <NavBar />

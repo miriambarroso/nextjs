@@ -15,7 +15,7 @@ type Props = {
   onClick: () => void;
 };
 
-const Accordion = ({ name, items, onClick }: Props) => {
+const AccordionNav = ({ name, items, onClick }: Props) => {
   return (
     <>
       <Disclosure
@@ -84,4 +84,4 @@ const Accordion = ({ name, items, onClick }: Props) => {
   );
 };
 
-export default Accordion;
+export default AccordionNav;

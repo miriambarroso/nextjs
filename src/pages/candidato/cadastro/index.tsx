@@ -129,7 +129,13 @@ const Index = ({}: Props) => {
               continuar
             </button>
           ) : (
-            <button type="submit" className="btn btn-primary mt-4 text-white">
+            <button
+              type="submit"
+              className="btn btn-primary mt-4 text-white"
+              onClick={() => {
+                console.log('heelloo');
+              }}
+            >
               cadastrar
             </button>
           )}

@@ -13,7 +13,7 @@ type Props = {
   items: DropdownItem[][];
   name: string;
 };
-const Dropdown = ({ items, name }: Props) => {
+const DropdownNav = ({ items, name }: Props) => {
   return (
     <Menu
       as="div"
@@ -74,4 +74,4 @@ const Dropdown = ({ items, name }: Props) => {
   );
 };
 
-export default Dropdown;
+export default DropdownNav;

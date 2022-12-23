@@ -1,29 +1,15 @@
 import InputField from '@/components/atoms/InputField';
 import { cpfMask } from '@/utils/masks';
-import RadioField from '@/components/atoms/RadioField';
+import ChoiceRadioField from '@/components/atoms/ChoiceRadioField';
+import {
+  EstadoCivilChoices,
+  PossuiDeficienciaChoices,
+  SexoChoices,
+  TipoDeficienciaChoices,
+} from '@/utils/choices';
+import ChoiceCheckboxField from '@/components/atoms/ChoiceCheckboxField';
 
 type Props = { register: any; errors: any };
-
-export const SexoChoices = [
-  { label: 'Feminino', value: '1', checked: true },
-  { label: 'Masculino', value: '2' },
-  { label: 'Não Informar', value: '3' },
-];
-
-export const EstadoCivilChoices = [
-  { label: 'Solteiro(a)', value: '1', checked: true },
-  { label: 'Casado(a)', value: '2' },
-  { label: 'Separado(a)', value: '3' },
-  { label: 'Divorciado(a)', value: '4' },
-  { label: 'Viúvo(a)', value: '5' },
-  { label: 'União Estável', value: '6' },
-  { label: 'Outro', value: '7' },
-];
-
-export const PossuiDeficienciaChoices = [
-  { label: 'Não', value: 'false', checked: true },
-  { label: 'Sim', value: 'true' },
-];
 
 const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
   return (
@@ -57,32 +43,39 @@ const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
         error={errors.cpf?.message}
         options={{ required: true, onChange: cpfMask.onChange }}
       />
-      <RadioField
+      <ChoiceRadioField
         label="Genêro"
         name="sexo"
         register={register}
         error={errors.sexo?.message}
-        choices={SexoChoices}
+        choices={SexoChoices.choices}
         options={{
           required: true,
         }}
       />
-      <RadioField
+      <ChoiceRadioField
         label="Estado Civil"
         name="estado_civil"
         error={errors.estado_civil?.message}
         register={register}
-        choices={EstadoCivilChoices}
+        choices={EstadoCivilChoices.choices}
         options={{
           required: true,
         }}
       />
-      <RadioField
+      <ChoiceRadioField
         label="Possui deficiência (PcD)?"
         name="possui_deficiencia"
         error={errors.possui_deficiencia?.message}
         register={register}
-        choices={PossuiDeficienciaChoices}
+        choices={PossuiDeficienciaChoices.choices}
+      />
+      <ChoiceCheckboxField
+        label="Tipo de deficiência"
+        name="tipo_deficiencia"
+        error={errors.tipo_deficiencia?.message}
+        register={register}
+        choices={TipoDeficienciaChoices.choices}
       />
     </>
   );

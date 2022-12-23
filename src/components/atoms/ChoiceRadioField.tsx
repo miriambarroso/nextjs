@@ -18,7 +18,7 @@ type Props = {
   error?: any;
 };
 
-const RadioField = ({
+const ChoiceRadioField = ({
   label,
   name,
   register,
@@ -68,4 +68,4 @@ const RadioField = ({
   );
 };
 
-export default RadioField;
+export default ChoiceRadioField;

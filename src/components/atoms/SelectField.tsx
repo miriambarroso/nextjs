@@ -1,4 +1,5 @@
 import { classNames } from '@/utils';
+import { BiHealth } from 'react-icons/bi';
 
 export type ChoiceProp = {
   label: string;
@@ -31,9 +32,23 @@ const SelectField = ({
   return (
     <div className={classNames('form-control', className)}>
       <label className="label">
-        <span className="label-text">{label}</span>
+        <span className="label-text">
+          {label}{' '}
+          {options?.required && (
+            <BiHealth
+              className={classNames(
+                error ? 'text-error' : 'text-base-200',
+                ' inline-block text-xs',
+              )}
+            />
+          )}
+        </span>
       </label>
-      <select {...register(name, options)} className="select select-bordered">
+      <select
+        defaultValue={choices.find((i) => i.selected)?.value}
+        {...register(name, options)}
+        className="select select-bordered"
+      >
         {choices.map((choice) => (
           <option
             key={`${name}-${choice.value}`}

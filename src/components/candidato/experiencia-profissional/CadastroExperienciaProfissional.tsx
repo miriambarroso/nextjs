@@ -21,6 +21,9 @@ const CadastroExperienciaProfissional = ({
         name="empresa"
         register={register}
         placeholder="Ex: Google"
+        options={{
+          required: true,
+        }}
         error={errors.empresa?.message}
       />
       <InputField
@@ -28,6 +31,9 @@ const CadastroExperienciaProfissional = ({
         name="cargo"
         register={register}
         placeholder="Ex: Desenvolvedor"
+        options={{
+          required: true,
+        }}
         error={errors.cargo?.message}
       />
       <InputField
@@ -41,21 +47,29 @@ const CadastroExperienciaProfissional = ({
         error={errors.salario?.message}
       />
       <InputField
-        label="Data de Início"
+        label="Data de início"
         name="data_inicio"
         register={register}
+        type="date"
+        options={{
+          required: true,
+        }}
         placeholder="Ex: 01/01/2020"
         error={errors.data_inicio?.message}
       />
       <InputField
-        label="Data de Término"
+        label="Data de término"
         name="data_fim"
         register={register}
+        type="date"
+        options={{
+          required: !watch('data_atual', false),
+        }}
         placeholder="Ex: 01/01/2024"
         inputProps={{
           disabled: watch('data_atual', false),
         }}
-        error={errors.data_termino?.message}
+        error={errors.data_fim?.message}
       />
       <ToggleField
         label={'Estou trabalhando'}
@@ -66,6 +80,9 @@ const CadastroExperienciaProfissional = ({
         label="Atividades"
         name="atividades"
         register={register}
+        options={{
+          required: true,
+        }}
         placeholder="Descrição das atividades envolvidas no cargo"
         error={errors.atividades?.message}
       />

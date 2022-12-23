@@ -52,7 +52,7 @@ const Dropdown = ({ items, name }: DropdownProps) => {
                     <Link
                       href={subItem.href}
                       className={`${
-                        active ? 'bg-base-300 text-white' : 'text-gray-900'
+                        active ? 'bg-neutral text-white' : 'text-gray-900'
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                     >
                       {/*{active ? (*/}
@@ -88,14 +88,27 @@ const NavBar = ({}: Props) => {
   const dropdownEmpresas = [
     [
       { name: 'Cadastrar', href: '/empresa/cadastro' },
-      { name: 'Contato', href: '/contato' },
+      { name: 'Vaga', href: '/vaga/cadastro' },
     ],
   ];
 
   const dropdownCandidatos = [
     [
       { name: 'Cadastrar', href: '/candidato/cadastro' },
-      { name: 'Contato', href: '/contato' },
+      {
+        name: 'Objetivo Profissional',
+        href: '/candidato/objetivo-profissional',
+      },
+      { name: 'Formação Acadêmica', href: '/candidato/formacao-academica' },
+      {
+        name: 'Experiência Profissional',
+        href: '/candidato/experiencia-profissional',
+      },
+      {
+        name: 'Curso e Especialização',
+        href: '/candidato/curso-especializacao',
+      },
+      { name: 'Idioma', href: '/candidato/idioma' },
     ],
   ];
 

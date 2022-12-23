@@ -11,7 +11,7 @@ const CadastroCandidatoDadosContato = ({ register, errors }: Props) => {
         name="email"
         type="email"
         register={register}
-        placeholder="email@email.com"
+        placeholder="Ex: joao@anapolis.go.gov.br"
         error={errors.email?.message}
         options={{
           required: true,
@@ -21,6 +21,7 @@ const CadastroCandidatoDadosContato = ({ register, errors }: Props) => {
         label="Celular"
         name="telefone"
         register={register}
+        placeholder="Ex: (00) 00000-0000"
         error={errors.telefone?.message}
         type="phone"
         options={{

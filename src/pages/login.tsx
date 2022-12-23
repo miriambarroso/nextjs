@@ -20,12 +20,12 @@ const Login = ({}: Props) => {
           label={'CPF'}
           name={'cpf'}
           register={register}
-          placeholder={'Insira seu CPF'}
+          placeholder={'000.000.000-00'}
         />
         <InputField
           label="Senha"
           type="password"
-          placeholder="Insira sua senha"
+          placeholder="********"
           register={register}
           name="password"
         />

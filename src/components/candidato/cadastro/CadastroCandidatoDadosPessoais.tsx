@@ -32,7 +32,7 @@ const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
         label="Nome Completo"
         name="nome"
         register={register}
-        placeholder="Insira seu nome completo"
+        placeholder="Ex: João da Silva"
         error={errors.nome?.message}
         options={{
           required: true,
@@ -53,7 +53,7 @@ const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
         label="CPF"
         name="cpf"
         register={register}
-        placeholder="Insira seu CPF"
+        placeholder="Ex: 000.000.000-00"
         error={errors.cpf?.message}
         options={{ required: true, onChange: cpfMask.onChange }}
       />

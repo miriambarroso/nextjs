@@ -10,7 +10,7 @@ const CadastroEmpresaEnderecoContatos = ({ register, errors }: Props) => {
         label="Telefone Comercial"
         name="telefone"
         register={register}
-        placeholder="(00) 0000-0000"
+        placeholder="Ex: (00) 0000-0000"
         error={errors.telefone?.message}
         options={{
           required: true,
@@ -20,14 +20,14 @@ const CadastroEmpresaEnderecoContatos = ({ register, errors }: Props) => {
       <InputField
         label="Site"
         name="site"
-        placeholder="example.com"
+        placeholder="Ex: anapolis.go.gov.br"
         register={register}
         error={errors.site?.message}
       />
       <InputField
         label="CEP"
         name="cep"
-        placeholder="00000-000"
+        placeholder="Ex: 00000-000"
         register={register}
         error={errors.cep?.message}
         options={{
@@ -37,7 +37,7 @@ const CadastroEmpresaEnderecoContatos = ({ register, errors }: Props) => {
       <InputField
         label="Logradouro"
         name="logradouro"
-        placeholder="Rua, Avenida, etc"
+        placeholder="Ex: Rua, Avenida, etc"
         register={register}
         error={errors.logradouro?.message}
       />

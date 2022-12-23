@@ -11,7 +11,7 @@ const CadastroEmpresaDadosEmpresa = ({ register, errors }: Props) => {
         label="CNPJ"
         name="cnpj"
         register={register}
-        placeholder="00.000.000/0000-00"
+        placeholder="Ex: 00.000.000/0000-00"
         error={errors.cnpj?.message}
         options={{
           required: true,

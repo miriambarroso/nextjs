@@ -23,6 +23,14 @@
 }
 
 .checkbox-primary {
+  border-color: hsl(var(--bc) / var(--tw-border-opacity));
   --chkfg: var(--b1);
+  --tw-border-opacity: 0.2;
+
+  &:hover {
+    border-color: hsl(var(--bc) / var(--tw-border-opacity));
+    --tw-border-opacity: 0.2;
+
+  }
 }
 

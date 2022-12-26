@@ -7,8 +7,8 @@ import { cpfMask } from '@/utils/masks';
 import { GUEST, useAuthStore } from '@/store/auth';
 import { schema } from '@/components/login/schema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 type Props = {};
 
@@ -30,17 +30,11 @@ const Login = ({}: Props) => {
     try {
       await login(cpf, password);
 
-      toast.success('Login realizado com sucesso!', {
-        duration: 3000,
-        position: 'top-right',
-      });
+      toastSuccess('Login realizado!');
 
       await router.push({ pathname: (query.redirect as string) ?? '/' });
     } catch (e) {
-      toast.error('Erro ao realizar login!', {
-        duration: 3000,
-        position: 'top-right',
-      });
+      toastError('Erro ao realizar login!');
     }
   };
 

@@ -7,11 +7,11 @@ import {
   SexoChoices,
   TipoDeficienciaChoices,
 } from '@/utils/choices';
-import ChoiceCheckboxField from '@/components/atoms/ChoiceCheckboxField';
+import { format, subYears } from 'date-fns';
 
-type Props = { register: any; errors: any };
+type Props = { register: any; errors: any; watch: any };
 
-const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
+const CadastroCandidatoDadosPessoais = ({ register, errors, watch }: Props) => {
   return (
     <>
       <InputField
@@ -32,6 +32,10 @@ const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
         type="date"
         options={{
           required: true,
+        }}
+        inputProps={{
+          min: '1900-01-01',
+          max: format(subYears(new Date(), 14), 'yyyy-MM-dd'),
         }}
       />
 
@@ -70,13 +74,18 @@ const CadastroCandidatoDadosPessoais = ({ register, errors }: Props) => {
         register={register}
         choices={PossuiDeficienciaChoices.choices}
       />
-      <ChoiceCheckboxField
-        label="Tipo de deficiência"
-        name="tipo_deficiencia"
-        error={errors.tipo_deficiencia?.message}
-        register={register}
-        choices={TipoDeficienciaChoices.choices}
-      />
+      {watch('possui_deficiencia', 'false') == 'true' && (
+        <ChoiceRadioField
+          label="Tipo de deficiência"
+          name="tipo_deficiencia"
+          error={errors.tipo_deficiencia?.message}
+          options={{
+            required: true,
+          }}
+          register={register}
+          choices={TipoDeficienciaChoices.choices}
+        />
+      )}
     </>
   );
 };

@@ -23,6 +23,16 @@ class Choices {
   get values(): string[] {
     return this._choices.map((choice) => choice.value);
   }
+
+  get valuesAsNumber(): number[] {
+    return this._choices.map((choice) => parseInt(choice.value));
+  }
+
+  get findByIntValue(): (value: number) => IChoice {
+    return (value: number) => {
+      return this._choices.find((choice) => parseInt(choice.value) === value);
+    };
+  }
 }
 
 export const SexoChoices = new Choices([

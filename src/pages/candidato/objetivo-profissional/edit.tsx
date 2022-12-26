@@ -1,11 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  IObjetivoProfissional,
-  schema,
-} from '@/components/candidato/objetivo-profissional/schema';
+import { schema } from '@/components/candidato/objetivo-profissional/schema';
 import BasicForm from '@/components/atoms/BasicForm';
 import CadastroObjetivoProfissional from '@/components/candidato/objetivo-profissional/CadastroObjetivoProfissional';
+import { IObjetivoProfissional } from '@/interfaces/objetivoProfissional';
 
 type Props = {};
 

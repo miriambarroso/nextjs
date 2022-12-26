@@ -6,6 +6,7 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use((config) => {
@@ -17,9 +18,9 @@ axiosInstance.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token;
 
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Token ${token}`;
   }
-  
+
   return config;
 });
 

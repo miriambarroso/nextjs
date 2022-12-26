@@ -7,15 +7,9 @@ import { IUser } from '@/interfaces/user';
 type Props = {
   user: IUser;
   logout: () => Promise<void>;
-  router: any;
 };
 
-const NavEmpregador = ({ user, logout, router }: Props) => {
-  const logoutAction = async () => {
-    await logout();
-    await router.push('/');
-  };
-
+const NavEmpregador = ({ user, logout }: Props) => {
   const dropdownItems = [
     [
       {
@@ -42,7 +36,7 @@ const NavEmpregador = ({ user, logout, router }: Props) => {
     [
       {
         name: 'Sair',
-        action: logoutAction,
+        action: logout,
         icon: BiLogOut,
       },
     ],

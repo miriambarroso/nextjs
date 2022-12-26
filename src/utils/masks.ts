@@ -222,3 +222,7 @@ export const numberMask = masker({
 export function parseDateString(value, originalValue) {
   return !!originalValue ? value : add(new Date(), { days: 1 });
 }
+
+export function parseNumberString(value, originalValue) {
+  return !!originalValue ? value : null;
+}

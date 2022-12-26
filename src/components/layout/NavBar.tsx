@@ -1,4 +1,4 @@
-import { BiMenuAltRight, BiSearch } from 'react-icons/bi';
+import { BiMenuAltRight, BiSearch, BiShocked } from 'react-icons/bi';
 import LogoAnapolis from '@/components/layout/LogoAnapolis';
 import LogoEmprega from '@/components/layout/LogoEmprega';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import NavGuest from '@/components/layout/NavBar/NavGuest';
 import NavAdmin from '@/components/layout/NavBar/NavAdmin';
 import NavEmpregador from '@/components/layout/NavBar/NavEmpregador';
 import NavCandidato from '@/components/layout/NavBar/NavCandidato';
+import { toastCustom } from '@/utils/toasts';
 
 type Props = {};
 
@@ -15,6 +16,12 @@ const NavBar = ({}: Props) => {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const router = useRouter();
+
+  const logoutHandler = async () => {
+    await logout();
+    toastCustom('Logout realizado!', <BiShocked className="text-xl" />);
+    await router.push('/');
+  };
 
   const [term, setTerm] = useState<string>('');
   const searchTerm = () => {
@@ -25,11 +32,11 @@ const NavBar = ({}: Props) => {
     if (!user || !Object.values(NivelUsuario).includes(user?.nivel_usuario))
       return <NavGuest />;
     if (user?.nivel_usuario <= NivelUsuario.ADMIN)
-      return <NavAdmin user={user} logout={logout} router={router} />;
+      return <NavAdmin user={user} logout={logoutHandler} />;
     if (user?.nivel_usuario === NivelUsuario.EMPREGADOR)
-      return <NavEmpregador user={user} logout={logout} router={router} />;
+      return <NavEmpregador user={user} logout={logoutHandler} />;
     if (user?.nivel_usuario === NivelUsuario.CANDIDATO)
-      return <NavCandidato user={user} logout={logout} router={router} />;
+      return <NavCandidato user={user} logout={logoutHandler} />;
   };
 
   return (

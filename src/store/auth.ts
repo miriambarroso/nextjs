@@ -7,7 +7,7 @@ export interface IAuthStore {
   token: string;
   expires: string;
   user: IUser;
-  login: (email: string, password: string) => Promise<void>;
+  login: (cpf: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   clear: () => void;
   update: (user: IUser, token: string, expires: string) => void;
@@ -17,7 +17,7 @@ export interface IAuthStore {
 export const SUPERADMIN = 1;
 export const ADMIN = 2;
 export const EMPREGADOR = 3;
-export const CANDIDATO = 3;
+export const CANDIDATO = 4;
 export const GUEST = undefined;
 
 export const NivelUsuario = {

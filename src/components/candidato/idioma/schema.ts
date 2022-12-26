@@ -3,11 +3,11 @@ import { IdiomaChoices, IdiomaNivelChoices } from '@/utils/choices';
 
 export const schema = yup.object().shape({
   nome: yup
-    .string()
+    .number()
     .required('Idioma é obrigatório')
-    .oneOf(IdiomaChoices.values, 'Idioma é obrigatório'),
+    .oneOf(IdiomaChoices.valuesAsNumber, 'Idioma é obrigatório'),
   nivel: yup
-    .string()
+    .number()
     .required('Nível é obrigatório')
-    .oneOf(IdiomaNivelChoices.values, 'Nível inválido'),
+    .oneOf(IdiomaNivelChoices.valuesAsNumber, 'Nível inválido'),
 });

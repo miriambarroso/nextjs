@@ -18,6 +18,7 @@
     "daisyui": "^2.45.0",
     "date-fns": "^2.29.3",
     "imask": "^6.4.3",
+    "lodash": "^4.17.21",
     "next": "canary",
     "react": "latest",
     "react-dom": "latest",

@@ -7,20 +7,14 @@ import { IUser } from '@/interfaces/user';
 type Props = {
   user: IUser;
   logout: () => Promise<void>;
-  router: any;
 };
 
-const NavCandidato = ({ user, logout, router }: Props) => {
-  const logoutAction = async () => {
-    await logout();
-    await router.push('/');
-  };
-
+const NavCandidato = ({ user, logout }: Props) => {
   const dropdownItems = [
     [
       {
         name: 'Meu Perfil',
-        href: '/admin/profile',
+        href: '/candidato/perfil',
       },
     ],
     [
@@ -42,7 +36,7 @@ const NavCandidato = ({ user, logout, router }: Props) => {
     [
       {
         name: 'Sair',
-        action: logoutAction,
+        action: logout,
         icon: BiLogOut,
       },
     ],

@@ -1,12 +1,12 @@
 import InputField from '@/components/atoms/InputField';
 import { currencyMask } from '@/utils/masks';
-import { IObjetivoProfissional } from '@/components/candidato/objetivo-profissional/schema';
 import SelectField from '@/components/atoms/SelectField';
 import {
   JornadaTrabalhoChoices,
   ModeloTrabalhoChoices,
   RegimeContratualChoices,
 } from '@/utils/choices';
+import { IObjetivoProfissional } from '@/interfaces/objetivoProfissional';
 
 type Props = {
   register: any;
@@ -27,7 +27,7 @@ const CadastroObjetivoProfissional = ({ register, errors, data }: Props) => {
 
   const regimeContratualChoices = [
     {
-      label: 'Selecione o regime contratual',
+      label: 'Selecione o regime de contratação',
       value: '',
       selected: true,
       disabled: true,
@@ -53,6 +53,9 @@ const CadastroObjetivoProfissional = ({ register, errors, data }: Props) => {
         register={register}
         placeholder="Ex: Analista de Sistemas"
         error={errors.cargo?.message}
+        options={{
+          required: true,
+        }}
       />
       <InputField
         label="Pretensão salarial"
@@ -61,6 +64,7 @@ const CadastroObjetivoProfissional = ({ register, errors, data }: Props) => {
         register={register}
         options={{
           onChange: currencyMask.onChange,
+          required: true,
         }}
         error={errors.salario?.message}
       />
@@ -71,6 +75,9 @@ const CadastroObjetivoProfissional = ({ register, errors, data }: Props) => {
         register={register}
         error={errors.modelo_trabalho?.message}
         choices={modeloTrabalhoChoices}
+        options={{
+          required: true,
+        }}
       />
       <SelectField
         label="Regime de contratação"
@@ -78,6 +85,9 @@ const CadastroObjetivoProfissional = ({ register, errors, data }: Props) => {
         register={register}
         error={errors.regime_contratual?.message}
         choices={regimeContratualChoices}
+        options={{
+          required: true,
+        }}
       />
       <SelectField
         label="Jornada de trabalho"
@@ -86,6 +96,9 @@ const CadastroObjetivoProfissional = ({ register, errors, data }: Props) => {
         register={register}
         error={errors.jornada_trabalho?.message}
         choices={jornadaTrabalhoChoices}
+        options={{
+          required: true,
+        }}
       />
     </>
   );

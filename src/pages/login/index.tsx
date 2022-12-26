@@ -4,14 +4,44 @@ import InputField from '@/components/atoms/InputField';
 import CardFormWrapper from '@/components/atoms/CardFormWrapper';
 import ToggleField from '@/components/atoms/ToggleField';
 import { cpfMask } from '@/utils/masks';
+import { GUEST, useAuthStore } from '@/store/auth';
+import { schema } from '@/pages/login/schema';
+import { yupResolver } from '@hookform/resolvers/yup';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 type Props = {};
 
 const Login = ({}: Props) => {
-  const { register, handleSubmit } = useForm();
+  const login = useAuthStore(({ login }) => login);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const router = useRouter();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const { cpf, password } = data;
+    const { query } = router;
+
+    try {
+      await login(cpf, password);
+
+      toast.success('Login realizado com sucesso!', {
+        duration: 3000,
+        position: 'top-right',
+      });
+
+      await router.push({ pathname: (query.redirect as string) ?? '/' });
+    } catch (e) {
+      toast.error('Erro ao realizar login!', {
+        duration: 3000,
+        position: 'top-right',
+      });
+    }
   };
 
   return (
@@ -24,6 +54,7 @@ const Login = ({}: Props) => {
           options={{
             onChange: cpfMask.onChange,
           }}
+          error={errors.cpf?.message}
           placeholder={'000.000.000-00'}
         />
         <InputField
@@ -31,6 +62,7 @@ const Login = ({}: Props) => {
           type="password"
           placeholder="********"
           register={register}
+          error={errors.password?.message}
           name="password"
         />
         <div className="flex items-center mt-4">
@@ -73,4 +105,5 @@ const Login = ({}: Props) => {
   );
 };
 
+Login.permissions = [GUEST];
 export default Login;

@@ -8,7 +8,7 @@ const CadastroEmpresaEnderecoContatos = ({ register, errors }: Props) => {
     <>
       <InputField
         label="Telefone Comercial"
-        name="telefone"
+        name="telefone_empresa"
         register={register}
         placeholder="Ex: (00) 0000-0000"
         error={errors.telefone?.message}

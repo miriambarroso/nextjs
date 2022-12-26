@@ -9,6 +9,7 @@ import Stepper from '@/components/atoms/Stepper';
 import CadastroCandidatoDadosContato from '@/components/candidato/cadastro/CadastroCandidatoDadosContato';
 import CadastroCandidatoCandidatura from '@/components/candidato/cadastro/CadastroCandidatoCandidatura';
 import CardFormWrapper from '@/components/atoms/CardFormWrapper';
+import { GUEST } from '@/store/auth';
 
 type Props = {};
 
@@ -144,5 +145,7 @@ const Index = ({}: Props) => {
     </CardFormWrapper>
   );
 };
+
+Index.permissions = [GUEST];
 
 export default Index;

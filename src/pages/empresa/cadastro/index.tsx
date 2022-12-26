@@ -9,8 +9,10 @@ import CadastroEmpresaDadosPessoais from '@/components/empresa/cadastro/Cadastro
 import CadastroEmpresaDadosEmpresa from '@/components/empresa/cadastro/CadastroEmpresaDadosEmpresa';
 import CadastroEmpresaEnderecoContatos from '@/components/empresa/cadastro/CadastroEmpresaEnderecoContatos';
 import CardFormWrapper from '@/components/atoms/CardFormWrapper';
+import { GUEST } from '@/store/auth';
 
 type Props = {};
+// TODO: Adicionar validação de campos
 
 const CadastroEmpresa = ({}: Props) => {
   const [step, setStep] = useState(0);
@@ -142,4 +144,5 @@ const CadastroEmpresa = ({}: Props) => {
   );
 };
 
+CadastroEmpresa.permissions = [GUEST];
 export default CadastroEmpresa;

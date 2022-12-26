@@ -11,6 +11,15 @@ module.exports = {
         'noto-sans': ['Noto Sans', 'sans-serif'],
         lato: ['Lato', 'sans-serif'],
       },
+      keyframes: {
+        appear: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+      },
+      animation: {
+        appear: 'appear 0.5s ease-in-out',
+      },
     },
   },
   daisyui: {

@@ -3,6 +3,7 @@ import BasicForm from '@/components/atoms/BasicForm';
 import CadastroCursoEspecializacao from '@/components/candidato/curso-especializacao/CadastroCursoEspecializacao';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '@/components/candidato/curso-especializacao/schema';
+import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
 
 type Props = {};
 
@@ -36,5 +37,7 @@ const Index = ({}: Props) => {
     </BasicForm>
   );
 };
+
+Index.permissions = [SUPERADMIN, ADMIN, CANDIDATO];
 
 export default Index;

@@ -1,44 +1,36 @@
 import { BiMenuAltRight, BiSearch } from 'react-icons/bi';
-import Link from 'next/link';
 import LogoAnapolis from '@/components/layout/LogoAnapolis';
 import LogoEmprega from '@/components/layout/LogoEmprega';
 import { useState } from 'react';
-import DropdownNav from '@/components/layout/DropdownNav';
+import { NivelUsuario, useAuthStore } from '@/store/auth';
+import { useRouter } from 'next/router';
+import NavGuest from '@/components/layout/NavBar/NavGuest';
+import NavAdmin from '@/components/layout/NavBar/NavAdmin';
+import NavEmpregador from '@/components/layout/NavBar/NavEmpregador';
+import NavCandidato from '@/components/layout/NavBar/NavCandidato';
 
 type Props = {};
 
 const NavBar = ({}: Props) => {
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+  const router = useRouter();
+
   const [term, setTerm] = useState<string>('');
   const searchTerm = () => {
     console.log('searchTerm');
   };
 
-  const dropdownEmpresas = [
-    [
-      { name: 'Cadastrar', href: '/empresa/cadastro' },
-      { name: 'Vaga', href: '/vaga/cadastro' },
-    ],
-  ];
-
-  const dropdownCandidatos = [
-    [
-      { name: 'Cadastrar', href: '/candidato/cadastro' },
-      {
-        name: 'Objetivo Profissional',
-        href: '/candidato/objetivo-profissional',
-      },
-      { name: 'Formação Acadêmica', href: '/candidato/formacao-academica' },
-      {
-        name: 'Experiência Profissional',
-        href: '/candidato/experiencia-profissional',
-      },
-      {
-        name: 'Curso e Especialização',
-        href: '/candidato/curso-especializacao',
-      },
-      { name: 'Idioma', href: '/candidato/idioma' },
-    ],
-  ];
+  const navNivelUsuario = () => {
+    if (!user || !Object.values(NivelUsuario).includes(user?.nivel_usuario))
+      return <NavGuest />;
+    if (user?.nivel_usuario <= NivelUsuario.ADMIN)
+      return <NavAdmin user={user} logout={logout} router={router} />;
+    if (user?.nivel_usuario === NivelUsuario.EMPREGADOR)
+      return <NavEmpregador user={user} logout={logout} router={router} />;
+    if (user?.nivel_usuario === NivelUsuario.CANDIDATO)
+      return <NavCandidato user={user} logout={logout} router={router} />;
+  };
 
   return (
     <>
@@ -71,25 +63,7 @@ const NavBar = ({}: Props) => {
             <label htmlFor="drawer-navbar" className="drawer-overlay lg:hidden">
               <BiMenuAltRight className="text-4xl" />
             </label>
-            <ul className="list hidden lg:flex items-center space-x-4 px-1 text-neutral ">
-              <li>
-                <DropdownNav name={'Empresas'} items={dropdownEmpresas} />
-              </li>
-              <li>
-                <DropdownNav name={'Candidatos'} items={dropdownCandidatos} />
-              </li>
-              <li>
-                <Link href="/login">Login</Link>
-              </li>
-              <li className="items-center">
-                <Link
-                  href="/candidato/cadastro"
-                  className="btn text-base-100 uppercase btn-sm py-0"
-                >
-                  Cadastre-se
-                </Link>
-              </li>
-            </ul>
+            {navNivelUsuario()}
           </div>
         </div>
       </div>

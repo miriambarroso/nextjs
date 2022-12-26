@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '@/components/candidato/objetivo-profissional/schema';
 import BasicForm from '@/components/atoms/BasicForm';
 import CadastroObjetivoProfissional from '@/components/candidato/objetivo-profissional/CadastroObjetivoProfissional';
+import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
 
 type Props = {};
 
@@ -38,5 +39,5 @@ const Index = ({}: Props) => {
     </>
   );
 };
-
+Index.permissions = [SUPERADMIN, ADMIN, CANDIDATO];
 export default Index;

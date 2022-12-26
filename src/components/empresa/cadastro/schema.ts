@@ -1,7 +1,7 @@
 import { isValidCPF, isValidPhone } from '@brazilian-utils/brazilian-utils';
 import * as yup from 'yup';
 
-import { cnpjMask, cpfMask } from '@/utils/masks';
+import { cnpjMask, cpfMask, numberMask, trimMask } from '@/utils/masks';
 
 export const schema = yup.object().shape({
   nome: yup
@@ -16,13 +16,13 @@ export const schema = yup.object().shape({
     .transform(cpfMask.transform)
     .required('CPF é obrigatório')
     .test('validateCPF', 'CPF Inválido', isValidCPF),
+  atuacao: yup.string().transform(trimMask.transform),
+  cargo: yup.string().transform(trimMask.transform),
   email: yup.string().email('Email inválido').required('Email é obrigatório'),
   telefone: yup
     .string()
     .required('Telefone é obrigatório')
-    .test('validatePhone', 'Telefone inválido', (value) => {
-      return isValidPhone(value);
-    }),
+    .test('validatePhone', 'Telefone inválido', isValidPhone),
   password: yup
     .string()
     .required('Senha é obrigatória')
@@ -43,15 +43,23 @@ export const schema = yup.object().shape({
   razao_social: yup
     .string()
     .required('Razão social é obrigatório')
-    .transform((value) => value?.trim()),
+    .transform(trimMask.transform),
   nome_fantasia: yup
     .string()
     .required('Nome fantasia é obrigatório')
-    .transform((value) => value?.trim()),
+    .transform(trimMask.transform),
   ramo_atividade: yup
     .string()
     .required('Ramo de atividade é obrigatório')
-    .transform((value) => value?.trim()),
+    .transform(trimMask.transform),
+  numero_funcionarios: yup
+    .number()
+    .typeError('Número de funcionários é obrigatório')
+    .transform(numberMask.transform),
+  descricao: yup
+    .string()
+    .required('Descrição é obrigatório')
+    .transform(trimMask.transform),
   // currency: yup
   //   .number()
   //   .transform((_, originalValue) =>

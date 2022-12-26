@@ -8,6 +8,7 @@ import CardFormWrapper from '@/components/atoms/CardFormWrapper';
 import CadastroVagaSobre from '@/components/vaga/cadastro/CadastroVagaSobre';
 import CadastroVagaInformacoes from '@/components/vaga/cadastro/CadastroVagaInformacoes';
 import CadastroVagaSalarioBeneficios from '@/components/vaga/cadastro/CadastroVagaSalarioBeneficios';
+import { GUEST } from '@/store/auth';
 
 type Props = {};
 
@@ -28,6 +29,7 @@ type FormProps = {
   regime_contratual: string;
   jornada_trabalho: string;
 };
+// TODO: Adicionar validação de campos
 
 const CadastroVaga = ({}: Props) => {
   const [step, setStep] = useState(0);
@@ -134,4 +136,5 @@ const CadastroVaga = ({}: Props) => {
   );
 };
 
+CadastroVaga.permissions = [GUEST];
 export default CadastroVaga;

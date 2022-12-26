@@ -15,7 +15,7 @@ const DefaultLayout = ({ children }: Props) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <NavBar />
-      <main className="container ">{children}</main>
+      <main className="container">{children}</main>
       <Footer />
     </Drawer>
   );

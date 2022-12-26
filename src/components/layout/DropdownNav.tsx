@@ -1,18 +1,68 @@
 import { Menu, Transition } from '@headlessui/react';
 import { BiChevronDown } from 'react-icons/bi';
-import { Fragment } from 'react';
+import { Fragment, FunctionComponent } from 'react';
 import Link from 'next/link';
 
 type DropdownItem = {
   name: string;
-  href: string;
-  icon?: any;
+  href?: string;
+  action?: () => Promise<void> | void;
+  icon?: FunctionComponent;
 };
 
 type Props = {
   items: DropdownItem[][];
-  name: string;
+  name: any;
 };
+
+const SubItem = ({
+  item,
+  active,
+  close,
+}: {
+  item: DropdownItem;
+  active: boolean;
+  close: () => void;
+}) => {
+  let ItemIcon: FunctionComponent<{}> = () => null;
+
+  if (item.icon) {
+    ItemIcon = item.icon;
+    ItemIcon.defaultProps = { className: 'w-5 h-5' };
+  }
+
+  if (item.href) {
+    return (
+      <Link
+        href={item.href}
+        onClick={close}
+        className={`${
+          active ? 'bg-neutral text-white' : 'text-gray-900'
+        } group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-neutral hover:text-white justify-between`}
+      >
+        {item.name}
+        {<ItemIcon />}
+      </Link>
+    );
+  }
+  if (item.action) {
+    return (
+      <button
+        onClick={() => {
+          item.action();
+          close();
+        }}
+        className={`${
+          active ? 'bg-neutral text-white' : 'text-gray-900'
+        } group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-neutral hover:text-white justify-between`}
+      >
+        {item.name}
+        {<ItemIcon />}
+      </button>
+    );
+  }
+};
+
 const DropdownNav = ({ items, name }: Props) => {
   return (
     <Menu
@@ -21,8 +71,14 @@ const DropdownNav = ({ items, name }: Props) => {
     >
       <div>
         <Menu.Button className="inline-flex items-center ">
-          {name}
-          <BiChevronDown className={'text-xl'} />
+          {name instanceof String ? (
+            <>
+              {name}
+              <BiChevronDown className={'text-xl'} />
+            </>
+          ) : (
+            name
+          )}
           {/*<ChevronDownIcon*/}
           {/*  className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"*/}
           {/*  aria-hidden="true"*/}
@@ -43,26 +99,8 @@ const DropdownNav = ({ items, name }: Props) => {
             <div key={index} className="px-1 py-1 ">
               {item.map((subItem, subIndex) => (
                 <Menu.Item key={subIndex}>
-                  {({ active }) => (
-                    <Link
-                      href={subItem.href}
-                      className={`${
-                        active ? 'bg-neutral text-white' : 'text-gray-900'
-                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                    >
-                      {/*{active ? (*/}
-                      {/*  <EditActiveIcon*/}
-                      {/*    className="mr-2 h-5 w-5"*/}
-                      {/*    aria-hidden="true"*/}
-                      {/*  />*/}
-                      {/*) : (*/}
-                      {/*  <EditInactiveIcon*/}
-                      {/*    className="mr-2 h-5 w-5"*/}
-                      {/*    aria-hidden="true"*/}
-                      {/*  />*/}
-                      {/*)}*/}
-                      {subItem.name}
-                    </Link>
+                  {({ active, close }) => (
+                    <SubItem item={subItem} active={active} close={close} />
                   )}
                 </Menu.Item>
               ))}

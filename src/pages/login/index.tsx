@@ -5,7 +5,7 @@ import CardFormWrapper from '@/components/atoms/CardFormWrapper';
 import ToggleField from '@/components/atoms/ToggleField';
 import { cpfMask } from '@/utils/masks';
 import { GUEST, useAuthStore } from '@/store/auth';
-import { schema } from '@/pages/login/schema';
+import { schema } from '@/components/login/schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';

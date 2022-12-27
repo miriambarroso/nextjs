@@ -86,7 +86,7 @@ const Login = ({}: Props) => {
         </h2>
         <p className="text-center">
           Cadastre-se como{' '}
-          <Link href={'/candidato/cadastro'} className="text-primary">
+          <Link href={'/candidato/cadastrar'} className="text-primary">
             Candidato
           </Link>{' '}
           ou{' '}

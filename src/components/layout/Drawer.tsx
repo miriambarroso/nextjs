@@ -18,7 +18,7 @@ const Drawer = ({ children, className }: Props) => {
 
   const accordionCandidatos = [
     [
-      { name: 'Cadastrar', href: '/candidato/cadastro' },
+      { name: 'Cadastrar', href: '/candidato/cadastrar' },
       {
         name: 'Objetivo Profissional',
         href: '/candidato/objetivo-profissional',

@@ -84,7 +84,7 @@ const CadastroEmpresa = ({}: Props) => {
     <p ref={startForm} className={classNames(step == 0 ? 'ml-auto' : 'hidden')}>
       Cadastre-se como{' '}
       <Link
-        href={'/candidato/cadastro'}
+        href={'/candidato/cadastrar'}
         className="link link-hover text-primary"
       >
         Candidato

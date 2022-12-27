@@ -4,7 +4,7 @@ import CadastroIdioma from '@/components/candidato/idioma/CadastroIdioma';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '@/components/candidato/idioma/schema';
 import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import { useEffect } from 'react';
 import IdiomaService from '@/services/IdiomaService';
@@ -21,7 +21,7 @@ const Index = ({}: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const { query } = Router;
+  const { query } = useRouter();
 
   const onSubmit = async (data) => {
     try {
@@ -41,7 +41,7 @@ const Index = ({}: Props) => {
         });
       });
     }
-  }, [query?.pid]);
+  }, [query?.pid, reset]);
 
   return (
     <BasicForm

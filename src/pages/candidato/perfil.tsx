@@ -57,7 +57,7 @@ const Page = ({}: Props) => {
 
   return (
     <>
-      <div className="mb-8 mt-4">
+      <div className="mb-8 mt-4 mx-auto max-w-3xl">
         <div className="label">
           <span className="label-text">Seu currículo</span>
         </div>

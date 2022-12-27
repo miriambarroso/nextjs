@@ -53,7 +53,7 @@ const Index = ({}: Props) => {
         },
       );
     }
-  }, [query?.pid]);
+  }, [query?.pid, reset]);
 
   return (
     <BasicForm

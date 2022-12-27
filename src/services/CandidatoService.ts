@@ -1,10 +1,10 @@
 import axiosInstance from '@/utils/axios';
 import { ICandidatoCreate } from '@/interfaces/candidato';
+import CRUDService from '@/services/CRUDService';
 
-class CandidatoService {
-  async create(candidato: NonNullable<ICandidatoCreate>) {
-    const response = await axiosInstance.post('/candidato', candidato);
-    return response.data;
+class CandidatoService extends CRUDService<ICandidatoCreate> {
+  constructor() {
+    super('candidato');
   }
 
   async perfil() {

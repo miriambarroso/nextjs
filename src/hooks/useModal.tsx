@@ -7,10 +7,7 @@ type Return = {
 const useModal = (): Return => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const toggle = () => {
-    console.log('hdadhwiad', open);
-    setOpen(!open);
-  };
+  const toggle = () => setOpen(!open);
 
   return {
     open,

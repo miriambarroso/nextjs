@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { parseDateString, trimMask } from '@/utils/masks';
+import { dateMask, trimMask } from '@/utils/masks';
 
 const today = new Date();
 
@@ -12,15 +12,10 @@ export const schema = yup.object().shape({
     .string()
     .required('Curso é obrigatório')
     .transform(trimMask.transform),
-  nivel: yup
-    .string()
-    .required('Nível é obrigatório')
-    .transform(trimMask.transform),
   data_conclusao: yup
-    .date()
-    .transform(parseDateString)
-    .typeError('Data de conclusão é obrigatória')
-    .max(today, 'Data de conclusão deve ser menor ou igual a hoje'),
+    .string()
+    .required('Data de conclusão é obrigatória')
+    .transform(dateMask.transform),
   duracao_horas: yup
     .number()
     .required('Tempo de duração é obrigatório')

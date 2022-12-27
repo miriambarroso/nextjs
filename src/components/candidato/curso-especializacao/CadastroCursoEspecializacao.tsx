@@ -1,7 +1,6 @@
 import InputField from '@/components/atoms/InputField';
 import { numberMask } from '@/utils/masks';
-import SelectField from '@/components/atoms/SelectField';
-import { FormacaoNivelChoices } from '@/utils/choices';
+import { format } from 'date-fns';
 
 type Props = {
   register: any;
@@ -9,15 +8,6 @@ type Props = {
 };
 
 const CadastroCursoEspecializacao = ({ register, errors }: Props) => {
-  const nivelFormacaoChoices = [
-    {
-      value: '',
-      label: 'Selecione o nível de formação',
-      disabled: true,
-      selected: true,
-    },
-    ...FormacaoNivelChoices.choices,
-  ];
   return (
     <>
       <InputField
@@ -40,17 +30,6 @@ const CadastroCursoEspecializacao = ({ register, errors }: Props) => {
         }}
         error={errors.curso?.message}
       />
-      <SelectField
-        label="Nível de formação"
-        name="nivel"
-        register={register}
-        placeholder="Ex: Superior"
-        options={{
-          required: true,
-        }}
-        choices={nivelFormacaoChoices}
-        error={errors.nivel?.message}
-      />
       <InputField
         label="Data de conclusão"
         name="data_conclusao"
@@ -58,6 +37,9 @@ const CadastroCursoEspecializacao = ({ register, errors }: Props) => {
         placeholder="Ex: 01/01/2024"
         options={{
           required: true,
+        }}
+        inputProps={{
+          max: format(new Date(), 'yyyy-MM-dd'),
         }}
         type="date"
         error={errors.data_conclusao?.message}

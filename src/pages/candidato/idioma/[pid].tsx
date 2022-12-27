@@ -1,13 +1,13 @@
 import { useForm } from 'react-hook-form';
 import BasicForm from '@/components/atoms/BasicForm';
-import CadastroCursoEspecializacao from '@/components/candidato/curso-especializacao/CadastroCursoEspecializacao';
+import CadastroIdioma from '@/components/candidato/idioma/CadastroIdioma';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from '@/components/candidato/curso-especializacao/schema';
+import { schema } from '@/components/candidato/idioma/schema';
 import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
 import Router from 'next/router';
 import { toastError, toastSuccess } from '@/utils/toasts';
-import CursoEspecializacaoService from '@/services/CursoEspecializacaoService';
-import { isEmpty } from 'lodash';
+import { useEffect } from 'react';
+import IdiomaService from '@/services/IdiomaService';
 
 type Props = {};
 
@@ -16,29 +16,38 @@ const Index = ({}: Props) => {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
+  const { query } = Router;
+
   const onSubmit = async (data) => {
     try {
-      const requestData = {
-        ...data,
-        certificado: isEmpty(data.certificado) ? null : data.certificado,
-      };
-      await CursoEspecializacaoService.create(requestData);
-      toastSuccess('Curso ou escialização salvo!');
+      await IdiomaService.update(data);
+      toastSuccess('Idioma atualizado!');
       Router.back();
     } catch (e) {
-      toastError('Erro ao salvar curso ou especialização!');
+      toastError('Erro ao atualizar idioma!');
     }
   };
 
+  useEffect(() => {
+    if (query.pid) {
+      IdiomaService.get(query?.pid as unknown as number).then((data) => {
+        reset({
+          ...data,
+        });
+      });
+    }
+  }, [query?.pid]);
+
   return (
     <BasicForm
-      title={'Curso e Especialização'}
+      title={'Idioma'}
       onSubmit={handleSubmit(onSubmit)}
-      component={CadastroCursoEspecializacao}
+      component={CadastroIdioma}
       register={register}
       errors={errors}
     >
@@ -51,7 +60,5 @@ const Index = ({}: Props) => {
     </BasicForm>
   );
 };
-
 Index.permissions = [SUPERADMIN, ADMIN, CANDIDATO];
-
 export default Index;

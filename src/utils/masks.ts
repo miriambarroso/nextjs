@@ -81,6 +81,8 @@ export const dateMask = masker({
       return value;
     }
 
+    console.log(value);
+
     const date = dateFns.parse(value, 'yyyy-MM-dd', new Date());
     return dateFns.format(date, dateFormatApi);
   },

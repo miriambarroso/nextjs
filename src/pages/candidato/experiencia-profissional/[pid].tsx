@@ -1,14 +1,15 @@
 import { useForm } from 'react-hook-form';
 import BasicForm from '@/components/atoms/BasicForm';
-import CadastroFormacaoAcademica from '@/components/candidato/formacao-academica/CadastroFormacaoAcademica';
-import { schema } from '@/components/candidato/formacao-academica/schema';
+import CadastroExperienciaProfissional from '@/components/candidato/experiencia-profissional/CadastroExperienciaProfissional';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from '@/components/candidato/experiencia-profissional/schema';
 import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
-import FormacaoAcademicaService from '@/services/FormacaoAcademicaService';
 import { toastError, toastSuccess } from '@/utils/toasts';
-import Router, { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import Router from 'next/router';
 import { IFormacaoAcademica } from '@/interfaces/formacaoAcademica';
+
+import { useEffect } from 'react';
+import ExperienciaProfissionalService from '@/services/ExperienciaProfissionalService';
 
 type Props = {};
 
@@ -18,14 +19,12 @@ const Index = ({}: Props) => {
     formState: { errors },
     handleSubmit,
     watch,
-    trigger,
     reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const router = useRouter();
-  const { query } = router;
+  const { query } = Router;
 
   const onSubmit = async (data) => {
     try {
@@ -34,9 +33,9 @@ const Index = ({}: Props) => {
         data_conclusao: data.data_atual ? null : data.data_conclusao,
       };
 
-      await FormacaoAcademicaService.update(requestData);
+      await ExperienciaProfissionalService.update(requestData);
       toastSuccess('Formação acadêmica atualizada!');
-      router.back();
+      Router.back();
     } catch (e) {
       toastError('Erro ao atualizar formação acadêmica!');
     }
@@ -44,11 +43,11 @@ const Index = ({}: Props) => {
 
   useEffect(() => {
     if (query.pid) {
-      FormacaoAcademicaService.get(query?.pid as unknown as number).then(
+      ExperienciaProfissionalService.get(query?.pid as unknown as number).then(
         (data) => {
           reset({
             ...data,
-            data_atual: data.data_conclusao === null,
+            data_atual: data.data_fim === null,
           });
         },
       );
@@ -57,12 +56,11 @@ const Index = ({}: Props) => {
 
   return (
     <BasicForm
-      title={'Formação Acadêmica'}
+      title={'Experiência Profissional'}
       onSubmit={handleSubmit(onSubmit)}
-      component={CadastroFormacaoAcademica}
-      register={register}
+      component={CadastroExperienciaProfissional}
       watch={watch}
-      trigger={trigger}
+      register={register}
       errors={errors}
     >
       <button type="button" className="btn btn-base mt-4" onClick={Router.back}>

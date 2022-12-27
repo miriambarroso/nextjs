@@ -13,8 +13,6 @@ type Props = {
 const RouteGuard = ({ pageComponent, children }: Props) => {
   const authStore = useAuthStore();
 
-  useEffect(() => {}, []);
-
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
 

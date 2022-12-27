@@ -5,6 +5,7 @@ import type { NextPage } from 'next';
 import '@/styles/global.scss';
 import { Toaster } from 'react-hot-toast';
 import RouteGuard from '@/components/RouteGuard';
+import useScrollToTop from '@/hooks/useScrollToTop';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -16,6 +17,8 @@ type AppPropsWithLayout = AppProps & {
 };
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+  useScrollToTop();
+
   const getLayout =
     Component.getLayout ??
     ((page) => (
@@ -23,8 +26,10 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
         <RouteGuard pageComponent={Component}>{page}</RouteGuard>
       </DefaultLayout>
     ));
+
   return getLayout(
     <>
+      <div id="scroll" />
       <Component {...pageProps} />
       <Toaster />
     </>,

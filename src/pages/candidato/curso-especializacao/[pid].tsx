@@ -1,14 +1,13 @@
 import { useForm } from 'react-hook-form';
 import BasicForm from '@/components/atoms/BasicForm';
-import CadastroFormacaoAcademica from '@/components/candidato/formacao-academica/CadastroFormacaoAcademica';
-import { schema } from '@/components/candidato/formacao-academica/schema';
+import CadastroCursoEspecializacao from '@/components/candidato/curso-especializacao/CadastroCursoEspecializacao';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from '@/components/candidato/curso-especializacao/schema';
 import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
-import FormacaoAcademicaService from '@/services/FormacaoAcademicaService';
+import Router from 'next/router';
 import { toastError, toastSuccess } from '@/utils/toasts';
-import Router, { useRouter } from 'next/router';
+import CursoEspecializacaoService from '@/services/CursoEspecializacaoService';
 import { useEffect } from 'react';
-import { IFormacaoAcademica } from '@/interfaces/formacaoAcademica';
 
 type Props = {};
 
@@ -17,38 +16,29 @@ const Index = ({}: Props) => {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
-    trigger,
     reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const router = useRouter();
-  const { query } = router;
+  const { query } = Router;
 
   const onSubmit = async (data) => {
     try {
-      const requestData: IFormacaoAcademica = {
-        ...data,
-        data_conclusao: data.data_atual ? null : data.data_conclusao,
-      };
-
-      await FormacaoAcademicaService.update(requestData);
-      toastSuccess('Formação acadêmica atualizada!');
-      router.back();
+      await CursoEspecializacaoService.update(data);
+      toastSuccess('Curso e escialização atualizado!');
+      Router.back();
     } catch (e) {
-      toastError('Erro ao atualizar formação acadêmica!');
+      toastError('Erro ao atualizar curso e especialização!');
     }
   };
 
   useEffect(() => {
     if (query.pid) {
-      FormacaoAcademicaService.get(query?.pid as unknown as number).then(
+      CursoEspecializacaoService.get(query?.pid as unknown as number).then(
         (data) => {
           reset({
             ...data,
-            data_atual: data.data_conclusao === null,
           });
         },
       );
@@ -57,12 +47,10 @@ const Index = ({}: Props) => {
 
   return (
     <BasicForm
-      title={'Formação Acadêmica'}
+      title={'Curso e Especialização'}
       onSubmit={handleSubmit(onSubmit)}
-      component={CadastroFormacaoAcademica}
+      component={CadastroCursoEspecializacao}
       register={register}
-      watch={watch}
-      trigger={trigger}
       errors={errors}
     >
       <button type="button" className="btn btn-base mt-4" onClick={Router.back}>
@@ -74,5 +62,7 @@ const Index = ({}: Props) => {
     </BasicForm>
   );
 };
+
 Index.permissions = [SUPERADMIN, ADMIN, CANDIDATO];
+
 export default Index;

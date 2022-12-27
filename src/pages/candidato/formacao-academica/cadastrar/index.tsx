@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
 import FormacaoAcademicaService from '@/services/FormacaoAcademicaService';
 import { toastError, toastSuccess } from '@/utils/toasts';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 
 type Props = {};
 
@@ -21,8 +21,6 @@ const Index = ({}: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const router = useRouter();
-
   const onSubmit = async (data) => {
     try {
       const requestData = {
@@ -31,7 +29,7 @@ const Index = ({}: Props) => {
       };
       await FormacaoAcademicaService.create(requestData);
       toastSuccess('Formação acadêmica salva!');
-      router.back();
+      Router.back();
     } catch (e) {
       toastError('Erro ao salvar formação acadêmica!');
     }
@@ -47,7 +45,7 @@ const Index = ({}: Props) => {
       trigger={trigger}
       errors={errors}
     >
-      <button type="button" className="btn btn-base mt-4">
+      <button type="button" className="btn btn-base mt-4" onClick={Router.back}>
         voltar
       </button>
       <button type="submit" className="btn btn-primary mt-4 text-white">

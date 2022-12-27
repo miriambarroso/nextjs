@@ -12,8 +12,6 @@ import CardPerfilCursoEspecializacao from '@/components/candidato/perfil/CardPer
 import CardPerfilIdioma from '@/components/candidato/perfil/CardPerfilIdioma';
 import Link from 'next/link';
 import { CANDIDATO } from '@/store/auth';
-import CandidatoModal from '@/components/candidato/CandidatoModal';
-import useModal from '@/hooks/useModal';
 
 type Props = {};
 
@@ -40,8 +38,6 @@ export const CardPerfil = ({
 };
 
 const Page = ({}: Props) => {
-  const { open, toggle } = useModal();
-
   const [userProfile, setUserProfile] = useState<ICandidatoPerfil>(
     {} as ICandidatoPerfil,
   );
@@ -58,10 +54,6 @@ const Page = ({}: Props) => {
   useEffect(() => {
     fetchUser();
   }, []);
-
-  useEffect(() => {
-    console.log('hello');
-  }, [open]);
 
   return (
     <>
@@ -102,8 +94,6 @@ const Page = ({}: Props) => {
           />
           <CardPerfilFormacaoAcademica
             formacao_academica={userProfile?.formacao_academica}
-            openModal={open}
-            toggleModal={toggle}
           />
           <CardPerfilExperienciaProfissional
             experiencia_profissional={userProfile?.experiencia_profissional}
@@ -114,7 +104,6 @@ const Page = ({}: Props) => {
           <CardPerfilIdioma idioma={userProfile?.idioma} />
         </div>
       </div>
-      <CandidatoModal open={open} close={toggle} />
     </>
   );
 };

@@ -4,6 +4,9 @@ import CadastroExperienciaProfissional from '@/components/candidato/experiencia-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '@/components/candidato/experiencia-profissional/schema';
 import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
+import { toastError, toastSuccess } from '@/utils/toasts';
+import Router from 'next/router';
+import ExperienciaProfissionalService from '@/services/ExperienciaProfissionalService';
 
 type Props = {};
 
@@ -17,8 +20,18 @@ const Index = ({}: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const requestData = {
+        ...data,
+        data_conclusao: data.data_atual ? null : data.data_conclusao,
+      };
+      await ExperienciaProfissionalService.create(requestData);
+      toastSuccess('Experiência profissional salva!');
+      Router.back();
+    } catch (e) {
+      toastError('Erro ao salvar experiência profissional!');
+    }
   };
 
   return (
@@ -30,7 +43,7 @@ const Index = ({}: Props) => {
       register={register}
       errors={errors}
     >
-      <button type="button" className="btn btn-base mt-4">
+      <button type="button" className="btn btn-base mt-4" onClick={Router.back}>
         voltar
       </button>
       <button type="submit" className="btn btn-primary mt-4 text-white">

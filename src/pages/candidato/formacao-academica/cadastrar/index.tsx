@@ -4,6 +4,9 @@ import CadastroFormacaoAcademica from '@/components/candidato/formacao-academica
 import { schema } from '@/components/candidato/formacao-academica/schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
+import FormacaoAcademicaService from '@/services/FormacaoAcademicaService';
+import { toastError, toastSuccess } from '@/utils/toasts';
+import { useRouter } from 'next/router';
 
 type Props = {};
 
@@ -18,8 +21,20 @@ const Index = ({}: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const router = useRouter();
+
+  const onSubmit = async (data) => {
+    try {
+      const requestData = {
+        ...data,
+        data_conclusao: data.data_atual ? null : data.data_conclusao,
+      };
+      await FormacaoAcademicaService.create(requestData);
+      toastSuccess('Formação acadêmica salva!');
+      router.back();
+    } catch (e) {
+      toastError('Erro ao salvar formação acadêmica!');
+    }
   };
 
   return (

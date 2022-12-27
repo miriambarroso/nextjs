@@ -80,7 +80,8 @@ export const dateMask = masker({
     if (!value) {
       return value;
     }
-    const date = dateFns.parse(value, dateFormatClient, new Date());
+
+    const date = dateFns.parse(value, 'yyyy-MM-dd', new Date());
     return dateFns.format(date, dateFormatApi);
   },
   maskDefault: (value) => {

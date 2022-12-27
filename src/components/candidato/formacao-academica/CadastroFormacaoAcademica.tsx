@@ -2,6 +2,7 @@ import InputField from '@/components/atoms/InputField';
 import ToggleField from '@/components/atoms/ToggleField';
 import SelectField from '@/components/atoms/SelectField';
 import { FormacaoNivelChoices } from '@/utils/choices';
+import { format } from 'date-fns';
 
 type Props = {
   register: any;
@@ -59,7 +60,7 @@ const CadastroFormacaoAcademica = ({ register, errors, watch }: Props) => {
         register={register}
         type="date"
         inputProps={{
-          max: new Date().toISOString().split('T')[0],
+          max: format(new Date(), 'yyyy-MM-dd'),
         }}
         options={{
           required: true,
@@ -75,7 +76,7 @@ const CadastroFormacaoAcademica = ({ register, errors, watch }: Props) => {
         register={register}
         inputProps={{
           disabled: watch('data_atual', false),
-          max: new Date().toISOString().split('T')[0],
+          max: format(new Date(), 'yyyy-MM-dd'),
         }}
         options={{
           required: !watch('data_atual', false),

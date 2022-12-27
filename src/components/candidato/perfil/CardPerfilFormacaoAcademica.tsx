@@ -64,7 +64,7 @@ const CardPerfilFormacaoAcademica = ({ formacao_academica }: Props) => {
         </div>
         <div className={'ml-auto  flex flex-col text-right gap-2'}>
           <Link
-            href={`/candidato/formacao-academica/${item.id}`}
+            href={`/candidato/formacao-academica/${item.id}/editar`}
             className="link link-hover link-neutral text-sm"
           >
             Editar

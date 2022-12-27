@@ -73,7 +73,7 @@ const Page = ({}: Props) => {
             <div>
               <BiUser className="inline-block" />{' '}
               <TextSkeleton className="h-4 w-[180px] bg-base-100 ml-2">
-                {cpfMask.mask(userProfile?.cpf || '')}
+                {userProfile?.cpf ? cpfMask.mask(userProfile?.cpf) : null}
               </TextSkeleton>
             </div>
             <div>
@@ -85,8 +85,18 @@ const Page = ({}: Props) => {
             <div>
               <BiPhone className="inline-block" />{' '}
               <TextSkeleton className="h-4 w-[180px] bg-base-100 ml-2">
-                {phoneMask.mask(userProfile?.telefone || '')}
+                {userProfile?.telefone
+                  ? phoneMask.mask(userProfile?.telefone)
+                  : null}
               </TextSkeleton>
+            </div>
+            <div className="mt-4">
+              <Link
+                href={`/candidato/${userProfile?.id}/editar`}
+                className="btn btn-outline btn-white btn-sm"
+              >
+                Editar dados cadastrais
+              </Link>
             </div>
           </div>
           <CardPerfilObjetivoProfissional

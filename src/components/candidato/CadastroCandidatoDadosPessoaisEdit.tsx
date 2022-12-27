@@ -7,18 +7,22 @@ import {
   SexoChoices,
   TipoDeficienciaChoices,
 } from '@/utils/choices';
-import ChoiceCheckboxField from '@/components/atoms/ChoiceCheckboxField';
+import { format, subYears } from 'date-fns';
 
-type Props = { register: any; errors: any };
+type Props = { register: any; errors: any; watch: any };
 
-const CadastroCandidatoDadosPessoaisEdit = ({ register, errors }: Props) => {
+const CadastroCandidatoDadosPessoaisEdit = ({
+  register,
+  errors,
+  watch,
+}: Props) => {
   return (
     <>
       <InputField
         label="Nome Completo"
         name="nome"
         register={register}
-        placeholder="Insira seu nome completo"
+        placeholder="Ex: João da Silva"
         error={errors.nome?.message}
         options={{
           required: true,
@@ -33,13 +37,17 @@ const CadastroCandidatoDadosPessoaisEdit = ({ register, errors }: Props) => {
         options={{
           required: true,
         }}
+        inputProps={{
+          min: '1900-01-01',
+          max: format(subYears(new Date(), 14), 'yyyy-MM-dd'),
+        }}
       />
 
       <InputField
         label="CPF"
         name="cpf"
         register={register}
-        placeholder="Insira seu CPF"
+        placeholder="Ex: 000.000.000-00"
         error={errors.cpf?.message}
         options={{ required: true, onChange: cpfMask.onChange }}
       />
@@ -48,7 +56,7 @@ const CadastroCandidatoDadosPessoaisEdit = ({ register, errors }: Props) => {
         name="email"
         type="email"
         register={register}
-        placeholder="email@email.com"
+        placeholder="Ex: joao@anapolis.go.gov.br"
         error={errors.email?.message}
         options={{
           required: true,
@@ -58,6 +66,7 @@ const CadastroCandidatoDadosPessoaisEdit = ({ register, errors }: Props) => {
         label="Celular"
         name="telefone"
         register={register}
+        placeholder="Ex: (00) 00000-0000"
         error={errors.telefone?.message}
         type="phone"
         options={{
@@ -92,13 +101,18 @@ const CadastroCandidatoDadosPessoaisEdit = ({ register, errors }: Props) => {
         register={register}
         choices={PossuiDeficienciaChoices.choices}
       />
-      <ChoiceCheckboxField
-        label="Tipo de deficiência"
-        name="tipo_deficiencia"
-        error={errors.tipo_deficiencia?.message}
-        register={register}
-        choices={TipoDeficienciaChoices.choices}
-      />
+      {watch('possui_deficiencia', 'false') == 'true' && (
+        <ChoiceRadioField
+          label="Tipo de deficiência"
+          name="tipo_deficiencia"
+          error={errors.tipo_deficiencia?.message}
+          options={{
+            required: true,
+          }}
+          register={register}
+          choices={TipoDeficienciaChoices.choices}
+        />
+      )}
     </>
   );
 };

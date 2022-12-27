@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useAuthStore } from '@/store/auth';
+import { toastWarning } from '@/utils/toasts';
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -23,5 +24,17 @@ axiosInstance.interceptors.request.use((config) => {
 
   return config;
 });
+
+axiosInstance.interceptors.response.use(response => response, error => {
+  if (error.response.status === 401) {
+    useAuthStore.getState().logout();
+  }
+
+  if (error.response.status === 403) {
+    toastWarning('Você não tem permissão para acessar essa informação.')
+  }
+
+  return Promise.reject(error);
+})
 
 export default axiosInstance;

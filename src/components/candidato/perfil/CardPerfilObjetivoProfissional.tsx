@@ -60,7 +60,7 @@ const CardPerfilObjetivoProfissional = ({ objetivo_profissional }: Props) => {
       title={'Objetivo Profissional'}
       button={{
         label: 'Editar objetivo profissional',
-        href: '/candidato/objetivo-profissional/editar',
+        href: `/candidato/objetivo-profissional/${objetivo_profissional?.id}/editar`,
       }}
     >
       <div className={'space-y-2 mt-4'}>

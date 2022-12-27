@@ -20,18 +20,15 @@ export const schema = yup.object().shape({
     ),
   modelo_trabalho: yup
     .number()
-    .transform(trimMask.transform)
     .oneOf(ModeloTrabalhoChoices.valuesAsNumber, 'Modelo de trabalho inválido'),
   regime_contratual: yup
     .number()
-    .transform(trimMask.transform)
     .oneOf(
       RegimeContratualChoices.valuesAsNumber,
       'Regime de contratação inválido',
     ),
   jornada_trabalho: yup
     .number()
-    .transform(trimMask.transform)
     .oneOf(
       JornadaTrabalhoChoices.valuesAsNumber,
       'Jornada de trabalho inválida',

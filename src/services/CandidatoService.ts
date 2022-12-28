@@ -25,8 +25,8 @@ class CandidatoService extends CRUDService<ICandidatoCreate> {
   }
 
   async perfil() {
-    const response = await axiosInstance.get('/candidato/perfil');
-    return response.data;
+    const { data } = await axiosInstance.get(`${this.baseUrl}/perfil`);
+    return data;
   }
 }
 

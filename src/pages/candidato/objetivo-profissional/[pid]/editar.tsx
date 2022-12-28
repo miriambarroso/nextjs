@@ -8,6 +8,7 @@ import { toastError, toastSuccess } from '@/utils/toasts';
 import { useEffect } from 'react';
 import ObjetivoProfissionalService from '@/services/ObjetivoProfissionalService';
 import { currencyMask } from '@/utils/masks';
+import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
 
 type Props = {};
 
@@ -69,5 +70,5 @@ const Edit = ({}: Props) => {
     </>
   );
 };
-
+Edit.permissions = [SUPERADMIN, ADMIN, CANDIDATO];
 export default Edit;

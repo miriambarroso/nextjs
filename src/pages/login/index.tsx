@@ -90,7 +90,7 @@ const Login = ({}: Props) => {
             Candidato
           </Link>{' '}
           ou{' '}
-          <Link href={'/empresa/cadastro'} className="text-primary">
+          <Link href={'/empresa/cadastrar'} className="text-primary">
             Empresa
           </Link>
         </p>

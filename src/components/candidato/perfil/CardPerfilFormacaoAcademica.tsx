@@ -2,7 +2,7 @@ import { IFormacaoAcademica } from '@/interfaces/formacaoAcademica';
 import { useEffect, useState } from 'react';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
 import { FormacaoNivelChoices } from '@/utils/choices';
-import { CardPerfil } from '@/pages/candidato/perfil';
+import CardPerfil from '@/components/atoms/CardPerfil';
 import { formatDateToLocale } from '@/utils/date';
 import Link from 'next/link';
 import CandidatoModal from '@/components/candidato/CandidatoModal';

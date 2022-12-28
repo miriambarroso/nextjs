@@ -1,7 +1,7 @@
 import { isValidCPF, isValidPhone } from '@brazilian-utils/brazilian-utils';
 import * as yup from 'yup';
 
-import { cpfMask, numberMask, parseDateString, trimMask } from '@/utils/masks';
+import { cpfMask, parseDateString, phoneMask, trimMask } from '@/utils/masks';
 import {
   EstadoCivilChoices,
   SexoChoices,
@@ -59,8 +59,6 @@ export const schema = yup.object().shape({
   telefone: yup
     .string()
     .required('Telefone é obrigatório')
-    .test('validatePhone', 'Telefone inválido', (value) => {
-      return isValidPhone(value);
-    })
-    .transform(numberMask.transform),
+    .test('validatePhone', 'Telefone inválido', isValidPhone)
+    .transform(phoneMask.transform),
 });

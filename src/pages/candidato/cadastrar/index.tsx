@@ -118,7 +118,10 @@ const Index = ({}: Props) => {
   const subTitle = (
     <p ref={startForm} className={classNames(step == 0 ? 'ml-auto' : 'hidden')}>
       Cadastre-se como{' '}
-      <Link href={'/empresa/cadastro'} className="link link-hover text-primary">
+      <Link
+        href={'/empresa/cadastrar'}
+        className="link link-hover text-primary"
+      >
         Empresa
       </Link>
     </p>

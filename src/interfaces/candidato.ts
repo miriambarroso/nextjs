@@ -3,33 +3,11 @@ import { IFormacaoAcademica } from '@/interfaces/formacaoAcademica';
 import { IIdioma } from '@/interfaces/idioma';
 import { ICursoEspecializacao } from '@/interfaces/cursoEspecializacao';
 import { IExperienciaProfissional } from '@/interfaces/experienciaProfissional';
+import { IUser } from '@/interfaces/user';
 
-export interface ICandidato {
-  id?: number;
-  nome: string;
-  cpf: string;
-  data_nascimento: string;
-  sexo?: number;
-  estado_civil?: number;
-  tipo_deficiencia?: number;
-  email: string;
-  telefone?: string;
-  curriculo?: any;
-  foto?: any;
-  habilitado?: boolean;
-}
+export interface ICandidato extends IUser {}
 
-export interface ICandidatoCreate extends IObjetivoProfissional {
-  nome: string;
-  cpf: string;
-  data_nascimento: string;
-  sexo?: number;
-  estado_civil?: number;
-  tipo_deficiencia?: number;
-  email: string;
-  telefone?: string;
-  curriculo?: string;
-}
+export interface ICandidatoCreate extends ICandidato, IObjetivoProfissional {}
 
 export interface ICandidatoPerfil extends ICandidato {
   objetivo_profissional: IObjetivoProfissional;

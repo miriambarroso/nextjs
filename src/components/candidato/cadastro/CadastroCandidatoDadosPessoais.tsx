@@ -1,5 +1,3 @@
-import InputField from '@/components/atoms/InputField';
-import { cpfMask } from '@/utils/masks';
 import ChoiceRadioField from '@/components/atoms/ChoiceRadioField';
 import {
   EstadoCivilChoices,
@@ -7,46 +5,49 @@ import {
   SexoChoices,
   TipoDeficienciaChoices,
 } from '@/utils/choices';
-import { format, subYears } from 'date-fns';
+import { subYears } from 'date-fns';
+import InputNome from '@/components/atoms/inputs/InputNome';
+import InputDate from '@/components/atoms/inputs/InputDate';
+import InputCPF from '@/components/atoms/inputs/InputCPF';
+import InputEmail from '@/components/atoms/inputs/InputEmail';
+import InputTelefone from '@/components/atoms/inputs/InputTelefone';
 
-type Props = { register: any; errors: any; watch: any };
+type Props = { register: any; errors: any; watch: any; editMode?: boolean };
 
-const CadastroCandidatoDadosPessoais = ({ register, errors, watch }: Props) => {
+const CadastroCandidatoDadosPessoais = ({
+  register,
+  errors,
+  watch,
+  editMode,
+}: Props) => {
   return (
     <>
-      <InputField
-        label="Nome Completo"
-        name="nome"
-        register={register}
-        placeholder="Ex: João da Silva"
-        error={errors.nome?.message}
-        options={{
-          required: true,
-        }}
-      />
-      <InputField
+      <InputNome register={register} error={errors.nome?.message} required />
+      <InputDate
         label="Data de Nascimento"
         name="data_nascimento"
         register={register}
         error={errors.data_nascimento?.message}
-        type="date"
-        options={{
-          required: true,
-        }}
-        inputProps={{
-          min: '1900-01-01',
-          max: format(subYears(new Date(), 14), 'yyyy-MM-dd'),
-        }}
+        required
+        maxDate={subYears(new Date(), 14)}
       />
+      <InputCPF register={register} error={errors.cpf?.message} required />
+      {editMode && (
+        <>
+          <InputEmail
+            register={register}
+            error={errors.email?.message}
+            required
+          />
+          <InputTelefone
+            label="Celular"
+            register={register}
+            error={errors.telefone?.message}
+            required
+          />
+        </>
+      )}
 
-      <InputField
-        label="CPF"
-        name="cpf"
-        register={register}
-        placeholder="Ex: 000.000.000-00"
-        error={errors.cpf?.message}
-        options={{ required: true, onChange: cpfMask.onChange }}
-      />
       <ChoiceRadioField
         label="Genêro"
         name="sexo"

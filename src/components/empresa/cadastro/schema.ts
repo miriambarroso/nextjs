@@ -1,28 +1,28 @@
-import { isValidCPF, isValidPhone } from '@brazilian-utils/brazilian-utils';
+import { isValidCNPJ, isValidPhone } from '@brazilian-utils/brazilian-utils';
 import * as yup from 'yup';
 
-import { cnpjMask, cpfMask, numberMask, trimMask } from '@/utils/masks';
+import {
+  cepMask,
+  cnpjMask,
+  numberMask,
+  phoneMask,
+  trimMask,
+} from '@/utils/masks';
+import schemas from '@/utils/schemas';
 
 export const schema = yup.object().shape({
-  nome: yup
-    .string()
-    .required('Nome é obrigatório')
-    // .matches(/^[a-zA-Z ]+$/, 'Nome deve conter apenas letras')
-    .matches(/^[A-zÁ-ú]* [A-zÁ-ú]+( [A-zÁ-ú]*)*$/gi, 'Nome inválido')
-    .transform((value) => value?.trim()),
-  data_nascimento: yup.string().required('Data de nascimento é obrigatório'),
-  cpf: yup
-    .string()
-    .transform(cpfMask.transform)
-    .required('CPF é obrigatório')
-    .test('validateCPF', 'CPF Inválido', isValidCPF),
+  nome: schemas.nome(true),
+  data_nascimento: schemas.data_nascimento(true),
+  cpf: schemas.cpf(true),
   atuacao: yup.string().transform(trimMask.transform),
   cargo: yup.string().transform(trimMask.transform),
   email: yup.string().email('Email inválido').required('Email é obrigatório'),
   telefone: yup
     .string()
+    .nullable()
     .required('Telefone é obrigatório')
-    .test('validatePhone', 'Telefone inválido', isValidPhone),
+    .test('validatePhone', 'Telefone inválido', isValidPhone)
+    .transform(phoneMask.transform),
   password: yup
     .string()
     .required('Senha é obrigatória')
@@ -39,7 +39,7 @@ export const schema = yup.object().shape({
     .string()
     .transform(cnpjMask.transform)
     .required('CNPJ é obrigatório')
-    .test('validateCNPJ', 'CNPJ Inválido', isValidCPF),
+    .test('validateCNPJ', 'CNPJ Inválido', isValidCNPJ),
   razao_social: yup
     .string()
     .required('Razão social é obrigatório')
@@ -53,13 +53,32 @@ export const schema = yup.object().shape({
     .required('Ramo de atividade é obrigatório')
     .transform(trimMask.transform),
   numero_funcionarios: yup
-    .number()
+    .string()
     .typeError('Número de funcionários é obrigatório')
     .transform(numberMask.transform),
   descricao: yup
     .string()
     .required('Descrição é obrigatório')
     .transform(trimMask.transform),
+  empresa_telefone: yup
+    .string()
+    .nullable()
+    .required('Telefone é obrigatório')
+    .test('validatePhone', 'Telefone inválido', isValidPhone)
+    .transform(phoneMask.transform),
+  empresa_email: yup
+    .string()
+    .email('Email inválido')
+    .required('Email é obrigatório'),
+  site: yup.string().url('Site inválido'),
+  cep: yup.string().transform(cepMask.transform),
+  logradouro: yup.string().transform(trimMask.transform),
+  numero: yup.string().transform(trimMask.transform),
+  complemento: yup.string().transform(trimMask.transform),
+  bairro: yup.string().transform(trimMask.transform),
+  cidade: yup.string().transform(trimMask.transform),
+  estado: yup.string().transform(trimMask.transform),
+
   // currency: yup
   //   .number()
   //   .transform((_, originalValue) =>

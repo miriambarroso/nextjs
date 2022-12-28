@@ -9,14 +9,19 @@ import CadastroEmpresaDadosPessoais from '@/components/empresa/cadastro/Cadastro
 import CadastroEmpresaDadosEmpresa from '@/components/empresa/cadastro/CadastroEmpresaDadosEmpresa';
 import CadastroEmpresaEnderecoContatos from '@/components/empresa/cadastro/CadastroEmpresaEnderecoContatos';
 import CardFormWrapper from '@/components/atoms/CardFormWrapper';
-import { GUEST } from '@/store/auth';
+import { GUEST, useAuthStore } from '@/store/auth';
+import { toastError, toastSuccess } from '@/utils/toasts';
+import EmpregadorService from '@/services/EmpregadorService';
+import { omitBy } from 'lodash';
+import { IEmpregadorCreate } from '@/interfaces/empregador';
+import { useRouter } from 'next/router';
 
 type Props = {};
-// TODO: Adicionar validação de campos
 
 const CadastroEmpresa = ({}: Props) => {
   const [step, setStep] = useState(0);
   const startForm = useRef(null);
+  const login = useAuthStore((state) => state.login);
   const steps = ['Dados Pessoais', 'Dados da Empresa', 'Endereço e Contatos'];
 
   const {
@@ -28,8 +33,28 @@ const CadastroEmpresa = ({}: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const router = useRouter();
+
+  const loginAction = async (data: IEmpregadorCreate) => {
+    const { cpf, password } = data;
+
+    try {
+      await login(cpf, password);
+      toastSuccess('Login realizado!');
+      await router.push({ pathname: '/' });
+    } catch (e) {
+      toastError('Erro ao realizar login!');
+    }
+  };
+  const onSubmit = async (data) => {
+    try {
+      const requestData = omitBy(data, (v) => !v) as IEmpregadorCreate;
+      await EmpregadorService.create(requestData);
+      toastSuccess('Cadastro realizado!');
+      await loginAction(data);
+    } catch (e) {
+      toastError('Erro ao salvar usuário ou empresa!');
+    }
   };
 
   const changeStep = async (value) => {
@@ -57,7 +82,8 @@ const CadastroEmpresa = ({}: Props) => {
           ]),
         2: async () =>
           await trigger([
-            'telefone',
+            'empresa_telefone',
+            'empresa_email',
             'site',
             'cep',
             'logradouro',
@@ -73,7 +99,7 @@ const CadastroEmpresa = ({}: Props) => {
 
       startForm.current.scrollIntoView({ behavior: 'smooth' });
 
-      // if (!result) return;
+      if (!result) return;
     }
 
     startForm.current.scrollIntoView({ behavior: 'smooth' });

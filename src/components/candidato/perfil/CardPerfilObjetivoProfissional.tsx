@@ -6,7 +6,7 @@ import {
   RegimeContratualChoices,
 } from '@/utils/choices';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
-import { CardPerfil } from '@/pages/candidato/perfil';
+import CardPerfil from '@/components/atoms/CardPerfil';
 
 type Props = {
   objetivo_profissional: IObjetivoProfissional;

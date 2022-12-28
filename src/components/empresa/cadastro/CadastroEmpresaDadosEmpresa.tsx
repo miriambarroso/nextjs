@@ -1,68 +1,62 @@
-import InputField from '@/components/atoms/InputField';
-import { cnpjMask, numberMask } from '@/utils/masks';
-import TextAreaField from '@/components/atoms/TextAreaField';
+import InputRazaoSocial from '@/components/atoms/inputs/InputRazaoSocial';
+import InputCNPJ from '@/components/atoms/inputs/InputCNPJ';
+import InputNomeFantasia from '@/components/atoms/inputs/InputNomeFantasia';
+import InputRamoAtividade from '@/components/atoms/inputs/InputRamoAtividade';
+import InputTelefone from '@/components/atoms/inputs/InputTelefone';
+import InputEmail from '@/components/atoms/inputs/InputEmail';
+import InputSite from '@/components/atoms/inputs/InputSite';
+import InputNumeroFuncionarios from '@/components/atoms/inputs/InputNumeroFuncionarios';
+import TextAreaDescricao from '@/components/atoms/inputs/TextAreaDescricao';
 
-type Props = { register: any; errors: any };
+type Props = { register: any; errors: any; editMode?: boolean };
 
-const CadastroEmpresaDadosEmpresa = ({ register, errors }: Props) => {
+const CadastroEmpresaDadosEmpresa = ({ register, errors, editMode }: Props) => {
   return (
     <>
-      <InputField
-        label="CNPJ"
-        name="cnpj"
+      <InputCNPJ
         register={register}
-        placeholder="Ex: 00.000.000/0000-00"
         error={errors.cnpj?.message}
-        options={{
-          required: true,
-          onChange: cnpjMask.onChange,
-        }}
+        required={true}
       />
-      <InputField
-        label="Razão Social"
-        name="razao_social"
+      <InputRazaoSocial
         register={register}
-        placeholder="Ex: Empresa de Tecnologia LTDA"
         error={errors.razao_social?.message}
-        options={{
-          required: true,
-        }}
+        required={true}
       />
-      <InputField
-        label="Nome Fantasia"
-        name="nome_fantasia"
+      <InputNomeFantasia
         register={register}
-        placeholder="Ex: Empresa de Tecnologia"
         error={errors.nome_fantasia?.message}
-        options={{
-          required: true,
-        }}
+        required={true}
       />
-      <InputField
-        label="Ramo de Atividade"
-        name="ramo_atividade"
+      <InputRamoAtividade
         register={register}
-        placeholder="Ex: Tecnologia"
         error={errors.ramo_atividade?.message}
-        options={{
-          required: true,
-        }}
+        required={true}
       />
-      <InputField
-        label="Número de Funcionários"
-        name="numero_funcionarios"
+      {editMode && (
+        <>
+          <InputTelefone
+            label="Telefone Comercial"
+            register={register}
+            error={errors.telefone?.message}
+            required={true}
+          />
+          <InputEmail
+            label="E-mail Comercial"
+            register={register}
+            error={errors.email?.message}
+            required={true}
+          />
+          <InputSite register={register} error={errors.site?.message} />
+        </>
+      )}
+      <InputNumeroFuncionarios
         register={register}
-        placeholder="Ex: 100"
-        options={{
-          onChange: numberMask.onChange,
-        }}
         error={errors.numero_funcionarios?.message}
       />
-      <TextAreaField
-        label={'Descrição da Empresa'}
-        name={'descricao'}
+      <TextAreaDescricao
         register={register}
-        placeholder={'Descreva as atividade exercidas pela empresa'}
+        error={errors.descricao?.message}
       />
     </>
   );

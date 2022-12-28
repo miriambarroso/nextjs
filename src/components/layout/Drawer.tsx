@@ -11,8 +11,8 @@ const Drawer = ({ children, className }: Props) => {
 
   const accordionEmpresas = [
     [
-      { name: 'Cadastrar', href: '/empresa/cadastro' },
-      { name: 'Vaga', href: '/vaga/cadastro' },
+      { name: 'Cadastrar', href: '/empresa/cadastrar' },
+      { name: 'Vaga', href: '/empresa/vaga/cadastrar' },
     ],
   ];
 

@@ -1,45 +1,24 @@
-import InputField from '@/components/atoms/InputField';
-import { phoneMask } from '@/utils/masks';
+import InputEmail from '@/components/atoms/inputs/InputEmail';
+import InputTelefone from '@/components/atoms/inputs/InputTelefone';
+import InputSenha from '@/components/atoms/inputs/InputSenha';
 
 type Props = { register: any; errors: any };
 
 const CadastroCandidatoDadosContato = ({ register, errors }: Props) => {
   return (
     <>
-      <InputField
-        label="Email"
-        name="email"
-        type="email"
-        register={register}
-        placeholder="Ex: joao@anapolis.go.gov.br"
-        error={errors.email?.message}
-        options={{
-          required: true,
-        }}
-      />
-      <InputField
+      <InputEmail register={register} error={errors.email?.message} required />
+      <InputTelefone
         label="Celular"
-        name="telefone"
         register={register}
-        placeholder="Ex: (00) 00000-0000"
         error={errors.telefone?.message}
-        type="phone"
-        options={{
-          required: true,
-          onChange: phoneMask.onChange,
-        }}
+        required
       />
-
-      <InputField
+      <InputSenha
         label="Crie uma senha"
-        name="password"
         register={register}
-        placeholder="********"
         error={errors.password?.message}
-        type="password"
-        options={{
-          required: true,
-        }}
+        required
       />
       <div className="prose text-sm text-base-content opacity-50">
         <ul>
@@ -49,16 +28,12 @@ const CadastroCandidatoDadosContato = ({ register, errors }: Props) => {
           <li>Letras minúsculas</li>
         </ul>
       </div>
-      <InputField
+      <InputSenha
         label="Repita sua senha"
         name="confirm_password"
         register={register}
-        placeholder="********"
         error={errors.confirm_password?.message}
-        type="password"
-        options={{
-          required: true,
-        }}
+        required
       />
     </>
   );

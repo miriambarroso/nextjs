@@ -1,7 +1,7 @@
 import { ICursoEspecializacao } from '@/interfaces/cursoEspecializacao';
 import { useEffect, useState } from 'react';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
-import { CardPerfil } from '@/pages/candidato/perfil';
+import CardPerfil from '@/components/atoms/CardPerfil';
 import { formatDateToLocale } from '@/utils/date';
 import Link from 'next/link';
 import useModal from '@/hooks/useModal';

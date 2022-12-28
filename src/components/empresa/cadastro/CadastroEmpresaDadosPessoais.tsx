@@ -1,93 +1,77 @@
-import InputField from '@/components/atoms/InputField';
-import { cpfMask } from '@/utils/masks';
+import InputNome from '@/components/atoms/inputs/InputNome';
+import InputDate from '@/components/atoms/inputs/InputDate';
+import InputCPF from '@/components/atoms/inputs/InputCPF';
+import InputAtuacao from '@/components/atoms/inputs/InputAtuacao';
+import InputCargo from '@/components/atoms/inputs/InputCargo';
+import InputTelefone from '@/components/atoms/inputs/InputTelefone';
+import InputEmail from '@/components/atoms/inputs/InputEmail';
+import InputSenha from '@/components/atoms/inputs/InputSenha';
 
-type Props = { register: any; errors: any };
+type Props = { register: any; errors: any; editMode?: boolean };
 
-const CadastroEmpresaDadosPessoais = ({ register, errors }: Props) => {
+const CadastroEmpresaDadosPessoais = ({
+  register,
+  errors,
+  editMode,
+}: Props) => {
   return (
     <>
-      <InputField
-        label="Nome Completo"
-        name="nome"
+      <InputNome
         register={register}
-        placeholder="Ex: João da Silva"
         error={errors.nome?.message}
-        options={{
-          required: true,
-        }}
+        required={true}
       />
-      <InputField
-        label="Data de Nascimento"
-        name="data_nascimento"
+      <InputDate
         register={register}
         error={errors.data_nascimento?.message}
-        type="date"
-        options={{
-          required: true,
-        }}
+        required={true}
       />
 
-      <InputField
-        label="CPF"
-        name="cpf"
+      <InputCPF
         register={register}
-        placeholder="Ex: 000.000.000-00"
         error={errors.cpf?.message}
-        options={{ required: true, onChange: cpfMask.onChange }}
+        required={true}
       />
-      <InputField
-        label="Área de Atuação"
-        name="atuacao"
-        placeholder="Ex: Departamento Pessoal"
+      <InputAtuacao register={register} error={errors.atuacao?.message} />
+      <InputCargo register={register} error={errors.cargo?.message} />
+
+      <InputTelefone
+        label="Telefone Pessoal"
         register={register}
+        error={errors.telefone?.message}
+        required={true}
       />
-      <InputField
-        label="Cargo"
-        name="cargo"
-        placeholder="Ex: Analista de Sistemas"
+      <InputEmail
+        label="E-mail Pessoal"
         register={register}
-      />
-      <InputField
-        label="E-mail Corporativo"
-        name="email"
-        register={register}
-        placeholder={'Ex: joao@anapolis.go.gov.br'}
+        required={true}
         error={errors.email?.message}
-        type="email"
-        options={{
-          required: true,
-        }}
       />
-      <InputField
-        label="Crie uma senha"
-        name="password"
-        register={register}
-        placeholder="********"
-        error={errors.password?.message}
-        type="password"
-        options={{
-          required: true,
-        }}
-      />
-      <div className="prose text-sm text-base-content opacity-50">
-        <ul>
-          <li>Minimo de 8 caracteres</li>
-          <li>Minimo de 1 caracter especial</li>
-          <li>Letras MAIÚSCULAS</li>
-          <li>Letras minúsculas</li>
-        </ul>
-      </div>
-      <InputField
-        label="Repita sua senha"
-        name="confirm_password"
-        register={register}
-        placeholder="********"
-        error={errors.confirm_password?.message}
-        type="password"
-        options={{
-          required: true,
-        }}
-      />
+      {!editMode && (
+        <>
+          <InputSenha
+            label="Crie uma senha"
+            error={errors.password?.message}
+            register={register}
+            required
+          />
+          <div className="prose text-sm text-base-content opacity-50">
+            <ul>
+              <li>Minimo de 8 caracteres</li>
+              <li>Minimo de 1 caracter especial</li>
+              <li>Letras MAIÚSCULAS</li>
+              <li>Letras minúsculas</li>
+            </ul>
+          </div>
+          <InputSenha
+            label="Repita sua senha"
+            name="confirm_password"
+            register={register}
+            error={errors.confirm_password?.message}
+            required
+          />
+        </>
+      )}
     </>
   );
 };

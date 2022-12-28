@@ -1,10 +1,10 @@
 export interface IUser {
-  id: number;
-  last_login: string;
-  is_superuser: boolean;
-  created_at: string;
-  updated_at: string;
-  nivel_usuario: number;
+  id?: number;
+  last_login?: string;
+  is_superuser?: boolean;
+  created_at?: string;
+  updated_at?: string;
+  nivel_usuario?: number;
   nome: string;
   cpf: string;
   data_nascimento: string;

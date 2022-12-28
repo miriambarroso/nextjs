@@ -1,9 +1,7 @@
-interface IChoice {
+export interface IChoice {
   label: string;
   value: string;
 }
-
-Array;
 
 class Choices {
   private readonly _choices: IChoice[] = [];

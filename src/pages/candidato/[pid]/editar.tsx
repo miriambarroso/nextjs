@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import CandidatoService from '@/services/CandidatoService';
 import { cpfMask, phoneMask } from '@/utils/masks';
 import { format } from 'date-fns';
+import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
 
 type Props = {};
 
@@ -73,5 +74,7 @@ const Edit = ({}: Props) => {
     </BasicForm>
   );
 };
+
+Edit.permissions = [SUPERADMIN, ADMIN, CANDIDATO];
 
 export default Edit;

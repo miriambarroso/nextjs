@@ -14,24 +14,14 @@ const NavEmpregador = ({ user, logout }: Props) => {
     [
       {
         name: 'Meu Perfil',
-        href: '/admin/profile',
+        href: '/empresa/perfil',
       },
     ],
     [
       {
-        name: 'Objetivo Profissional',
-        href: '/candidato/objetivo-profissional',
+        name: 'Vagas',
+        href: '/empresa/vaga/cadastrar',
       },
-      { name: 'Formação Acadêmica', href: '/candidato/formacao-academica' },
-      {
-        name: 'Experiência Profissional',
-        href: '/candidato/experiencia-profissional',
-      },
-      {
-        name: 'Curso e Especialização',
-        href: '/candidato/curso-especializacao',
-      },
-      { name: 'Idioma', href: '/candidato/idioma' },
     ],
     [
       {

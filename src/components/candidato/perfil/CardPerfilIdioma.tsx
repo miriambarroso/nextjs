@@ -2,7 +2,7 @@ import { IIdioma } from '@/interfaces/idioma';
 import { useEffect, useState } from 'react';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
 import { IdiomaNivelChoices } from '@/utils/choices';
-import { CardPerfil } from '@/pages/candidato/perfil';
+import CardPerfil from '@/components/atoms/CardPerfil';
 import Link from 'next/link';
 import useModal from '@/hooks/useModal';
 import CandidatoModal from '@/components/candidato/CandidatoModal';

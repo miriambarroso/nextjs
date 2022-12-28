@@ -148,6 +148,7 @@ export const phoneMask = masker({
         phone: 'mobile',
       },
     ],
+
     dispatch: (appended, dynamicMasked) => {
       const landlineMask = dynamicMasked.compiledMasks.find(
         ({ phone }) => phone === 'landline',
@@ -165,6 +166,13 @@ export const phoneMask = masker({
 
       return landlineMask;
     },
+  },
+  transform: (value) => {
+    if (!value) {
+      return value;
+    }
+
+    return phoneMask.unmask(value);
   },
 });
 

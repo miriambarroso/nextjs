@@ -1,7 +1,13 @@
-import CRUDService from '@/services/CRUDService';
+import CRLUDService from '@/services/CRLUDService';
 import { IIdioma } from '@/interfaces/idioma';
 
-class IdiomaService extends CRUDService<IIdioma> {
+class IdiomaService extends CRLUDService<
+  IIdioma,
+  IIdioma,
+  IIdioma,
+  IIdioma,
+  IIdioma
+> {
   constructor() {
     super('idioma');
   }

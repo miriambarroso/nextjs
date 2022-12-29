@@ -1,7 +1,13 @@
-import CRUDService from '@/services/CRUDService';
+import CRLUDService from '@/services/CRLUDService';
 import { IEmpresa } from '@/interfaces/empresa';
 
-class EmpresaService extends CRUDService<IEmpresa> {
+class EmpresaService extends CRLUDService<
+  IEmpresa,
+  IEmpresa,
+  IEmpresa,
+  IEmpresa,
+  IEmpresa
+> {
   constructor() {
     super('empresa');
   }

@@ -12,7 +12,7 @@ type DropdownItem = {
 
 type Props = {
   items: DropdownItem[][];
-  name: any;
+  content: any;
 };
 
 const SubItem = ({
@@ -63,7 +63,7 @@ const SubItem = ({
   }
 };
 
-const DropdownNav = ({ items, name }: Props) => {
+const DropdownNav = ({ items, content }: Props) => {
   return (
     <Menu
       as="div"
@@ -71,13 +71,13 @@ const DropdownNav = ({ items, name }: Props) => {
     >
       <div>
         <Menu.Button className="inline-flex items-center ">
-          {name instanceof String ? (
+          {content instanceof String ? (
             <>
-              {name}
+              {content}
               <BiChevronDown className={'text-xl'} />
             </>
           ) : (
-            name
+            content
           )}
           {/*<ChevronDownIcon*/}
           {/*  className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"*/}

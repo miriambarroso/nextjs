@@ -1,31 +1,37 @@
 import axiosInstance from '@/utils/axios';
-import { ICandidatoCreate } from '@/interfaces/candidato';
-import CRUDService from '@/services/CRUDService';
+import {
+  ICandidato,
+  ICandidatoCreate,
+  ICandidatoPerfil,
+} from '@/interfaces/candidato';
+import CRLUDService from '@/services/CRLUDService';
 import { currencyMask } from '@/utils/masks';
 
-class CandidatoService extends CRUDService<ICandidatoCreate> {
+class CandidatoService extends CRLUDService<
+  ICandidatoCreate,
+  ICandidato,
+  ICandidatoCreate,
+  ICandidatoCreate,
+  ICandidatoCreate
+> {
   constructor() {
     super('candidato');
   }
 
-  async get(id: number) {
-    let responseData = await super.get(id);
+  async perfil(): Promise<ICandidatoPerfil> {
+    const { data } = await axiosInstance.get(`${this.baseUrl}/perfil`);
 
-    if (responseData?.objetivo_profissional) {
-      responseData.objetivo_profissional = {
-        ...responseData.objetivo_profissional,
+    if (data?.objetivo_profissional) {
+      data.objetivo_profissional = {
+        ...data.objetivo_profissional,
         salario: currencyMask.mask(
-          parseFloat(responseData?.objetivo_profissional?.salario)
+          parseFloat(data?.objetivo_profissional?.salario)
             .toFixed(2)
             .replace('.', ','),
         ),
       };
     }
-    return responseData;
-  }
 
-  async perfil() {
-    const { data } = await axiosInstance.get(`${this.baseUrl}/perfil`);
     return data;
   }
 }

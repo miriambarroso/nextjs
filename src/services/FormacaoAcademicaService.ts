@@ -1,7 +1,13 @@
 import { IFormacaoAcademica } from '@/interfaces/formacaoAcademica';
-import CRUDService from '@/services/CRUDService';
+import CRLUDService from '@/services/CRLUDService';
 
-class FormacaoAcademicaService extends CRUDService<IFormacaoAcademica> {
+class FormacaoAcademicaService extends CRLUDService<
+  IFormacaoAcademica,
+  IFormacaoAcademica,
+  IFormacaoAcademica,
+  IFormacaoAcademica,
+  IFormacaoAcademica
+> {
   constructor() {
     super('formacao_academica');
   }

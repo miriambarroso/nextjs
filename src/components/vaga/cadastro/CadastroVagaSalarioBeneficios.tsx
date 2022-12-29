@@ -1,24 +1,28 @@
-import InputField from '@/components/atoms/InputField';
-import { currencyMask } from '@/utils/masks';
+import InputSalario from '@/components/atoms/inputs/InputSalario';
+import ChoiceCheckboxBeneficio from '@/components/atoms/inputs/ChoiceCheckboxBeneficio';
 
 type Props = {
   register: any;
   errors: any;
+  beneficios: any;
 };
 
-const CadastroVagaSalarioBeneficios = ({ register, errors }: Props) => {
+const CadastroVagaSalarioBeneficios = ({
+  register,
+  errors,
+  beneficios,
+}: Props) => {
   return (
     <>
-      <InputField
-        label={'Salário mensal'}
-        name={'salario'}
+      <InputSalario
         register={register}
-        placeholder={'Ex: R$ 2.000,00'}
-        options={{
-          onChange: currencyMask.onChange,
-          required: true,
-        }}
         error={errors.salario?.message}
+        required
+      />
+      <ChoiceCheckboxBeneficio
+        register={register}
+        error={errors.beneficios?.message}
+        beneficios={beneficios}
       />
     </>
   );

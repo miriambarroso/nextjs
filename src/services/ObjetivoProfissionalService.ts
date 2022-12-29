@@ -1,7 +1,13 @@
-import CRUDService from '@/services/CRUDService';
+import CRLUDService from '@/services/CRLUDService';
 import { IObjetivoProfissional } from '@/interfaces/objetivoProfissional';
 
-class ObjetivoProfissionalService extends CRUDService<IObjetivoProfissional> {
+class ObjetivoProfissionalService extends CRLUDService<
+  IObjetivoProfissional,
+  IObjetivoProfissional,
+  IObjetivoProfissional,
+  IObjetivoProfissional,
+  IObjetivoProfissional
+> {
   constructor() {
     super('objetivo_profissional');
   }

@@ -48,6 +48,18 @@
   }
 }
 
+.text-fade {
+  @apply text-secondary/60;
+}
+
+.badge.badge-base {
+  @apply bg-base-200 text-base-content border-none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 //.select::selection[value=""] {
 //  color: hsl(var(--bc) / var(--tw-text-opacity));
 //  --tw-text-opacity: 0.5;

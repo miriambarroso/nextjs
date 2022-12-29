@@ -19,8 +19,12 @@ const NavEmpregador = ({ user, logout }: Props) => {
     ],
     [
       {
-        name: 'Vagas',
+        name: 'Cadastrar Vaga',
         href: '/empresa/vaga/cadastrar',
+      },
+      {
+        name: 'Listar Vagas',
+        href: '/empresa/vagas',
       },
     ],
     [
@@ -34,20 +38,26 @@ const NavEmpregador = ({ user, logout }: Props) => {
   return (
     <ul className="list hidden lg:flex items-center space-x-4 px-1 text-neutral ">
       <li>
-        <Link href="/dashboard">Painel</Link>
+        <Link href="/empresa/painel">Painel</Link>
       </li>
       <li className="items-center inline-flex space-x-2">
         <DropdownNav
           items={dropdownItems}
-          name={
+          content={
             <>
-              <div className="text-right">
-                <p className="text-neutral">{user?.nome}</p>
-                <p className="text-sm">Empregador</p>
-              </div>
-              <div className="avatar">
-                <div className="w-12 rounded-full relative">
-                  <Image src="" fill alt="Retrato do Usuário" />
+              <div className="flex gap-2">
+                <div className="text-right">
+                  <p className="text-neutral">{user?.nome}</p>
+                  <p className="text-sm">Empregador</p>
+                </div>
+                <div className="avatar">
+                  <div className="w-10 rounded-full relative">
+                    <Image
+                      src="https://placeimg.com/400/225/arch"
+                      fill
+                      alt="Retrato do Usuário"
+                    />
+                  </div>
                 </div>
               </div>
             </>

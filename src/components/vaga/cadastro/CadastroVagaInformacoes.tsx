@@ -35,11 +35,11 @@ const CadastroVagaInformacoes = ({ register, errors }: Props) => {
       <div className="form-control flex-row justify-between gap-x-4">
         <div className="w-full">
           <InputField
-            label={'Idade minima'}
+            label={'Idade mínima'}
             name={'idade_minima'}
             placeholder={'Ex: 18'}
             type="number"
-            inputProps={{ min: 0, max: 200 }}
+            inputProps={{ min: 14, max: 200 }}
             register={register}
             error={errors.idade_minima?.message}
           />
@@ -48,11 +48,11 @@ const CadastroVagaInformacoes = ({ register, errors }: Props) => {
           <InputField
             label={'Idade máxima'}
             name={'idade_maxima'}
-            placeholder={'Ex: 60'}
+            placeholder={'Ex: 65'}
             type="number"
-            inputProps={{ min: 0, max: 200 }}
+            inputProps={{ min: 14, max: 200 }}
             register={register}
-            error={errors.idade_minima?.message}
+            error={errors.idade_maxima?.message}
           />
         </div>
       </div>
@@ -64,6 +64,9 @@ const CadastroVagaInformacoes = ({ register, errors }: Props) => {
         placeholder={'Ex: 1'}
         type="number"
         inputProps={{ min: 1 }}
+        options={{
+          required: true,
+        }}
       />
     </>
   );

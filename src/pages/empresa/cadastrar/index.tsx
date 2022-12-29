@@ -14,7 +14,7 @@ import { toastError, toastSuccess } from '@/utils/toasts';
 import EmpregadorService from '@/services/EmpregadorService';
 import { omitBy } from 'lodash';
 import { IEmpregadorCreate } from '@/interfaces/empregador';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 type Props = {};
 
@@ -138,33 +138,40 @@ const CadastroEmpresa = ({}: Props) => {
         )}
 
         <div className="flex space-x-4 justify-end">
-          {step == 0 ? (
-            <button type="button" className="btn btn-base mt-4">
-              cancelar
-            </button>
-          ) : (
-            <button
-              onClick={() => changeStep(step - 1)}
-              type="button"
-              className="btn btn-base mt-4"
-            >
-              voltar
-            </button>
-          )}
+          <button
+            type="button"
+            className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
+            onClick={Router.back}
+          >
+            cancelar
+          </button>
+          <button
+            onClick={() => changeStep(step - 1)}
+            type="button"
+            className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
+          >
+            voltar
+          </button>
 
-          {step < steps.length - 1 ? (
-            <button
-              onClick={() => changeStep(step + 1)}
-              type="button"
-              className="btn btn-primary mt-4 text-white"
-            >
-              continuar
-            </button>
-          ) : (
-            <button type="submit" className="btn btn-primary mt-4 text-white">
-              cadastrar
-            </button>
-          )}
+          <button
+            onClick={() => changeStep(step + 1)}
+            type="button"
+            className={classNames(
+              step == steps.length - 1 && 'hidden',
+              'btn btn-primary mt-4 text-white',
+            )}
+          >
+            continuar
+          </button>
+          <button
+            type="submit"
+            className={classNames(
+              step < steps.length - 1 && 'hidden',
+              'btn btn-primary mt-4 text-white',
+            )}
+          >
+            cadastrar
+          </button>
         </div>
       </form>
     </CardFormWrapper>

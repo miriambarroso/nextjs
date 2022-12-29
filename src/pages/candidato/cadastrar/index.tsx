@@ -13,7 +13,7 @@ import { GUEST, useAuthStore } from '@/store/auth';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import CandidatoService from '@/services/CandidatoService';
 import { format } from 'date-fns';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 type Props = {};
 
@@ -147,19 +147,20 @@ const Index = ({}: Props) => {
         )}
 
         <div className="flex space-x-4 justify-end">
-          {step == 0 ? (
-            <button type="button" className="btn btn-base mt-4">
-              cancelar
-            </button>
-          ) : (
-            <button
-              onClick={() => changeStep(step - 1)}
-              type="button"
-              className="btn btn-base mt-4"
-            >
-              voltar
-            </button>
-          )}
+          <button
+            type="button"
+            className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
+            onClick={Router.back}
+          >
+            cancelar
+          </button>
+          <button
+            onClick={() => changeStep(step - 1)}
+            type="button"
+            className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
+          >
+            voltar
+          </button>
 
           <button
             onClick={() => changeStep(step + 1)}

@@ -1,7 +1,13 @@
-import CRUDService from '@/services/CRUDService';
+import CRLUDService from '@/services/CRLUDService';
 import { IEndereco } from '@/interfaces/endereco';
 
-class EnderecoService extends CRUDService<IEndereco> {
+class EnderecoService extends CRLUDService<
+  IEndereco,
+  IEndereco,
+  IEndereco,
+  IEndereco,
+  IEndereco
+> {
   constructor() {
     super('endereco');
   }

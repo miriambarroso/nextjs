@@ -2,12 +2,12 @@ import { ICursoEspecializacao } from '@/interfaces/cursoEspecializacao';
 import { useEffect, useState } from 'react';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
 import CardPerfil from '@/components/atoms/CardPerfil';
-import { formatDateToLocale } from '@/utils/date';
+import { formatDateToExtense } from '@/utils/date';
 import Link from 'next/link';
 import useModal from '@/hooks/useModal';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import CursoEspecializacaoService from '@/services/CursoEspecializacaoService';
-import CandidatoModal from '@/components/candidato/CandidatoModal';
+import ConfirmModal from '@/components/atoms/ConfirmModal';
 
 type Props = {
   curso_especializacao: ICursoEspecializacao[];
@@ -53,8 +53,8 @@ const CardPerfilCursoEspecializacao = ({ curso_especializacao }: Props) => {
         <div>
           <p className="font-noto-sans  ">{item.curso}</p>
           <p>{item.instituicao}</p>
-          <p className="text-sm text-secondary/60 uppercase">
-            {formatDateToLocale(item.data_conclusao)} - {item.duracao_horas}H
+          <p className="text-sm text-fade uppercase">
+            {formatDateToExtense(item.data_conclusao)} - {item.duracao_horas}H
           </p>
         </div>
         <div className={'ml-auto  flex flex-col text-right gap-2'}>
@@ -94,7 +94,7 @@ const CardPerfilCursoEspecializacao = ({ curso_especializacao }: Props) => {
             : renderNoItems()}
         </div>
       </CardPerfil>
-      <CandidatoModal
+      <ConfirmModal
         open={open}
         close={toggle}
         confirm={() => {

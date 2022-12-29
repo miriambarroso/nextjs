@@ -5,7 +5,7 @@ import { IdiomaNivelChoices } from '@/utils/choices';
 import CardPerfil from '@/components/atoms/CardPerfil';
 import Link from 'next/link';
 import useModal from '@/hooks/useModal';
-import CandidatoModal from '@/components/candidato/CandidatoModal';
+import ConfirmModal from '@/components/atoms/ConfirmModal';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import IdiomaService from '@/services/IdiomaService';
 
@@ -87,7 +87,7 @@ const CardPerfilIdioma = ({ idioma }: Props) => {
             : renderNoItems()}
         </div>
       </CardPerfil>
-      <CandidatoModal
+      <ConfirmModal
         open={open}
         close={toggle}
         confirm={() => {

@@ -49,7 +49,7 @@ const NavCandidato = ({ user, logout }: Props) => {
       <li className="items-center inline-flex space-x-2">
         <DropdownNav
           items={dropdownItems}
-          name={
+          content={
             <>
               <div className="text-right">
                 <p className="text-neutral">{user?.nome}</p>

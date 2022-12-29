@@ -10,7 +10,7 @@ type Props = {
   message: string | ReactNode;
 };
 
-const CandidatoModal = ({ open, close, confirm, title, message }: Props) =>
+const ConfirmModal = ({ open, close, confirm, title, message }: Props) =>
   open
     ? createPortal(
         <>
@@ -81,4 +81,4 @@ const CandidatoModal = ({ open, close, confirm, title, message }: Props) =>
       )
     : null;
 
-export default CandidatoModal;
+export default ConfirmModal;

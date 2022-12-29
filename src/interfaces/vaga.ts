@@ -1,10 +1,12 @@
+import { IBeneficio } from '@/interfaces/beneficio';
+
 export interface IVaga {
   id?: number;
   cargo: string;
   atividades: string;
   requisitos: string;
   pessoa_deficiencia: boolean;
-  salario: number;
+  salario: string;
   jornada_trabalho: number;
   modelo_trabalho: number;
   regime_contratual: number;
@@ -13,6 +15,12 @@ export interface IVaga {
   idade_maxima: number;
   quantidade_vagas: number;
   habilitado: boolean;
-  // beneficios: IBeneficio[];
+  beneficios: IBeneficio[];
   empresa: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface IVagaCreate extends Omit<IVaga, 'beneficios'> {
+  beneficios: number[];
 }

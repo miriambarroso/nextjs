@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
 import { FormacaoNivelChoices } from '@/utils/choices';
 import CardPerfil from '@/components/atoms/CardPerfil';
-import { formatDateToLocale } from '@/utils/date';
+import { formatDateToExtense } from '@/utils/date';
 import Link from 'next/link';
-import CandidatoModal from '@/components/candidato/CandidatoModal';
+import ConfirmModal from '@/components/atoms/ConfirmModal';
 import useModal from '@/hooks/useModal';
 import FormacaoAcademicaService from '@/services/FormacaoAcademicaService';
 import { toastError, toastSuccess } from '@/utils/toasts';
@@ -55,10 +55,10 @@ const CardPerfilFormacaoAcademica = ({ formacao_academica }: Props) => {
             {item.curso}
           </p>
           <p>{item.instituicao}</p>
-          <p className="text-sm uppercase text-secondary/60 ">
-            {formatDateToLocale(item.data_inicio)} -{' '}
+          <p className="text-sm uppercase text-fade ">
+            {formatDateToExtense(item.data_inicio)} -{' '}
             {item.data_conclusao
-              ? formatDateToLocale(item.data_conclusao)
+              ? formatDateToExtense(item.data_conclusao)
               : 'Atual'}
           </p>
         </div>
@@ -99,7 +99,7 @@ const CardPerfilFormacaoAcademica = ({ formacao_academica }: Props) => {
             : renderNoItems()}
         </div>
       </CardPerfil>
-      <CandidatoModal
+      <ConfirmModal
         open={open}
         close={toggle}
         confirm={() => {

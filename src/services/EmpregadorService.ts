@@ -1,8 +1,14 @@
-import CRUDService from '@/services/CRUDService';
+import CRLUDService from '@/services/CRLUDService';
 import { IEmpregador, IEmpregadorCreate } from '@/interfaces/empregador';
 import axiosInstance from '@/utils/axios';
 
-class EmpregadorService extends CRUDService<IEmpregador> {
+class EmpregadorService extends CRLUDService<
+  IEmpregador,
+  IEmpregador,
+  IEmpregador,
+  IEmpregador,
+  IEmpregador
+> {
   constructor() {
     super('empregador');
   }

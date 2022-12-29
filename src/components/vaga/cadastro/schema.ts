@@ -10,9 +10,10 @@ export const schema = yup.object().shape({
   salario: schemas.salario(true, true),
   jornada_trabalho: schemas.jornada_trabalho(true, true),
   modelo_trabalho: schemas.modelo_trabalho(true, true),
-  sexo: schemas.sexo(true, true, SexoChoicesBoth),
-  idade_minima: schemas.idade_minima(true, true),
-  idade_maxima: schemas.idade_maxima(true, true),
+  sexo: schemas.sexo(false, true, SexoChoicesBoth),
+  idade_minima: schemas.idade_minima(false, true),
+  idade_maxima: schemas.idade_maxima(false, true),
   quantidade_vagas: schemas.quantidade_vagas(true, true),
   pessoa_deficiencia: yup.boolean().nullable(),
+  beneficios: yup.array().nullable().of(schemas.beneficio(false, true)),
 });

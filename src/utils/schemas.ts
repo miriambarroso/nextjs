@@ -321,27 +321,31 @@ export default {
     let s = yup.number();
 
     if (require) {
-      s = s.required('Número de funcionários é obrigatório');
+      s = s.required('Idade mínima é obrigatório');
     }
 
     if (nullable) {
       s = s.nullable();
     }
 
-    return s;
+    return s
+      .min(14, 'Idade minima deve ser maior que 14')
+      .transform((value) => value || null);
   },
   idade_maxima: (require = false, nullable = false) => {
     let s = yup.number();
 
     if (require) {
-      s = s.required('Número de funcionários é obrigatório');
+      s = s.required('Idade máxima é obrigatório');
     }
 
     if (nullable) {
       s = s.nullable();
     }
 
-    return s;
+    return s
+      .max(200, 'Idade máxima deve ser menor que 200')
+      .transform((value) => value || null);
   },
   quantidade_vagas: (require = false, nullable = false) => {
     let s = yup.number();
@@ -354,7 +358,7 @@ export default {
       s = s.nullable();
     }
 
-    return s;
+    return s.transform((value) => value || null);
   },
   descricao: (require = false, nullable = false) => {
     let s = yup.string();
@@ -450,5 +454,15 @@ export default {
     return s
       .oneOf(EstadosChoices.values, 'Estado inválido')
       .transform(trimMask.transform);
+  },
+  beneficio: (require = false, nullable = false) => {
+    let s = yup.number();
+    if (require) {
+      s = s.required('Benefício é obrigatório');
+    }
+    if (nullable) {
+      s = s.nullable();
+    }
+    return s.transform((value) => value || null);
   },
 };

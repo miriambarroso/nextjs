@@ -67,9 +67,7 @@ const CardPerfilObjetivoProfissional = ({ objetivo_profissional }: Props) => {
         {items.map((i, index) => {
           return (
             <div key={index}>
-              <p className="font-noto-sans text-sm text-secondary/60 ">
-                {i.label}
-              </p>
+              <p className="font-noto-sans text-sm text-fade ">{i.label}</p>
               <TextSkeleton className="h-4 w-[180px] bg-base-100">
                 {i.value}
               </TextSkeleton>

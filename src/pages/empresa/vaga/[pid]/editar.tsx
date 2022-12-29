@@ -14,7 +14,8 @@ import BeneficioService from '@/services/BeneficioService';
 import VagaService from '@/services/VagaService';
 import { omitBy } from 'lodash';
 import { IVagaCreate } from '@/interfaces/vaga';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
+import { currencyMask } from '@/utils/masks';
 
 type Props = {};
 
@@ -35,18 +36,22 @@ const CadastroVaga = ({}: Props) => {
     handleSubmit,
     formState: { errors },
     trigger,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const { query } = useRouter();
+
   const onSubmit = async (data) => {
     console.log(data);
     try {
       const request = omitBy(data, (v) => !v) as IVagaCreate;
-      await VagaService.create(request);
-      toastSuccess('Vaga criada!');
-      Router.back();
+      await VagaService.update(request);
+      toastSuccess('Vaga atualizada!');
+      // Router.back();
     } catch (e) {
-      toastError('Erro ao criar vaga!');
+      toastError('Erro ao atualizar vaga!');
     }
   };
 
@@ -58,6 +63,22 @@ const CadastroVaga = ({}: Props) => {
       toastError('Erro ao buscar benefícios');
     }
   };
+
+  useEffect(() => {
+    if (query.pid) {
+      VagaService.get(query?.pid as unknown as number).then((data) => {
+        reset({
+          ...data,
+          salario: currencyMask.mask(data.salario),
+          beneficios: data.beneficios.map((i) => i.id.toString()),
+        });
+      });
+    }
+  }, [query?.pid, reset]);
+
+  useEffect(() => {
+    fetchBeneficios();
+  }, []);
 
   const changeStep = async (value) => {
     if (value > step) {
@@ -91,10 +112,6 @@ const CadastroVaga = ({}: Props) => {
     startForm.current.scrollIntoView({ behavior: 'smooth' });
     setStep(clamp(value, 0, 2));
   };
-
-  useEffect(() => {
-    fetchBeneficios();
-  }, []);
 
   return (
     <CardFormWrapper
@@ -149,7 +166,7 @@ const CadastroVaga = ({}: Props) => {
               'btn btn-primary mt-4 text-white',
             )}
           >
-            cadastrar
+            Salvar
           </button>
         </div>
       </form>

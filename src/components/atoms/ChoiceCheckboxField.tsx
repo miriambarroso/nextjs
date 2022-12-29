@@ -16,6 +16,8 @@ type Props = {
   options?: any;
   className?: string;
   error?: any;
+  cols?: number;
+  mobileCols?: number;
 };
 
 const ChoiceCheckboxField = ({
@@ -26,6 +28,8 @@ const ChoiceCheckboxField = ({
   choices,
   className,
   error,
+  cols = 4,
+  mobileCols = 2,
 }: Props) => {
   return (
     <>
@@ -43,7 +47,23 @@ const ChoiceCheckboxField = ({
             )}
           </span>
         </div>
-        <div className="grid grid-cols-4 gap-x-8">
+        <div
+          className={classNames(
+            'grid gap-x-8',
+            cols == 1 && 'md:grid-cols-1',
+            cols == 2 && 'md:grid-cols-2',
+            cols == 3 && 'md:grid-cols-3',
+            cols == 4 && 'md:grid-cols-4',
+            cols == 5 && 'md:grid-cols-5',
+            cols == 6 && 'md:grid-cols-6',
+            mobileCols == 1 && 'grid-cols-1',
+            mobileCols == 2 && 'grid-cols-2',
+            mobileCols == 3 && 'grid-cols-3',
+            mobileCols == 4 && 'grid-cols-4',
+            mobileCols == 5 && 'grid-cols-5',
+            mobileCols == 6 && 'grid-cols-6',
+          )}
+        >
           {choices.map((choice) => (
             <div key={`${name}-${choice.value}`} className="flex">
               <div className="form-control">

@@ -37,10 +37,10 @@ const NavGuest = ({}: Props) => {
   return (
     <ul className="list hidden lg:flex items-center space-x-4 px-1 text-neutral ">
       <li>
-        <DropdownNav name={'Empresas'} items={dropdownEmpresas} />
+        <DropdownNav content={'Empresas'} items={dropdownEmpresas} />
       </li>
       <li>
-        <DropdownNav name={'Candidatos'} items={dropdownCandidatos} />
+        <DropdownNav content={'Candidatos'} items={dropdownCandidatos} />
       </li>
       <li>
         <Link href="/login">Login</Link>

@@ -8,7 +8,7 @@ type Props = {
   endereco: IEndereco;
 };
 
-const CardPerfilContatosEndereco = ({ endereco }: Props) => {
+const CardPerfilEndereco = ({ endereco }: Props) => {
   const [items, setItems] = useState<{ label: string; value: string }[]>(
     [
       'CEP',
@@ -61,7 +61,7 @@ const CardPerfilContatosEndereco = ({ endereco }: Props) => {
       title={'Endereço'}
       button={{
         label: 'Editar endereço',
-        href: `/candidato/endereco/${endereco?.id}/editar`,
+        href: `/empresa/endereco/${endereco?.id}/editar`,
       }}
     >
       <div className={'space-y-2 mt-4'}>
@@ -82,4 +82,4 @@ const CardPerfilContatosEndereco = ({ endereco }: Props) => {
   );
 };
 
-export default CardPerfilContatosEndereco;
+export default CardPerfilEndereco;

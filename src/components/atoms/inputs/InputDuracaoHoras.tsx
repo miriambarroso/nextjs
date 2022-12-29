@@ -1,4 +1,5 @@
 import InputField from '@/components/atoms/InputField';
+import { numberMask } from '@/utils/masks';
 
 type Props = {
   register;
@@ -8,27 +9,29 @@ type Props = {
   name?: string;
 };
 
-const InputEstado = ({
+const InputDuracaoHoras = ({
   register,
   error,
   required = false,
-  label = 'Estado',
-  name = 'estado',
+  label = 'Tempo de duração',
+  name = 'duracao_horas',
 }: Props) => {
   return (
     <>
       <InputField
         label={label}
         name={name}
-        placeholder="Ex: SP"
         register={register}
-        error={error}
+        placeholder={'Ex: 2.000 horas'}
         options={{
           required: required,
+          onChange: numberMask.onChange,
         }}
+        type="number"
+        error={error}
       />
     </>
   );
 };
 
-export default InputEstado;
+export default InputDuracaoHoras;

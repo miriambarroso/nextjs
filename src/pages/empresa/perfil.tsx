@@ -5,7 +5,7 @@ import EmpregadorService from '@/services/EmpregadorService';
 import CardPerfilDados from '@/components/empresa/perfil/CardPerfilDados';
 import CardPerfilEmpresa from '@/components/empresa/perfil/CardPerfilEmpresa';
 import { IEmpregadorPerfil } from '@/interfaces/empregador';
-import CardPerfilContatosEndereco from '@/components/empresa/perfil/CardPerfilContatosEndereco';
+import CardPerfilEndereco from '@/components/empresa/perfil/CardPerfilEndereco';
 
 type Props = {};
 
@@ -36,10 +36,7 @@ const Page = ({}: Props) => {
         <div className="space-y-4">
           <CardPerfilDados empregador={userProfile} />
           <CardPerfilEmpresa empresa={userProfile?.empresa} />
-          <CardPerfilContatosEndereco
-            empresa={userProfile?.empresa}
-            endereco={userProfile?.endereco}
-          />
+          <CardPerfilEndereco endereco={userProfile?.endereco} />
         </div>
       </div>
     </>

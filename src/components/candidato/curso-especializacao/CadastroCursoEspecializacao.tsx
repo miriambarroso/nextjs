@@ -1,6 +1,7 @@
-import InputField from '@/components/atoms/InputField';
-import { numberMask } from '@/utils/masks';
-import { format } from 'date-fns';
+import InputInstituicao from '@/components/atoms/inputs/InputInstituicao';
+import InputCurso from '@/components/atoms/inputs/InputCurso';
+import InputDate from '@/components/atoms/inputs/InputDate';
+import InputDuracaoHoras from '@/components/atoms/inputs/InputDuracaoHoras';
 
 type Props = {
   register: any;
@@ -10,51 +11,23 @@ type Props = {
 const CadastroCursoEspecializacao = ({ register, errors }: Props) => {
   return (
     <>
-      <InputField
-        label="Instituição de ensino"
-        name="instituicao"
+      <InputInstituicao
         register={register}
-        placeholder="Ex: Instituto Federal de Educação, Ciência e Tecnologia de Goiás"
-        options={{
-          required: true,
-        }}
         error={errors.instituicao?.message}
+        required
       />
-      <InputField
-        label="Curso"
-        name="curso"
-        register={register}
-        placeholder="Ex: Análise e Desenvolvimento de Sistemas"
-        options={{
-          required: true,
-        }}
-        error={errors.curso?.message}
-      />
-      <InputField
+      <InputCurso register={register} error={errors.curso?.message} required />
+      <InputDate
         label="Data de conclusão"
         name="data_conclusao"
         register={register}
-        placeholder="Ex: 01/01/2024"
-        options={{
-          required: true,
-        }}
-        inputProps={{
-          max: format(new Date(), 'yyyy-MM-dd'),
-        }}
-        type="date"
+        required
         error={errors.data_conclusao?.message}
       />
-      <InputField
-        label={'Tempo de duração'}
-        name={'duracao_horas'}
+      <InputDuracaoHoras
         register={register}
-        placeholder={'Ex: 2.000 horas'}
-        options={{
-          required: true,
-          onChange: numberMask.onChange,
-        }}
-        type="number"
         error={errors.duracao_horas?.message}
+        required
       />
       <div className="form-control">
         <label className="label">

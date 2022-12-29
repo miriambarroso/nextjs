@@ -48,3 +48,13 @@
   }
 }
 
+//.select::selection[value=""] {
+//  color: hsl(var(--bc) / var(--tw-text-opacity));
+//  --tw-text-opacity: 0.5;
+//  font-weight: normal;
+//  font-size: 1rem;
+//}
+//
+//.select option {
+//  @apply text-secondary;
+//}

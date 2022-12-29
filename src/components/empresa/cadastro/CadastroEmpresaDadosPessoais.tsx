@@ -6,6 +6,7 @@ import InputCargo from '@/components/atoms/inputs/InputCargo';
 import InputTelefone from '@/components/atoms/inputs/InputTelefone';
 import InputEmail from '@/components/atoms/inputs/InputEmail';
 import InputSenha from '@/components/atoms/inputs/InputSenha';
+import { subYears } from 'date-fns';
 
 type Props = { register: any; errors: any; editMode?: boolean };
 
@@ -22,7 +23,10 @@ const CadastroEmpresaDadosPessoais = ({
         required={true}
       />
       <InputDate
+        label="Data de Nascimento"
+        name="data_nascimento"
         register={register}
+        maxDate={subYears(new Date(), 14)}
         error={errors.data_nascimento?.message}
         required={true}
       />

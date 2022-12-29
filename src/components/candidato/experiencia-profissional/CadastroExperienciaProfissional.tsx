@@ -1,8 +1,9 @@
 import InputField from '@/components/atoms/InputField';
 import TextAreaField from '@/components/atoms/TextAreaField';
-import { currencyMask } from '@/utils/masks';
 import ToggleField from '@/components/atoms/ToggleField';
-import { format } from 'date-fns';
+import InputCargo from '@/components/atoms/inputs/InputCargo';
+import InputSalario from '@/components/atoms/inputs/InputSalario';
+import InputDate from '@/components/atoms/inputs/InputDate';
 
 type Props = {
   register: any;
@@ -27,54 +28,24 @@ const CadastroExperienciaProfissional = ({
         }}
         error={errors.empresa?.message}
       />
-      <InputField
-        label="Cargo"
-        name="cargo"
-        register={register}
-        placeholder="Ex: Desenvolvedor"
-        options={{
-          required: true,
-        }}
-        error={errors.cargo?.message}
-      />
-      <InputField
-        label={'Salário'}
-        name={'salario'}
-        register={register}
-        placeholder={'Ex: R$ 2.000,00'}
-        options={{
-          onChange: currencyMask.onChange,
-        }}
-        error={errors.salario?.message}
-      />
-      <InputField
+      <InputCargo register={register} error={errors.cargo?.message} required />
+      <InputSalario register={register} error={errors.salario?.message} />
+      <InputDate
         label="Data de início"
         name="data_inicio"
         register={register}
-        type="date"
-        options={{
-          required: true,
-        }}
-        inputProps={{
-          max: format(new Date(), 'yyyy-MM-dd'),
-        }}
-        placeholder="Ex: 01/01/2020"
+        required
         error={errors.data_inicio?.message}
       />
-      <InputField
+      <InputDate
         label="Data de término"
         name="data_fim"
         register={register}
-        type="date"
-        options={{
-          required: !watch('data_atual', false),
-        }}
-        placeholder="Ex: 01/01/2024"
-        inputProps={{
-          disabled: watch('data_atual', false),
-          max: format(new Date(), 'yyyy-MM-dd'),
-        }}
         error={errors.data_fim?.message}
+        required={!watch('data_atual', false)}
+        options={{
+          disabled: watch('data_atual', false),
+        }}
       />
       <ToggleField
         label={'Estou trabalhando'}

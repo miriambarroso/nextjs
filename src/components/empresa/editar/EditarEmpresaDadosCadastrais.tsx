@@ -2,7 +2,7 @@ import CadastroEmpresaDadosEmpresa from '@/components/empresa/cadastro/CadastroE
 
 type Props = { register: any; errors: any };
 
-const EditEmpresaDadosCadastrais = ({ register, errors }: Props) => {
+const EditarEmpresaDadosCadastrais = ({ register, errors }: Props) => {
   return (
     <CadastroEmpresaDadosEmpresa
       register={register}
@@ -12,4 +12,4 @@ const EditEmpresaDadosCadastrais = ({ register, errors }: Props) => {
   );
 };
 
-export default EditEmpresaDadosCadastrais;
+export default EditarEmpresaDadosCadastrais;

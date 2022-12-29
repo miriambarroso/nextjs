@@ -1,14 +1,14 @@
-import { EMPREGADOR } from '@/store/auth';
+import { ADMIN, CANDIDATO, EMPREGADOR, SUPERADMIN } from '@/store/auth';
+import EditarEnderecoDadosCadastrais from '@/components/empresa/endereco/EditarEnderecoDadosCadastrais';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from '@/components/empresa/editar/schema';
+import { schema } from '@/components/empresa/endereco/schema';
 import Router, { useRouter } from 'next/router';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import { useEffect } from 'react';
-import { cnpjMask, phoneMask } from '@/utils/masks';
+import { cepMask } from '@/utils/masks';
 import BasicForm from '@/components/atoms/BasicForm';
-import EditarEmpresaDadosCadastrais from '@/components/empresa/editar/EditarEmpresaDadosCadastrais';
-import EmpresaService from '@/services/EmpresaService';
+import EnderecoService from '@/services/EnderecoService';
 
 type Props = {};
 
@@ -27,25 +27,23 @@ const Page = ({}: Props) => {
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
       const requestData = {
         ...data,
       };
-      await EmpresaService.update(requestData);
-      toastSuccess('Dados cadastrais atualizado!');
+      await EnderecoService.update(requestData);
+      toastSuccess('Endereço atualizado!');
       Router.back();
     } catch (e) {
-      toastError('Erro ao atualizar os dados cadastrais!');
+      toastError('Erro ao atualizar endereço!');
     }
   };
 
   useEffect(() => {
     if (query.pid) {
-      EmpresaService.get(query?.pid as unknown as number).then((data) => {
+      EnderecoService.get(query?.pid as unknown as number).then((data) => {
         reset({
           ...data,
-          cnpj: cnpjMask.mask(data.cnpj),
-          telefone: data.telefone ? phoneMask.mask(data.telefone) : null,
+          cep: cepMask.mask(data?.cep ?? ''),
         });
       });
     }
@@ -53,9 +51,9 @@ const Page = ({}: Props) => {
 
   return (
     <BasicForm
-      title={'Dados Cadastrais'}
+      title={'Endereço'}
       onSubmit={handleSubmit(onSubmit)}
-      component={EditarEmpresaDadosCadastrais}
+      component={EditarEnderecoDadosCadastrais}
       register={register}
       errors={errors}
       watch={watch}
@@ -70,6 +68,6 @@ const Page = ({}: Props) => {
   );
 };
 
-Page.permissions = [EMPREGADOR];
+Page.permissions = [SUPERADMIN, ADMIN, EMPREGADOR, CANDIDATO];
 
 export default Page;

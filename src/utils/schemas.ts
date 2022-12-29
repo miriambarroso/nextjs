@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import {
+  cepMask,
   cnpjMask,
   cpfMask,
   currencyMask,
@@ -16,7 +17,9 @@ import {
   isValidPhone,
 } from '@brazilian-utils/brazilian-utils';
 import {
+  Choices,
   EstadoCivilChoices,
+  EstadosChoices,
   JornadaTrabalhoChoices,
   ModeloTrabalhoChoices,
   RegimeContratualChoices,
@@ -60,7 +63,7 @@ export default {
       .transform(cpfMask.transform)
       .test('validateCpfOrCnpj', 'CPF Inválido', isValidCPF);
   },
-  sexo: (require = false, nullable = false) => {
+  sexo: (require = false, nullable = false, choices: Choices = SexoChoices) => {
     let s = yup.number();
 
     if (require) {
@@ -72,7 +75,7 @@ export default {
 
     return s
       .transform(parseNumberString)
-      .oneOf(SexoChoices.valuesAsNumber, 'Sexo inválido');
+      .oneOf(choices?.valuesAsNumber, 'Sexo inválido');
   },
   estado_civil: (require = false, nullable = false) => {
     let s = yup.number();
@@ -150,10 +153,40 @@ export default {
     }
     return s.oneOf([yup.ref('password'), null], 'Senhas não conferem');
   },
+  atuacao: (require = false, nullable = false) => {
+    let s = yup.string();
+    if (require) {
+      s = s.required('Área de atuação é obrigatório');
+    }
+    if (nullable) {
+      s = s.nullable();
+    }
+    return s.transform(trimMask.transform);
+  },
   cargo: (require = false, nullable = false) => {
     let s = yup.string();
     if (require) {
       s = s.required('Cargo é obrigatório');
+    }
+    if (nullable) {
+      s = s.nullable();
+    }
+    return s.transform(trimMask.transform);
+  },
+  atividades: (require = false, nullable = false) => {
+    let s = yup.string();
+    if (require) {
+      s = s.required('Atividades é obrigatório');
+    }
+    if (nullable) {
+      s = s.nullable();
+    }
+    return s.transform(trimMask.transform);
+  },
+  requisitos: (require = false, nullable = false) => {
+    let s = yup.string();
+    if (require) {
+      s = s.required('Requisitos é obrigatório');
     }
     if (nullable) {
       s = s.nullable();
@@ -283,6 +316,46 @@ export default {
 
     return s.transform(numberMask.transform);
   },
+
+  idade_minima: (require = false, nullable = false) => {
+    let s = yup.number();
+
+    if (require) {
+      s = s.required('Número de funcionários é obrigatório');
+    }
+
+    if (nullable) {
+      s = s.nullable();
+    }
+
+    return s;
+  },
+  idade_maxima: (require = false, nullable = false) => {
+    let s = yup.number();
+
+    if (require) {
+      s = s.required('Número de funcionários é obrigatório');
+    }
+
+    if (nullable) {
+      s = s.nullable();
+    }
+
+    return s;
+  },
+  quantidade_vagas: (require = false, nullable = false) => {
+    let s = yup.number();
+
+    if (require) {
+      s = s.required('Número de funcionários é obrigatório');
+    }
+
+    if (nullable) {
+      s = s.nullable();
+    }
+
+    return s;
+  },
   descricao: (require = false, nullable = false) => {
     let s = yup.string();
 
@@ -305,5 +378,77 @@ export default {
       s = s.nullable();
     }
     return s.url('Site inválido');
+  },
+  cep: (require = false, nullable = false) => {
+    let s = yup.string();
+    if (require) {
+      s = s.required('CEP é obrigatório');
+    }
+    if (nullable) {
+      s = s.nullable();
+    }
+    return s.transform(cepMask.transform);
+  },
+  logradouro: (require = false, nullable = false) => {
+    let s = yup.string();
+    if (require) {
+      s = s.required('Logradouro é obrigatório');
+    }
+    if (nullable) {
+      s = s.nullable();
+    }
+    return s.transform(trimMask.transform);
+  },
+  numero: (require = false, nullable = false) => {
+    let s = yup.string();
+    if (require) {
+      s = s.required('Número é obrigatório');
+    }
+    if (nullable) {
+      s = s.nullable();
+    }
+    return s.transform(trimMask.transform);
+  },
+  complemento: (require = false, nullable = false) => {
+    let s = yup.string();
+    if (require) {
+      s = s.required('Complemento é obrigatório');
+    }
+    if (nullable) {
+      s = s.nullable();
+    }
+    return s.transform(trimMask.transform);
+  },
+  bairro: (require = false, nullable = false) => {
+    let s = yup.string();
+    if (require) {
+      s = s.required('Bairro é obrigatório');
+    }
+    if (nullable) {
+      s = s.nullable();
+    }
+    return s.transform(trimMask.transform);
+  },
+  cidade: (require = false, nullable = false) => {
+    let s = yup.string();
+    if (require) {
+      s = s.required('Cidade é obrigatório');
+    }
+    if (nullable) {
+      s = s.nullable();
+    }
+    return s.transform(trimMask.transform);
+  },
+  estado: (require = false, nullable = false) => {
+    let s = yup.string();
+    if (require) {
+      s = s.required('Estado é obrigatório');
+    }
+    if (nullable) {
+      s = s.nullable();
+    }
+    return s
+      .oneOf(EstadosChoices.values, 'Estado inválido')
+      .transform(trimMask.transform);
   },
 };

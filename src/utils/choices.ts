@@ -3,7 +3,7 @@ export interface IChoice {
   value: string;
 }
 
-class Choices {
+export class Choices {
   private readonly _choices: IChoice[] = [];
 
   constructor(choices: IChoice[]) {
@@ -37,6 +37,12 @@ export const SexoChoices = new Choices([
   { label: 'Feminino', value: '1' },
   { label: 'Masculino', value: '2' },
   { label: 'Não Informar', value: '3' },
+]);
+
+export const SexoChoicesBoth = new Choices([
+  { value: '4', label: 'Ambos' },
+  { value: '1', label: 'Feminino' },
+  { value: '2', label: 'Masculino' },
 ]);
 
 export const EstadoCivilChoices = new Choices([
@@ -128,4 +134,34 @@ export const IdiomaChoices = new Choices([
   { label: 'Somali', value: 'somali' },
   { label: 'Romeno', value: 'romeno' },
   { label: 'Hindi', value: 'hindi' },
+]);
+
+export const EstadosChoices = new Choices([
+  { label: 'Acre', value: 'AC' },
+  { label: 'Alagoas', value: 'AL' },
+  { label: 'Amapá', value: 'AP' },
+  { label: 'Amazonas', value: 'AM' },
+  { label: 'Bahia', value: 'BA' },
+  { label: 'Ceará', value: 'CE' },
+  { label: 'Distrito Federal', value: 'DF' },
+  { label: 'Espírito Santo', value: 'ES' },
+  { label: 'Goiás', value: 'GO' },
+  { label: 'Maranhão', value: 'MA' },
+  { label: 'Mato Grosso', value: 'MT' },
+  { label: 'Mato Grosso do Sul', value: 'MS' },
+  { label: 'Minas Gerais', value: 'MG' },
+  { label: 'Pará', value: 'PA' },
+  { label: 'Paraíba', value: 'PB' },
+  { label: 'Paraná', value: 'PR' },
+  { label: 'Pernambuco', value: 'PE' },
+  { label: 'Piauí', value: 'PI' },
+  { label: 'Rio de Janeiro', value: 'RJ' },
+  { label: 'Rio Grande do Norte', value: 'RN' },
+  { label: 'Rio Grande do Sul', value: 'RS' },
+  { label: 'Rondônia', value: 'RO' },
+  { label: 'Roraima', value: 'RR' },
+  { label: 'Santa Catarina', value: 'SC' },
+  { label: 'São Paulo', value: 'SP' },
+  { label: 'Sergipe', value: 'SE' },
+  { label: 'Tocantins', value: 'TO' },
 ]);

@@ -33,8 +33,8 @@ const InputDate = ({
           required: required,
         }}
         inputProps={{
-          max: maxDate,
-          min: minDate,
+          max: maxDate.toISOString().split('T')[0],
+          min: minDate.toISOString().split('T')[0],
           ...options,
         }}
       />

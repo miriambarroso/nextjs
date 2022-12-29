@@ -16,6 +16,7 @@ const CadastroVagaSalarioBeneficios = ({ register, errors }: Props) => {
         placeholder={'Ex: R$ 2.000,00'}
         options={{
           onChange: currencyMask.onChange,
+          required: true,
         }}
         error={errors.salario?.message}
       />

@@ -67,6 +67,7 @@ const CadastroEmpresa = ({}: Props) => {
             'cpf',
             'atuacao',
             'cargo',
+            'telefone',
             'email',
             'password',
             'confirm_password',

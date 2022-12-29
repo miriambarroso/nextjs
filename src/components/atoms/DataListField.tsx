@@ -1,34 +1,34 @@
-import { classNames } from '@/utils';
+import { classNames, generateID } from '@/utils';
 import { BiHealth } from 'react-icons/bi';
-
-export type ChoiceProp = {
-  label: string;
-  value: string;
-  disabled?: boolean;
-  selected?: boolean;
-};
+import { IChoice } from '@/utils/choices';
 
 type Props = {
   label: string;
   name: string;
   register: any;
-  placeholder?: string;
-  choices: ChoiceProp[];
-  options?: any;
-  type?: string;
-  className?: string;
   error?: any;
+  className?: string;
+  type?: string;
+  options?: any;
+  placeholder?: string;
+  inputProps?: any;
+  choices: IChoice[];
 };
 
-const SelectField = ({
+const DataListField = ({
   label,
   name,
   register,
-  choices,
+  placeholder,
   options,
+  type = 'text',
   className,
   error,
+  inputProps,
+  choices,
 }: Props) => {
+  const id = `id_${generateID()}`;
+
   return (
     <div className={classNames('form-control', className)}>
       <label className="label">
@@ -44,22 +44,19 @@ const SelectField = ({
           )}
         </span>
       </label>
-      <select
-        defaultValue={choices.find((i) => i.selected)?.value}
+      <input
+        list={id}
         {...register(name, options)}
-        className="select select-bordered"
-      >
+        type={type}
+        {...inputProps}
+        placeholder={placeholder}
+        className={classNames('input', error && 'input-error')}
+      />
+      <datalist id={id}>
         {choices.map((choice) => (
-          <option
-            key={`${name}-${choice.value}`}
-            disabled={choice.disabled}
-            value={choice.value}
-            hidden={choice.disabled}
-          >
-            {choice.label}
-          </option>
+          <option key={choice.value} value={choice.value} />
         ))}
-      </select>
+      </datalist>
       <label className={classNames(!error && 'hidden', 'label')}>
         <span className="label-text-alt text-error">{error}</span>
       </label>
@@ -67,4 +64,4 @@ const SelectField = ({
   );
 };
 
-export default SelectField;
+export default DataListField;

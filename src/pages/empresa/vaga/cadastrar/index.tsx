@@ -8,27 +8,13 @@ import CardFormWrapper from '@/components/atoms/CardFormWrapper';
 import CadastroVagaSobre from '@/components/vaga/cadastro/CadastroVagaSobre';
 import CadastroVagaInformacoes from '@/components/vaga/cadastro/CadastroVagaInformacoes';
 import CadastroVagaSalarioBeneficios from '@/components/vaga/cadastro/CadastroVagaSalarioBeneficios';
-import { GUEST } from '@/store/auth';
+import { ADMIN, EMPREGADOR, SUPERADMIN } from '@/store/auth';
+import VagaService from '@/services/VagaService';
+import { toastError, toastSuccess } from '@/utils/toasts';
+import Router from 'next/router';
 
 type Props = {};
 
-type FormProps = {
-  nome: string;
-  data_nascimento: string;
-  cpf: string;
-  sexo: string;
-  estado_civil: string;
-  possui_deficiencia: string;
-  email: string;
-  telefone: string;
-  password: string;
-  confirm_password: string;
-  cargo: string;
-  salario: string;
-  modelo_trabalho: string;
-  regime_contratual: string;
-  jornada_trabalho: string;
-};
 // TODO: Adicionar validação de campos
 
 const CadastroVaga = ({}: Props) => {
@@ -48,8 +34,14 @@ const CadastroVaga = ({}: Props) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      await VagaService.create(data);
+      toastSuccess('Vaga criada!');
+      Router.back();
+    } catch (e) {
+      toastError('Erro ao criar vaga!');
+    }
   };
 
   const changeStep = async (value) => {
@@ -136,5 +128,5 @@ const CadastroVaga = ({}: Props) => {
   );
 };
 
-CadastroVaga.permissions = [GUEST];
+CadastroVaga.permissions = [SUPERADMIN, ADMIN, EMPREGADOR];
 export default CadastroVaga;

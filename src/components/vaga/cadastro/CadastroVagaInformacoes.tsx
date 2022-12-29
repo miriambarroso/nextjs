@@ -1,5 +1,8 @@
 import InputField from '@/components/atoms/InputField';
-import SelectField, { ChoiceProp } from '@/components/atoms/SelectField';
+import SelectField from '@/components/atoms/SelectField';
+import SelectJornadaTrabalho from '@/components/atoms/inputs/SelectJornadaTrabalho';
+import SelectModeloTrabalho from '@/components/atoms/inputs/SelectModeloTrabalho';
+import { SexoChoicesBoth } from '@/utils/choices';
 
 type Props = {
   register: any;
@@ -7,31 +10,25 @@ type Props = {
 };
 
 const CadastroVagaInformacoes = ({ register, errors }: Props) => {
-  const sexoChoices = [
-    { value: '4', label: 'Ambos' },
-    { value: '1', label: 'Feminino' },
-    { value: '2', label: 'Masculino' },
-  ] as ChoiceProp[];
-
   return (
     <>
-      <InputField
+      <SelectJornadaTrabalho
         label={'Jornada de Trabalho'}
         name={'jornada_trabalho'}
         register={register}
-        placeholder={'Ex: 40 horas semanais'}
+        required={true}
         error={errors.jornada_trabalho?.message}
       />
-      <InputField
+      <SelectModeloTrabalho
         label="Modelo de Trabalho"
         name="modelo_trabalho"
-        placeholder={'Ex: Remoto'}
         register={register}
         error={errors.modelo_trabalho?.message}
+        required={true}
       />
       <SelectField
         register={register}
-        choices={sexoChoices}
+        choices={SexoChoicesBoth.choices}
         label="Genêro"
         name="sexo"
       />

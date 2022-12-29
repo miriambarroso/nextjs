@@ -6,7 +6,7 @@ import InputTelefone from '@/components/atoms/inputs/InputTelefone';
 import InputEmail from '@/components/atoms/inputs/InputEmail';
 import InputSite from '@/components/atoms/inputs/InputSite';
 import InputNumeroFuncionarios from '@/components/atoms/inputs/InputNumeroFuncionarios';
-import TextAreaDescricao from '@/components/atoms/inputs/TextAreaDescricao';
+import TextAreaField from '@/components/atoms/TextAreaField';
 
 type Props = { register: any; errors: any; editMode?: boolean };
 
@@ -54,9 +54,15 @@ const CadastroEmpresaDadosEmpresa = ({ register, errors, editMode }: Props) => {
         register={register}
         error={errors.numero_funcionarios?.message}
       />
-      <TextAreaDescricao
+      <TextAreaField
+        label="Descrição"
+        name="descricao"
         register={register}
         error={errors.descricao?.message}
+        options={{
+          required: true,
+        }}
+        placeholder={'Descreva as atividade exercidas pela empresa'}
       />
     </>
   );

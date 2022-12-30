@@ -1,5 +1,6 @@
 import CRLUDService from '@/services/CRLUDService';
 import { IVaga, IVagaCreate } from '@/interfaces/vaga';
+import axiosInstance from '@/utils/axios';
 
 class VagaService extends CRLUDService<
   IVagaCreate,
@@ -18,6 +19,18 @@ class VagaService extends CRLUDService<
       .toFixed(2)
       .replace('.', ',');
     return responseData;
+  }
+
+  async query(query: any): Promise<IVaga[]> {
+    let { data } = await axiosInstance.get(`${this.baseUrl}`, {
+      params: query,
+    });
+
+    data.forEach((vaga: IVaga) => {
+      vaga.salario = parseFloat(vaga.salario).toFixed(2).replace('.', ',');
+    });
+
+    return data;
   }
 }
 

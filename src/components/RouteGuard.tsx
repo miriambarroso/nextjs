@@ -6,19 +6,18 @@ import { classNames } from '@/utils';
 import { toastWarning } from '@/utils/toasts';
 
 type Props = {
-  pageComponent: NextPageWithLayout;
+  page: NextPageWithLayout;
   children: ReactNode;
 };
 
-const RouteGuard = ({ pageComponent, children }: Props) => {
+const RouteGuard = ({ page, children }: Props) => {
   const authStore = useAuthStore();
 
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    pageComponent.permissions =
-      pageComponent.permissions ?? Object.values(NivelUsuario);
+    page.permissions = page.permissions ?? Object.values(NivelUsuario);
 
     // on initial load - run auth check
     authCheck(router.asPath);
@@ -37,7 +36,7 @@ const RouteGuard = ({ pageComponent, children }: Props) => {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageComponent]);
+  }, [page]);
 
   function authCheck(path: string, notification = false): void {
     if (notification) {
@@ -52,7 +51,7 @@ const RouteGuard = ({ pageComponent, children }: Props) => {
       user = auth.user;
     }
 
-    if (!pageComponent.permissions.includes(user?.nivel_usuario)) {
+    if (!page.permissions.includes(user?.nivel_usuario)) {
       if (!user) {
         setAuthorized(false);
         toastWarning('Você precisa estar logado para acessar essa página!');

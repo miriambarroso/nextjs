@@ -17,18 +17,20 @@ import { classNames } from '@/utils';
 
 type Props = {
   vaga: IVaga;
-  deleteFn: (id: number) => void;
-  showLogo?: boolean;
+  deleteFn?: (id: number) => void;
   selected?: boolean;
   onClick?: () => void;
+  showLogo?: boolean;
+  showCandidatos?: boolean;
 };
 
 const CardVaga = ({
   vaga,
   deleteFn,
-  showLogo = true,
   selected,
   onClick,
+  showLogo = true,
+  showCandidatos = false,
 }: Props) => {
   const [itemId, setItemId] = useState<number>(null);
   const { open, toggle } = useModal();
@@ -98,29 +100,28 @@ const CardVaga = ({
           <BadgeGroup badges={badges} />
           <p>{vaga?.atividades}</p>
           <div className="card-actions items-center">
-            <div
-              className={classNames(
-                !showLogo && 'hidden',
-                'flex items-center gap-2',
-              )}
-            >
-              <div className="avatar">
-                <div className="w-10 rounded-full relative">
-                  <Image
-                    src="https://placeimg.com/400/225/arch"
-                    fill
-                    alt="Logo da empresa"
-                  />
+            {showLogo && (
+              <div className="flex items-center gap-2">
+                <div className="avatar">
+                  <div className="w-10 rounded-full relative">
+                    <Image
+                      src="https://placeimg.com/400/225/arch"
+                      fill
+                      alt="Logo da empresa"
+                    />
+                  </div>
                 </div>
+                <p>{vaga?.empresa}</p>
               </div>
-              <p>{vaga?.empresa}</p>
-            </div>
-            <Link
-              href={`/empresa/vaga/${vaga?.id}`}
-              className="link link-hover link-neutral text-sm ml-auto"
-            >
-              Ver candidatos
-            </Link>
+            )}
+            {showCandidatos && (
+              <Link
+                href={`/empresa/vaga/${vaga?.id}`}
+                className="link link-hover link-neutral text-sm ml-auto"
+              >
+                Ver candidatos
+              </Link>
+            )}
           </div>
         </div>
 

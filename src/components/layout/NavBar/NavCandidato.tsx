@@ -1,4 +1,4 @@
-import { BiLogOut } from 'react-icons/bi';
+import { BiLogOut, BiSearch } from 'react-icons/bi';
 import Link from 'next/link';
 import DropdownNav from '@/components/layout/DropdownNav';
 import Image from 'next/image';
@@ -17,21 +17,28 @@ const NavCandidato = ({ user, logout }: Props) => {
         href: '/candidato/perfil',
       },
     ],
+    // [
+    //   {
+    //     name: 'Objetivo Profissional',
+    //     href: '/candidato/objetivo-profissional',
+    //   },
+    //   { name: 'Formação Acadêmica', href: '/candidato/formacao-academica' },
+    //   {
+    //     name: 'Experiência Profissional',
+    //     href: '/candidato/experiencia-profissional',
+    //   },
+    //   {
+    //     name: 'Curso e Especialização',
+    //     href: '/candidato/curso-especializacao',
+    //   },
+    //   { name: 'Idioma', href: '/candidato/idioma' },
+    // ],
     [
       {
-        name: 'Objetivo Profissional',
-        href: '/candidato/objetivo-profissional',
+        name: 'Buscar vagas',
+        href: '/vagas',
+        icon: BiSearch,
       },
-      { name: 'Formação Acadêmica', href: '/candidato/formacao-academica' },
-      {
-        name: 'Experiência Profissional',
-        href: '/candidato/experiencia-profissional',
-      },
-      {
-        name: 'Curso e Especialização',
-        href: '/candidato/curso-especializacao',
-      },
-      { name: 'Idioma', href: '/candidato/idioma' },
     ],
     [
       {

@@ -17,6 +17,7 @@ type Props = {
   options?: any;
   type?: string;
   className?: string;
+  labelClassName?: string;
   error?: any;
 };
 
@@ -27,12 +28,13 @@ const SelectField = ({
   choices,
   options,
   className,
+  labelClassName,
   error,
 }: Props) => {
   return (
     <div className={classNames('form-control', className)}>
       <label className="label">
-        <span className="label-text">
+        <span className={classNames('label-text', labelClassName)}>
           {label}{' '}
           {options?.required && (
             <BiHealth

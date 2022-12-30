@@ -7,6 +7,7 @@ type Props = {
   required?: boolean;
   label?: string;
   name?: string;
+  labelClassName?: string;
 };
 
 const InputSalario = ({
@@ -15,6 +16,7 @@ const InputSalario = ({
   required = false,
   label = 'Salário',
   name = 'salario',
+  labelClassName,
 }: Props) => {
   return (
     <>
@@ -27,6 +29,7 @@ const InputSalario = ({
           onChange: currencyMask.onChange,
           required: required,
         }}
+        labelClassName={labelClassName}
         error={error}
       />
     </>

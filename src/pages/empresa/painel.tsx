@@ -19,6 +19,7 @@ const Page = ({}: Props) => {
       setSelectedVaga(firstVaga);
       setVagas(data);
     } catch (error) {
+      console.log(error);
       toastError('Erro ao buscar vagas');
     }
   };
@@ -37,19 +38,6 @@ const Page = ({}: Props) => {
     }
   };
 
-  const renderVagas = () => {
-    return vagas.map((vaga) => (
-      <CardVaga
-        key={vaga.id}
-        vaga={vaga}
-        deleteFn={deleteItem}
-        showLogo={false}
-        onClick={() => setSelectedVaga(vaga)}
-        selected={vaga.id === selectedVaga?.id}
-      />
-    ));
-  };
-
   return (
     <>
       <div className="mb-8 mt-4 flex gap-8 ">
@@ -60,7 +48,16 @@ const Page = ({}: Props) => {
             </span>
           </div>
           <div className="w-full grid grid-cols-1 gap-4 bg-white p-4 rounded">
-            {renderVagas()}
+            {vagas.map((vaga) => (
+              <CardVaga
+                key={vaga.id}
+                vaga={vaga}
+                deleteFn={deleteItem}
+                showLogo={false}
+                onClick={() => setSelectedVaga(vaga)}
+                selected={vaga.id === selectedVaga?.id}
+              />
+            ))}
           </div>
         </div>
         <div className="w-8/12">
@@ -69,7 +66,11 @@ const Page = ({}: Props) => {
           </div>
           <div className="w-full grid grid-cols-1 gap-4">
             {selectedVaga ? (
-              <CardDetailVaga vaga={selectedVaga} deleteFn={deleteItem} />
+              <CardDetailVaga
+                vaga={selectedVaga}
+                deleteFn={deleteItem}
+                isOwner={true}
+              />
             ) : (
               <div className="card rounded w-full bg-white shadow h-48">
                 <div className="card-body items-center justify-center">

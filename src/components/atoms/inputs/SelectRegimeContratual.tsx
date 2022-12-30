@@ -8,6 +8,7 @@ type Props = {
   label?: string;
   name?: string;
   choices?: IChoice[];
+  labelClassName?: string;
 };
 
 const SelectRegimeContratual = ({
@@ -17,6 +18,7 @@ const SelectRegimeContratual = ({
   label = 'Regime de contratação',
   name = 'regime_contratual',
   choices,
+  labelClassName,
 }: Props) => {
   const regimeContratualChoices = [
     {
@@ -35,6 +37,7 @@ const SelectRegimeContratual = ({
         name={name}
         register={register}
         error={error}
+        labelClassName={labelClassName}
         choices={choices?.length > 0 ? choices : regimeContratualChoices}
         options={{
           required: required,

@@ -7,6 +7,7 @@ type Props = {
   register: any;
   error?: any;
   className?: string;
+  labelClassName?: string;
   type?: string;
   options?: any;
   placeholder?: string;
@@ -21,13 +22,14 @@ const InputField = ({
   options,
   type = 'text',
   className,
+  labelClassName,
   error,
   inputProps,
 }: Props) => {
   return (
     <div className={classNames('form-control', className)}>
       <label className="label">
-        <span className="label-text">
+        <span className={classNames('label-text', labelClassName)}>
           {label}{' '}
           {options?.required && (
             <BiHealth

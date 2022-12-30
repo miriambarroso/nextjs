@@ -8,6 +8,7 @@ type Props = {
   label?: string;
   name?: string;
   choices?: IChoice[];
+  labelClassName?: string;
 };
 
 const SelectJornadaTrabalho = ({
@@ -17,6 +18,7 @@ const SelectJornadaTrabalho = ({
   label = 'Jornada de trabalho',
   name = 'jornada_trabalho',
   choices,
+  labelClassName,
 }: Props) => {
   const jornadaTrabalhoChoices = [
     {
@@ -36,6 +38,7 @@ const SelectJornadaTrabalho = ({
         placeholder="Ex: 40 horas semanais"
         register={register}
         error={error}
+        labelClassName={labelClassName}
         choices={choices?.length > 0 ? choices : jornadaTrabalhoChoices}
         options={{
           required: required,

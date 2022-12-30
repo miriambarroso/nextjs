@@ -8,6 +8,7 @@ type Props = {
   label?: string;
   name?: string;
   choices?: IChoice[];
+  labelClassName?: string;
 };
 
 const SelectModeloTrabalho = ({
@@ -17,6 +18,7 @@ const SelectModeloTrabalho = ({
   label = 'Modelo de trabalho',
   name = 'modelo_trabalho',
   choices = [],
+  labelClassName,
 }: Props) => {
   const modeloTrabalhoChoices = [
     {
@@ -35,6 +37,7 @@ const SelectModeloTrabalho = ({
         name={name}
         register={register}
         error={error}
+        labelClassName={labelClassName}
         choices={choices?.length > 0 ? choices : modeloTrabalhoChoices}
         options={{
           required: required,

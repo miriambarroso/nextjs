@@ -15,6 +15,7 @@ import EmpregadorService from '@/services/EmpregadorService';
 import { omitBy } from 'lodash';
 import { IEmpregadorCreate } from '@/interfaces/empregador';
 import Router, { useRouter } from 'next/router';
+import { formatDateToAPI } from '@/utils/date';
 
 type Props = {};
 
@@ -28,6 +29,7 @@ const CadastroEmpresa = ({}: Props) => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
     trigger,
   } = useForm({
     resolver: yupResolver(schema),
@@ -49,11 +51,21 @@ const CadastroEmpresa = ({}: Props) => {
   const onSubmit = async (data) => {
     try {
       const requestData = omitBy(data, (v) => !v) as IEmpregadorCreate;
+      requestData['data_nascimento'] = formatDateToAPI(
+        requestData['data_nascimento'],
+      );
       await EmpregadorService.create(requestData);
       toastSuccess('Cadastro realizado!');
       await loginAction(data);
-    } catch (e) {
-      toastError('Erro ao salvar usuário ou empresa!');
+    } catch ({ response: { data } }) {
+      console.log(data);
+      if (data instanceof Object) {
+        Object.keys(data).forEach((key) => {
+          setError(key, { message: data[key] });
+        });
+      }
+      setStep(0);
+      toastError('Erro ao salvar usuário ou empresa, verifique os campos!');
     }
   };
 

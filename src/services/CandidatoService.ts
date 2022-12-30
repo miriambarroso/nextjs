@@ -5,7 +5,6 @@ import {
   ICandidatoPerfil,
 } from '@/interfaces/candidato';
 import CRLUDService from '@/services/CRLUDService';
-import { currencyMask } from '@/utils/masks';
 
 class CandidatoService extends CRLUDService<
   ICandidatoCreate,
@@ -24,11 +23,9 @@ class CandidatoService extends CRLUDService<
     if (data?.objetivo_profissional) {
       data.objetivo_profissional = {
         ...data.objetivo_profissional,
-        salario: currencyMask.mask(
-          parseFloat(data?.objetivo_profissional?.salario)
-            .toFixed(2)
-            .replace('.', ','),
-        ),
+        salario: parseFloat(data?.objetivo_profissional?.salario)
+          .toFixed(2)
+          .replace('.', ','),
       };
     }
 

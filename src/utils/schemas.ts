@@ -451,9 +451,7 @@ const schemas = {
     if (nullable) {
       s = s.nullable();
     }
-    return s
-      .oneOf(EstadosChoices.values, 'Estado inválido')
-      .transform(trimMask.transform);
+    return s.oneOf([...EstadosChoices.values, ''], 'Estado inválido');
   },
   beneficio: (require = false, nullable = false) => {
     let s = yup.number();

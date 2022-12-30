@@ -12,3 +12,9 @@ export function formatDateToLocale(date: string) {
   const dateFormat = 'dd/MM/yyyy';
   return dateFns.format(parsedDate, dateFormat, { locale: ptBR });
 }
+
+export function formatDateToAPI(date: string) {
+  const parsedDate = new Date(Date.parse(date));
+  const dateFormat = 'yyyy-MM-dd';
+  return dateFns.format(parsedDate, dateFormat, { locale: ptBR });
+}

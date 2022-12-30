@@ -27,7 +27,7 @@ import {
   TipoDeficienciaChoices,
 } from '@/utils/choices';
 
-export default {
+const schemas = {
   nome: (require = false, nullable = false) => {
     let s = yup.string();
     if (require) {
@@ -466,3 +466,5 @@ export default {
     return s.transform((value) => value || null);
   },
 };
+
+export default schemas;

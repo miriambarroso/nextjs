@@ -27,7 +27,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     (async () => {
       await getUsuario();
     })();
-  }, []);
+  }, [getUsuario]);
 
   const getLayout =
     Component.getLayout ??

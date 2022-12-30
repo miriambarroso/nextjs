@@ -28,7 +28,6 @@ const Page = ({}: Props) => {
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
       const requestData = {
         ...data,
         data_nascimento: format(data.data_nascimento, 'yyyy-MM-dd'),

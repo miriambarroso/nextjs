@@ -39,7 +39,6 @@ const CadastroVaga = ({}: Props) => {
     resolver: yupResolver(schema),
   });
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const request = omitBy(data, (v) => !v) as IVagaCreate;
       await VagaService.create(request);

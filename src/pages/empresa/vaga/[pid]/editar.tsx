@@ -44,12 +44,11 @@ const CadastroVaga = ({}: Props) => {
   const { query } = useRouter();
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const request = omitBy(data, (v) => !v) as IVagaCreate;
       await VagaService.update(request);
       toastSuccess('Vaga atualizada!');
-      // Router.back();
+      Router.back();
     } catch (e) {
       toastError('Erro ao atualizar vaga!');
     }

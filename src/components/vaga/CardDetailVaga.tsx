@@ -39,7 +39,6 @@ const CardDetailVaga = ({
   const [isCandidatado, setIsCandidatado] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log('hello');
     setIsCandidatado(candidaturas.some((i) => i.vaga == vaga.id));
   }, [candidaturas, vaga]);
 
@@ -118,22 +117,32 @@ const CardDetailVaga = ({
             )}
           </div>
 
-          <div>
-            <p className="text-fade">Atividades envolvidas na cargo</p>
-            <p className="whitespace-pre-line">{vaga?.atividades}</p>
-          </div>
-          <div>
-            <h2 className="text-fade">Requisitos necessários ou desejáveis</h2>
-            <p className="whitespace-pre-line">{vaga?.requisitos}</p>
-          </div>
-          <div>
-            <h2 className="text-fade">Benefícios</h2>
-            <ul className="list list-disc list-inside">
-              {vaga?.beneficios?.map((beneficio) => (
-                <li key={beneficio.id}>{beneficio.nome}</li>
-              ))}
-            </ul>
-          </div>
+          {vaga?.atividades && (
+            <div>
+              <p className="text-fade">Atividades envolvidas na cargo</p>
+              <p className="whitespace-pre-line">{vaga?.atividades}</p>
+            </div>
+          )}
+          {vaga?.requisitos && (
+            <div>
+              <h2 className="text-fade">
+                Requisitos necessários ou desejáveis
+              </h2>
+              <p className="whitespace-pre-line">{vaga?.requisitos}</p>
+            </div>
+          )}
+
+          {!!vaga?.beneficios.length && (
+            <div>
+              <h2 className="text-fade">Benefícios</h2>
+              <ul className="list list-disc list-inside">
+                {vaga?.beneficios?.map((beneficio) => (
+                  <li key={beneficio.id}>{beneficio.nome}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div className="divider"></div>
 
           {/*<div>*/}

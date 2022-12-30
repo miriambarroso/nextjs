@@ -58,7 +58,6 @@ const CadastroEmpresa = ({}: Props) => {
       toastSuccess('Cadastro realizado!');
       await loginAction(data);
     } catch ({ response: { data } }) {
-      console.log(data);
       if (data instanceof Object) {
         Object.keys(data).forEach((key) => {
           setError(key, { message: data[key] });

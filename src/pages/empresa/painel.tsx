@@ -19,7 +19,6 @@ const Page = ({}: Props) => {
       setSelectedVaga(firstVaga);
       setVagas(data);
     } catch (error) {
-      console.log(error);
       toastError('Erro ao buscar vagas');
     }
   };

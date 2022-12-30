@@ -49,7 +49,7 @@ const InputField = ({
         className={classNames('input', error && 'input-error')}
       />
       <label className={classNames(!error && 'hidden', 'label')}>
-        <span className="label-text-alt text-error">{error}</span>
+        <span className="label-text-alt text-error capitalize">{error}</span>
       </label>
     </div>
   );

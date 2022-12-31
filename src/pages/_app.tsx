@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast';
 import RouteGuard from '@/components/RouteGuard';
 import useScrollToTop from '@/hooks/useScrollToTop';
 import { useAuthStore } from '@/store/auth';
+import { GoogleAnalytics } from 'nextjs-google-analytics';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -40,6 +41,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   return getLayout(
     <>
       <div id="scroll" />
+      <GoogleAnalytics trackPageViews />
       <Component {...pageProps} />
       <Toaster />
     </>,

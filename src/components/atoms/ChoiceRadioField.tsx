@@ -43,7 +43,7 @@ const ChoiceRadioField = ({
             )}
           </span>
         </div>
-        <div className="grid grid-cols-4 gap-x-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8">
           {choices.map((choice) => (
             <div key={`${name}-${choice.value}`} className="flex">
               <div className="form-control">

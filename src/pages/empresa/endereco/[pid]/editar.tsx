@@ -27,6 +27,7 @@ const Page = ({}: Props) => {
 
   const onSubmit = async (data) => {
     try {
+      console.log(data);
       const requestData = {
         ...data,
       };

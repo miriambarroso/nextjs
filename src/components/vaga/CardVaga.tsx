@@ -11,27 +11,18 @@ import {
 import Image from 'next/image';
 import { useState } from 'react';
 import useModal from '@/hooks/useModal';
-import ConfirmModal from '@/components/atoms/ConfirmModal';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
 import { classNames } from '@/utils';
 
 type Props = {
   vaga: IVaga;
-  deleteFn?: (id: number) => void;
+  isCandidato?: boolean;
+  isOwner?: boolean;
   selected?: boolean;
   onClick?: () => void;
-  showLogo?: boolean;
-  showCandidatos?: boolean;
 };
 
-const CardVaga = ({
-  vaga,
-  deleteFn,
-  selected,
-  onClick,
-  showLogo = true,
-  showCandidatos = false,
-}: Props) => {
+const CardVaga = ({ vaga, selected, onClick, isCandidato, isOwner }: Props) => {
   const [itemId, setItemId] = useState<number>(null);
   const { open, toggle } = useModal();
 
@@ -100,7 +91,7 @@ const CardVaga = ({
           <BadgeGroup badges={badges} />
           <p>{vaga?.atividades}</p>
           <div className="card-actions items-center">
-            {showLogo && (
+            {isCandidato && (
               <div className="flex items-center gap-2">
                 <div className="avatar">
                   <div className="w-10 rounded-full relative">
@@ -114,7 +105,7 @@ const CardVaga = ({
                 <p>{vaga?.empresa}</p>
               </div>
             )}
-            {showCandidatos && (
+            {isOwner && (
               <Link
                 href={`/empresa/vaga/${vaga?.id}`}
                 className="link link-hover link-neutral text-sm ml-auto"
@@ -129,13 +120,6 @@ const CardVaga = ({
         {/*  <img src="https://placeimg.com/400/225/arch" alt="Shoes" />*/}
         {/*</figure>*/}
       </div>
-      <ConfirmModal
-        open={open}
-        close={toggle}
-        confirm={() => deleteFn(itemId)}
-        title={'Excluir vaga'}
-        message={'Deseja realmente excluir esta vaga?'}
-      />
     </>
   );
 };

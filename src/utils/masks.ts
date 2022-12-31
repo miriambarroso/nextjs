@@ -213,8 +213,8 @@ export const trimMask = masker({
       return appended.trim();
     },
   },
-  transform: (value) => {
-    return value.trim();
+  transform: (value: string) => {
+    return value ? value.trim() : value;
   },
 });
 

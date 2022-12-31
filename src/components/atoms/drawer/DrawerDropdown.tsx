@@ -1,12 +1,13 @@
 import { Disclosure, Transition } from '@headlessui/react';
 import Link from 'next/link';
-import { ReactNode } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { classNames } from '@/utils';
 
 type AccordionItem = {
   name: string;
-  href: string;
-  icon?: any;
+  href?: string;
+  action?: () => Promise<void> | void;
+  icon?: FunctionComponent;
 };
 
 type Props = {
@@ -15,12 +16,54 @@ type Props = {
   onClick: () => void;
 };
 
-const AccordionNav = ({ name, items, onClick }: Props) => {
+const SubItem = ({
+  item,
+  close,
+}: {
+  item: AccordionItem;
+  close: () => void;
+}) => {
+  let ItemIcon: FunctionComponent<{}> = () => null;
+
+  if (item.icon) {
+    ItemIcon = item.icon;
+    ItemIcon.defaultProps = { className: 'w-5 h-5' };
+  }
+
+  if (item.href) {
+    return (
+      <Link
+        href={item.href}
+        onClick={close}
+        className="group flex w-full items-center px-2 py-2 text-sm"
+      >
+        {item.name}
+        {<ItemIcon />}
+      </Link>
+    );
+  }
+  if (item.action) {
+    return (
+      <button
+        onClick={() => {
+          item.action();
+          close();
+        }}
+        className="group flex w-full items-center px-2 py-2 text-sm"
+      >
+        {item.name}
+        {<ItemIcon />}
+      </button>
+    );
+  }
+};
+
+const DrawerDropdown = ({ name, items, onClick }: Props) => {
   return (
     <>
       <Disclosure
         as="div"
-        className="shadow bg-white rounded-box  transition duration-500 ease-linear"
+        className="shadow bg-white rounded  transition duration-500 ease-linear"
       >
         {({ open, close }) => (
           <>
@@ -48,30 +91,7 @@ const AccordionNav = ({ name, items, onClick }: Props) => {
                 {items.map((item, index) => (
                   <div key={index} className="px-1 py-1 ">
                     {item.map((subItem, subIndex) => (
-                      <Link
-                        key={subIndex}
-                        href={subItem.href}
-                        className={
-                          'group flex w-full items-center px-2 py-2 text-sm'
-                        }
-                        onClick={() => {
-                          close();
-                          onClick();
-                        }}
-                      >
-                        {/*{active ? (*/}
-                        {/*  <EditActiveIcon*/}
-                        {/*    className="mr-2 h-5 w-5"*/}
-                        {/*    aria-hidden="true"*/}
-                        {/*  />*/}
-                        {/*) : (*/}
-                        {/*  <EditInactiveIcon*/}
-                        {/*    className="mr-2 h-5 w-5"*/}
-                        {/*    aria-hidden="true"*/}
-                        {/*  />*/}
-                        {/*)}*/}
-                        {subItem.name}
-                      </Link>
+                      <SubItem item={subItem} key={subIndex} close={onClick} />
                     ))}
                   </div>
                 ))}
@@ -84,4 +104,4 @@ const AccordionNav = ({ name, items, onClick }: Props) => {
   );
 };
 
-export default AccordionNav;
+export default DrawerDropdown;

@@ -15,10 +15,12 @@ import ConfirmModal from '@/components/atoms/ConfirmModal';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
 import { useAuthStore } from '@/store/auth';
 import { classNames } from '@/utils';
+import Router from 'next/router';
+import { toastWarning } from '@/utils/toasts';
 
 type Props = {
   vaga: IVaga;
-  deleteFn?: (id: number) => void;
+  onDelete?: (id: number) => void;
   isCandidato?: boolean;
   isEmpresa?: boolean;
   isOwner?: boolean;
@@ -27,7 +29,7 @@ type Props = {
 
 const CardDetailVaga = ({
   vaga,
-  deleteFn,
+  onDelete,
   isCandidato,
   isOwner,
   action,
@@ -35,6 +37,7 @@ const CardDetailVaga = ({
   const [itemId, setItemId] = useState<number>(null);
   const { open, toggle } = useModal();
   const candidaturas = useAuthStore((state) => state.candidaturas);
+  const isGuest = useAuthStore((state) => state.isGuest);
 
   const [isCandidatado, setIsCandidatado] = useState<boolean>(false);
 
@@ -66,6 +69,11 @@ const CardDetailVaga = ({
       label: vaga?.quantidade_vagas + ' vagas',
     },
   ];
+
+  const handleGuestCandidate = () => {
+    toastWarning('Você precisa estar logado para se candidatar');
+    return Router.push('/login');
+  };
 
   return (
     <>
@@ -112,6 +120,19 @@ const CardDetailVaga = ({
                   )}
                 >
                   {isCandidatado ? 'Cancelar candidatura' : 'Candidatar-se'}
+                </button>
+              </div>
+            )}
+            {isGuest() && (
+              <div className="ml-auto flex flex-col gap-2">
+                <button
+                  onClick={handleGuestCandidate}
+                  className={classNames(
+                    'btn btn-sm',
+                    isCandidatado && 'btn-error',
+                  )}
+                >
+                  Candidatar-se
                 </button>
               </div>
             )}
@@ -187,7 +208,7 @@ const CardDetailVaga = ({
         <ConfirmModal
           open={open}
           close={toggle}
-          confirm={() => deleteFn(itemId)}
+          confirm={() => onDelete(itemId)}
           title={'Excluir vaga'}
           message={'Deseja realmente excluir esta vaga?'}
         />

@@ -18,8 +18,6 @@ import Router from 'next/router';
 
 type Props = {};
 
-// TODO: Adicionar validação de campos
-
 const CadastroVaga = ({}: Props) => {
   const [step, setStep] = useState(0);
   const startForm = useRef(null);

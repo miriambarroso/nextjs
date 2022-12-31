@@ -13,7 +13,7 @@ import { IVaga } from '@/interfaces/vaga';
 import CardVaga from '@/components/vaga/CardVaga';
 import VagaService from '@/services/VagaService';
 import CandidaturaService from '@/services/CandidaturaService';
-import { CANDIDATO, useAuthStore } from '@/store/auth';
+import { useAuthStore } from '@/store/auth';
 import { toastError, toastSuccess } from '@/utils/toasts';
 
 type QueueProps = {
@@ -26,14 +26,23 @@ type QueueProps = {
 };
 
 const Page = () => {
-  const user = useAuthStore((state) => state.user);
-  const [candidaturas, setCandidaturas, isAuthenticated] = useAuthStore(
-    (state) => [
-      state.candidaturas,
-      state.setCandidaturas,
-      state.isAuthenticated,
-    ],
-  );
+  const [
+    user,
+    empresa,
+    candidaturas,
+    setCandidaturas,
+    isAuthenticated,
+    isCandidato,
+    isEmpregador,
+  ] = useAuthStore((state) => [
+    state.user,
+    state.empresa,
+    state.candidaturas,
+    state.setCandidaturas,
+    state.isAuthenticated,
+    state.isCandidato,
+    state.isEmpregador,
+  ]);
   const [vagas, setVagas] = useState<IVaga[]>([]);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
 
@@ -128,7 +137,7 @@ const Page = () => {
         </form>
       </div>
       <div className="mb-8 mt-4 space-y-2 container ">
-        {isAuthenticated && user?.nivel_usuario == CANDIDATO && (
+        {isCandidato() && (
           <div>
             <div className="w-full">
               <div className="label">
@@ -142,8 +151,8 @@ const Page = () => {
                     <CardVaga
                       key={vaga.id}
                       vaga={vaga}
-                      showLogo={true}
-                      showCandidatos={false}
+                      isCandidato={true}
+                      isOwner={false}
                       onClick={() => setSelectedVaga(vaga)}
                       selected={vaga.id === selectedVaga?.id}
                     />
@@ -167,8 +176,8 @@ const Page = () => {
                   <CardVaga
                     key={vaga.id}
                     vaga={vaga}
-                    showLogo={true}
-                    showCandidatos={false}
+                    isCandidato={isCandidato()}
+                    isOwner={empresa?.id === vaga.empresa}
                     onClick={() => setSelectedVaga(vaga)}
                     selected={vaga.id === selectedVaga?.id}
                   />
@@ -179,28 +188,28 @@ const Page = () => {
               ))}
             </div>
           </div>
-          <div className="w-8/12">
-            <div className="label">
-              <span className="label-text">Detalhes da vaga selecionada</span>
-            </div>
-            <div className="w-full grid grid-cols-1 gap-4 sticky top-0">
-              {selectedVaga ? (
-                <CardDetailVaga
-                  vaga={selectedVaga}
-                  isCandidato={
-                    isAuthenticated() && user?.nivel_usuario == CANDIDATO
-                  }
-                  action={() => handleCandidate(selectedVaga.id)}
-                />
-              ) : (
-                <div className="card rounded w-full bg-white shadow h-48">
-                  <div className="card-body items-center justify-center">
-                    <h2 className="text-center font-noto-sans">
-                      Selecione uma vaga para detalhar
-                    </h2>
+          <div className="w-8/12 sticky">
+            <div className="sticky top-0">
+              <div className="label">
+                <span className="label-text">Detalhes da vaga selecionada</span>
+              </div>
+              <div className="w-full grid grid-cols-1 gap-4  ">
+                {selectedVaga ? (
+                  <CardDetailVaga
+                    vaga={selectedVaga}
+                    isCandidato={isCandidato()}
+                    action={() => handleCandidate(selectedVaga.id)}
+                  />
+                ) : (
+                  <div className="card rounded w-full bg-white shadow h-48">
+                    <div className="card-body items-center justify-center">
+                      <h2 className="text-center font-noto-sans">
+                        Selecione uma vaga para detalhar
+                      </h2>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>

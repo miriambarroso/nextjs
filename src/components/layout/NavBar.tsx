@@ -4,10 +4,10 @@ import LogoEmprega from '@/components/layout/LogoEmprega';
 import { useEffect, useRef, useState } from 'react';
 import { NivelUsuario, useAuthStore } from '@/store/auth';
 import { useRouter } from 'next/router';
-import NavGuest from '@/components/layout/NavBar/NavGuest';
-import NavAdmin from '@/components/layout/NavBar/NavAdmin';
-import NavEmpregador from '@/components/layout/NavBar/NavEmpregador';
-import NavCandidato from '@/components/layout/NavBar/NavCandidato';
+import { NavGuest } from '@/components/layout/NavBar/NavGuest';
+import { NavAdmin } from '@/components/layout/NavBar/NavAdmin';
+import { NavEmpregador } from '@/components/layout/NavBar/NavEmpregador';
+import { NavCandidato } from '@/components/layout/NavBar/NavCandidato';
 import { toastCustom } from '@/utils/toasts';
 
 type Props = {};

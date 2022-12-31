@@ -1,43 +1,60 @@
 import { ReactNode, useState } from 'react';
 import { classNames } from '@/utils';
-import { BiX } from 'react-icons/bi';
+import { BiShocked, BiX } from 'react-icons/bi';
 import LogoEmprega from '@/components/layout/LogoEmprega';
-import AccordionNav from '@/components/layout/AccordionNav';
+import { NivelUsuario, useAuthStore } from '@/store/auth';
+import { NavMobileGuest } from '@/components/layout/NavBar/NavGuest';
+import { useRouter } from 'next/router';
+import { toastCustom } from '@/utils/toasts';
+import { NavMobileAdmin } from '@/components/layout/NavBar/NavAdmin';
+import { NavMobileEmpregador } from '@/components/layout/NavBar/NavEmpregador';
+import { NavMobileCandidato } from '@/components/layout/NavBar/NavCandidato';
 
 type Props = { children: ReactNode; className?: string };
 
 const Drawer = ({ children, className }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+  const router = useRouter();
 
-  const accordionEmpresas = [
-    [
-      { name: 'Cadastrar', href: '/empresa/cadastrar' },
-      { name: 'Vaga', href: '/empresa/vaga/cadastrar' },
-    ],
-  ];
-
-  const accordionCandidatos = [
-    [
-      { name: 'Cadastrar', href: '/candidato/cadastrar' },
-      {
-        name: 'Objetivo Profissional',
-        href: '/candidato/objetivo-profissional',
-      },
-      { name: 'Formação Acadêmica', href: '/candidato/formacao-academica' },
-      {
-        name: 'Experiência Profissional',
-        href: '/candidato/experiencia-profissional',
-      },
-      {
-        name: 'Curso e Especialização',
-        href: '/candidato/curso-especializacao',
-      },
-      { name: 'Idioma', href: '/candidato/idioma' },
-    ],
-  ];
+  const logoutHandler = async () => {
+    await logout();
+    toastCustom('Logout realizado!', <BiShocked className="text-xl" />);
+    await router.push('/');
+  };
 
   const closeDrawer = () => {
     setOpen(false);
+  };
+
+  const navNivelUsuario = () => {
+    if (!user || !Object.values(NivelUsuario).includes(user?.nivel_usuario))
+      return <NavMobileGuest close={closeDrawer} />;
+    if (user?.nivel_usuario <= NivelUsuario.ADMIN)
+      return (
+        <NavMobileAdmin
+          close={closeDrawer}
+          user={user}
+          logout={logoutHandler}
+        />
+      );
+    if (user?.nivel_usuario === NivelUsuario.EMPREGADOR)
+      return (
+        <NavMobileEmpregador
+          close={closeDrawer}
+          user={user}
+          logout={logoutHandler}
+        />
+      );
+    if (user?.nivel_usuario === NivelUsuario.CANDIDATO)
+      return (
+        <NavMobileCandidato
+          close={closeDrawer}
+          user={user}
+          logout={logoutHandler}
+        />
+      );
   };
 
   return (
@@ -60,18 +77,7 @@ const Drawer = ({ children, className }: Props) => {
               <BiX className="text-5xl" />
             </label>
           </div>
-          <div className="mt-4">
-            <AccordionNav
-              items={accordionCandidatos}
-              name={'Candidatos'}
-              onClick={closeDrawer}
-            />
-            <AccordionNav
-              items={accordionEmpresas}
-              name={'Empresas'}
-              onClick={closeDrawer}
-            />
-          </div>
+          <div className="mt-4">{navNivelUsuario()}</div>
         </div>
       </div>
     </div>

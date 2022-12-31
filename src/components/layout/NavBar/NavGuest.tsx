@@ -1,39 +1,41 @@
 import Link from 'next/link';
 import DropdownNav from '@/components/layout/DropdownNav';
+import DrawerDropdown from '@/components/atoms/drawer/DrawerDropdown';
+import DrawerLink from '@/components/atoms/drawer/DrawerLink';
 
 type Props = {};
 
+const dropdownEmpresas = [
+  [
+    { name: 'Cadastrar', href: '/empresa/cadastrar' },
+    { name: 'Vaga', href: '/vaga/cadastrar' },
+  ],
+];
+
+const dropdownCandidatos = [
+  [
+    { name: 'Cadastrar', href: '/candidato/cadastrar' },
+    {
+      name: 'Objetivo Profissional',
+      href: '/candidato/objetivo-profissional/cadastrar',
+    },
+    {
+      name: 'Formação Acadêmica',
+      href: '/candidato/formacao-academica/cadastrar',
+    },
+    {
+      name: 'Experiência Profissional',
+      href: '/candidato/experiencia-profissional/cadastrar',
+    },
+    {
+      name: 'Curso e Especialização',
+      href: '/candidato/curso-especializacao/cadastrar',
+    },
+    { name: 'Idioma', href: '/candidato/idioma/cadastrar' },
+  ],
+];
+
 const NavGuest = ({}: Props) => {
-  const dropdownEmpresas = [
-    [
-      { name: 'Cadastrar', href: '/empresa/cadastrar' },
-      { name: 'Vaga', href: '/vaga/cadastrar' },
-    ],
-  ];
-
-  const dropdownCandidatos = [
-    [
-      { name: 'Cadastrar', href: '/candidato/cadastrar' },
-      {
-        name: 'Objetivo Profissional',
-        href: '/candidato/objetivo-profissional/cadastrar',
-      },
-      {
-        name: 'Formação Acadêmica',
-        href: '/candidato/formacao-academica/cadastrar',
-      },
-      {
-        name: 'Experiência Profissional',
-        href: '/candidato/experiencia-profissional/cadastrar',
-      },
-      {
-        name: 'Curso e Especialização',
-        href: '/candidato/curso-especializacao/cadastrar',
-      },
-      { name: 'Idioma', href: '/candidato/idioma/cadastrar' },
-    ],
-  ];
-
   return (
     <ul className="list hidden lg:flex items-center space-x-4 px-1 text-neutral ">
       <li>
@@ -57,4 +59,31 @@ const NavGuest = ({}: Props) => {
   );
 };
 
-export default NavGuest;
+const NavMobileGuest = ({ close }: { close: () => void }) => {
+  return (
+    <>
+      <DrawerDropdown
+        items={dropdownCandidatos}
+        name={'Candidatos'}
+        onClick={close}
+      />
+      <DrawerDropdown
+        items={dropdownEmpresas}
+        name={'Empresas'}
+        onClick={close}
+      />
+      <DrawerLink href="/login" onClick={close}>
+        Login
+      </DrawerLink>
+      <DrawerLink
+        className="bg-primary"
+        href="/candidato/cadastrar"
+        onClick={close}
+      >
+        Cadastre-se
+      </DrawerLink>
+    </>
+  );
+};
+
+export { NavGuest, NavMobileGuest };

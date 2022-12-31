@@ -15,6 +15,10 @@ export interface IAuthStore {
   user: IUser;
 
   isAuthenticated: () => boolean;
+  isCandidato: () => boolean;
+  isEmpregador: () => boolean;
+  isAdmin: () => boolean;
+  isGuest: () => boolean;
   empresa: IEmpresa;
   candidaturas: ICandidatura[];
   setCandidaturas: (candidaturas: ICandidatura[]) => void;
@@ -47,6 +51,10 @@ const useAuthStore = create<IAuthStore>((set, get) => ({
   token: null,
   expires: null,
   isAuthenticated: () => !!get().user,
+  isAdmin: () => get().user?.nivel_usuario <= ADMIN,
+  isCandidato: () => get().user?.nivel_usuario == CANDIDATO,
+  isEmpregador: () => get().user?.nivel_usuario == EMPREGADOR,
+  isGuest: () => get().user?.nivel_usuario == GUEST,
   login: async (cpf: string, password: string) => {
     try {
       const { data } = await axiosInstance.post('/login', {

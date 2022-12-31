@@ -39,46 +39,54 @@ const Page = ({}: Props) => {
 
   return (
     <>
-      <div className="mb-8 mt-4 flex gap-8 ">
+      <div className="flex gap-8">
         <div className="w-4/12">
           <div className="label">
             <span className="label-text">
               Vagas cadastradas ({vagas.length} vagas)
             </span>
           </div>
-          <div className="w-full grid grid-cols-1 gap-4 bg-white p-4 rounded">
-            {vagas.map((vaga) => (
-              <CardVaga
-                key={vaga.id}
-                vaga={vaga}
-                deleteFn={deleteItem}
-                showLogo={false}
-                onClick={() => setSelectedVaga(vaga)}
-                selected={vaga.id === selectedVaga?.id}
-              />
+          <div className="w-full grid grid-cols-1 bg-white p-4 rounded">
+            {vagas.map((vaga, index) => (
+              <>
+                <CardVaga
+                  key={vaga.id}
+                  vaga={vaga}
+                  isCandidato={false}
+                  isOwner={true}
+                  onClick={() => setSelectedVaga(vaga)}
+                  selected={vaga.id === selectedVaga?.id}
+                />
+                {index !== vagas.length - 1 && (
+                  <div className="divider m-1"></div>
+                )}
+              </>
             ))}
           </div>
         </div>
-        <div className="w-8/12">
-          <div className="label">
-            <span className="label-text">Detalhes da vaga selecionada</span>
-          </div>
-          <div className="w-full grid grid-cols-1 gap-4">
-            {selectedVaga ? (
-              <CardDetailVaga
-                vaga={selectedVaga}
-                deleteFn={deleteItem}
-                isOwner={true}
-              />
-            ) : (
-              <div className="card rounded w-full bg-white shadow h-48">
-                <div className="card-body items-center justify-center">
-                  <h2 className="text-center font-noto-sans">
-                    Selecione uma vaga para detalhar
-                  </h2>
+        <div className="w-8/12 sticky">
+          <div className="sticky top-0">
+            <div className="label">
+              <span className="label-text">Detalhes da vaga selecionada</span>
+            </div>
+            <div className="w-full grid grid-cols-1 gap-4  ">
+              {selectedVaga ? (
+                <CardDetailVaga
+                  vaga={selectedVaga}
+                  isCandidato={false}
+                  isOwner={true}
+                  onDelete={() => deleteItem(selectedVaga.id)}
+                />
+              ) : (
+                <div className="card rounded w-full bg-white shadow h-48">
+                  <div className="card-body items-center justify-center">
+                    <h2 className="text-center font-noto-sans">
+                      Selecione uma vaga para detalhar
+                    </h2>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

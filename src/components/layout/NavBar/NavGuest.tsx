@@ -72,11 +72,11 @@ const NavMobileGuest = ({ close }: { close: () => void }) => {
         name={'Empresas'}
         onClick={close}
       />
-      <DrawerLink href="/login" onClick={close}>
+      <DrawerLink href="/login" onClick={close} className="border-none">
         Login
       </DrawerLink>
       <DrawerLink
-        className="bg-primary"
+        className="bg-primary rounded border-none"
         href="/candidato/cadastrar"
         onClick={close}
       >

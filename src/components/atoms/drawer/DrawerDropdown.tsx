@@ -63,17 +63,15 @@ const DrawerDropdown = ({ name, items, onClick }: Props) => {
     <>
       <Disclosure
         as="div"
-        className="shadow bg-white rounded  transition duration-500 ease-linear"
+        className="bg-white rounded  transition duration-500 ease-linear w-10/12 mx-auto"
       >
         {({ open, close }) => (
           <>
             <Disclosure.Button
               as={'button'}
               className={classNames(
-                'flex uppercase w-full justify-center items-center relative after:transition-all after:duration-150 after:absolute after:top-0 after:left-auto after:h-full after:border-b  px-4 py-4 text-center font-noto-sans bg-neutral text-white  focus:outline-none',
-                open
-                  ? 'after:w-full after:border-primary'
-                  : 'after:w-10/12 after:border-base-100/30',
+                'flex uppercase w-full justify-center items-center relative after:transition-all after:duration-150 after:absolute after:top-0 after:left-auto after:h-full after:border-b  px-4 py-4 text-center font-noto-sans bg-neutral text-white after:w-full focus:outline-none',
+                open ? 'after:border-primary' : 'after:border-base-100/30',
               )}
             >
               {name instanceof String ? <span>{name}</span> : name}{' '}

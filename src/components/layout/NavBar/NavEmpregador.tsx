@@ -113,7 +113,7 @@ const NavMobileEmpregador = ({
           </DrawerLink>
         )),
       )}
-      <DrawerLink onClick={close} action={logout}>
+      <DrawerLink onClick={close} action={logout} className="border-none">
         Sair
       </DrawerLink>
     </>

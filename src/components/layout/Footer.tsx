@@ -23,7 +23,7 @@ const Footer = ({}: Props) => {
 
   return (
     <footer className="bg-neutral">
-      <div className="flex justify-between p-10 container text-base-100">
+      <div className="flex justify-between p-10 container text-base-100 flex-wrap lg:flex-nowrap gap-8">
         <div className="w-full">
           <svg
             width="50"

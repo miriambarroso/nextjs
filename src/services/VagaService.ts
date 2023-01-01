@@ -20,7 +20,7 @@ class VagaService extends CRLUDService<
     return responseData;
   }
 
-  async getAll(query: any) {
+  async getAll(query?: any) {
     let data = await super.getAll(query);
 
     data.results.forEach((vaga: IVaga) => {

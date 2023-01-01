@@ -35,6 +35,7 @@ const HeroSection = ({}: Props) => {
                 alt={'Hero Empresa'}
                 fill
                 className="rounded-full"
+                loading={'eager'}
               />
             </div>
             <div className="absolute top-[-3rem] left-[-3rem] w-64 aspect-square">
@@ -43,6 +44,7 @@ const HeroSection = ({}: Props) => {
                 alt={'Pessoa com cateira de trabalho'}
                 fill
                 className="rounded-full"
+                loading={'eager'}
               />
             </div>
           </div>

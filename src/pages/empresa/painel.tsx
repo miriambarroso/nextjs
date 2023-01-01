@@ -16,10 +16,10 @@ const Page = ({}: Props) => {
 
   const fetchVagas = async () => {
     try {
-      const data = await VagaService.getAll();
-      const firstVaga = data.length > 0 ? data[0] : null;
+      const { results } = await VagaService.getAll();
+      const firstVaga = results.length > 0 ? results[0] : null;
       setSelectedVaga(firstVaga);
-      setVagas(data);
+      setVagas(results);
     } catch (error) {
       toastError('Erro ao buscar vagas');
     }

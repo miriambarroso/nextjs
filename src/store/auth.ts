@@ -103,8 +103,8 @@ const useAuthStore = create<IAuthStore>((set, get) => ({
   },
   fetchCandidatura: async () => {
     try {
-      const data = await CandidaturaService.getAll();
-      set({ candidaturas: data });
+      const { results } = await CandidaturaService.getAll();
+      set({ candidaturas: results });
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);

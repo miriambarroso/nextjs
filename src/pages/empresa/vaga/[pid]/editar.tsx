@@ -56,8 +56,8 @@ const CadastroVaga = ({}: Props) => {
 
   const fetchBeneficios = async () => {
     try {
-      const data = await BeneficioService.getAll();
-      setBeneficios(data.map((i) => ({ label: i.nome, value: i.id })));
+      const { results } = await BeneficioService.getAll();
+      setBeneficios(results.map((i) => ({ label: i.nome, value: i.id })));
     } catch (e) {
       toastError('Erro ao buscar benefícios');
     }

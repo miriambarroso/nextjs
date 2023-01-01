@@ -14,7 +14,7 @@ const GenericSection = ({ title, action, children }: Props) => {
   return (
     <>
       <div>
-        <div className="flex mb-8">
+        <div className="lg:flex mb-8">
           <h2 className="text-2xl font-semibold font-noto-sans">{title}</h2>
           {action && (
             <Link

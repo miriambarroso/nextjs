@@ -10,8 +10,8 @@ type Props = {};
 const OportunidadesDestaqueSection = ({}: Props) => {
   const [vagas, setVagas] = useState<IVaga[]>(null);
   useEffect(() => {
-    VagaService.getAll().then((data) => {
-      setVagas(data);
+    VagaService.getAll().then(({ results }) => {
+      setVagas(results);
     });
   }, []);
 
@@ -27,7 +27,7 @@ const OportunidadesDestaqueSection = ({}: Props) => {
         <div className="w-full">
           <div className="overflow-x-auto flex lg:grid lg:grid-cols-3 snap-x snap-mandatory lg:gap-4 bg-white py-4 rounded">
             {vagas ? (
-              vagas.map((vaga, index) => (
+              vagas?.map((vaga, index) => (
                 <CardVaga
                   key={index}
                   vaga={vaga}

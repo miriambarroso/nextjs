@@ -26,8 +26,8 @@ const ChoiceCheckboxBeneficio = ({
 
   const fetchBeneficios = async () => {
     try {
-      const data = await BeneficioService.getAll();
-      setItems(data.map((i) => ({ label: i.nome, value: i.id.toString() })));
+      const { results } = await BeneficioService.getAll();
+      setItems(results.map((i) => ({ label: i.nome, value: i.id.toString() })));
     } catch (e) {
       toastError('Erro ao buscar benefícios');
     }

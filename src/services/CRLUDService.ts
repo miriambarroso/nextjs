@@ -17,8 +17,15 @@ class CRLUDService<C, R, L, U, D> {
     return data;
   }
 
-  async getAll(): Promise<L[]> {
-    const { data } = await axiosInstance.get(`/${this.baseUrl}`);
+  async getAll(query): Promise<{
+    count: number;
+    next: number;
+    previous: number;
+    results: L[];
+  }> {
+    const { data } = await axiosInstance.get(`/${this.baseUrl}`, {
+      params: query,
+    });
     return data;
   }
 

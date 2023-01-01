@@ -61,11 +61,11 @@ const Page = () => {
 
   const handleSearch = async (query: QueueProps) => {
     try {
-      const data = await VagaService.query(query);
-      setSelectedVaga(data.length > 0 ? data[0] : null);
-      setVagas(data);
+      const { results } = await VagaService.query(query);
+      setSelectedVaga(results.length > 0 ? results[0] : null);
+      setVagas(results);
     } catch (error) {
-      console.log(error);
+      toastError('Erro ao buscar vagas');
     }
   };
 

@@ -21,6 +21,13 @@ class EmpregadorService extends CRLUDService<
     const { data } = await axiosInstance.get(`${this.baseUrl}/perfil`);
     return data;
   }
+
+  async getVagas(empregadorId: number) {
+    const { data } = await axiosInstance.get(
+      `${this.baseUrl}/${empregadorId}/vagas`,
+    );
+    return data;
+  }
 }
 
 export default new EmpregadorService();

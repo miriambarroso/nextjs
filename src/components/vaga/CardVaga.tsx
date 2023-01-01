@@ -1,5 +1,4 @@
 import { IVaga } from '@/interfaces/vaga';
-import { formatDateToLocale } from '@/utils/date';
 import Link from 'next/link';
 import { BiGlasses, BiGroup, BiHome, BiTime } from 'react-icons/bi';
 import { BadgeGroup } from '@/components/atoms/Badge';
@@ -14,6 +13,7 @@ import { classNames } from '@/utils';
 import { range } from 'lodash';
 import { useAuthStore } from '@/store/auth';
 import { useEffect, useState } from 'react';
+import { currencyMask } from '@/utils/masks';
 
 type Props = {
   vaga: IVaga;
@@ -27,21 +27,21 @@ type Props = {
 };
 
 const CardVaga = ({
-                    vaga,
-                    selected,
-                    onClick,
-                    isCandidato,
-                    isOwner,
-                    isFeature,
-                    className,
-                    skeleton = null,
-                  }: Props) => {
+  vaga,
+  selected,
+  onClick,
+  isCandidato,
+  isOwner,
+  isFeature,
+  className,
+  skeleton = null,
+}: Props) => {
   const [candidaturas] = useAuthStore((state) => [state.candidaturas]);
 
   const [isCandidatado, setIsCandidatado] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsCandidatado(candidaturas.some((i) => i.vaga == vaga.id));
+    setIsCandidatado(candidaturas.some((i) => i.vaga == vaga?.id));
   }, [candidaturas, vaga]);
 
   const badges = [
@@ -81,19 +81,24 @@ const CardVaga = ({
       >
         <div className="card-body p-4">
           <div onClick={onClick} className="cursor-pointer">
-            <div>
+            <div className="mb-2">
               <h2 className="card-title font-noto-sans">
-                <TextSkeleton className="h-6 w-48 bg-base-100">
+                <TextSkeleton as="span" className="h-6 w-48 bg-base-100">
                   {vaga?.cargo}
                 </TextSkeleton>
               </h2>
-              <span className="text-sm text-fade">
-                <TextSkeleton className="h-4 w-32 bg-base-100">
-                  {vaga?.created_at
-                    ? formatDateToLocale(vaga?.created_at)
-                    : null}
+              <p className="card-subtitle text-gray-500">
+                <TextSkeleton as="span">
+                  {vaga?.salario ? currencyMask.mask(vaga?.salario) : null}
                 </TextSkeleton>
-              </span>
+              </p>
+              {/*<p className="text-sm text-fade">*/}
+              {/*  <TextSkeleton>*/}
+              {/*    {vaga?.created_at*/}
+              {/*      ? formatDateToLocale(vaga?.created_at)*/}
+              {/*      : null}*/}
+              {/*  </TextSkeleton>*/}
+              {/*</p>*/}
             </div>
             <BadgeGroup badges={badges} />
             <p className="truncate-4">

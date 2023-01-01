@@ -6,7 +6,7 @@ import SelectModeloTrabalho from '@/components/atoms/inputs/SelectModeloTrabalho
 import SelectRegimeContratual from '@/components/atoms/inputs/SelectRegimeContratual';
 import SelectJornadaTrabalho from '@/components/atoms/inputs/SelectJornadaTrabalho';
 import InputNomeFantasia from '@/components/atoms/inputs/InputNomeFantasia';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import { IVaga } from '@/interfaces/vaga';
@@ -15,53 +15,73 @@ import VagaService from '@/services/VagaService';
 import CandidaturaService from '@/services/CandidaturaService';
 import { useAuthStore } from '@/store/auth';
 import { toastError, toastSuccess } from '@/utils/toasts';
-import { range } from 'lodash';
+import { omitBy, range } from 'lodash';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
+import useEffectTimeout from '@/hooks/useEffectTimeout';
+import {
+  JornadaTrabalhoChoices,
+  ModeloTrabalhoChoices,
+  RegimeContratualChoices,
+} from '@/utils/choices';
+import { currencyMask } from '@/utils/masks';
+import useScrollTo from '@/hooks/useScrollTo';
+import { createBreakpoint } from 'react-use';
+
+const useBreakpoint = createBreakpoint({
+  '2xl': 1536,
+  xl: 1280,
+  lg: 1024,
+  md: 768,
+  sm: 350,
+});
 
 type QueueProps = {
-  termo: string;
+  termo?: string;
   empresa?: string;
   salario?: number;
   modelo_trabalho?: number;
   regime_contratual?: number;
   jornada_trabalho?: number;
+  selecionado?: number;
 };
 
 const Page = () => {
-  const [
-    user,
-    empresa,
-    candidaturas,
-    setCandidaturas,
-    isAuthenticated,
-    isCandidato,
-    isEmpregador,
-  ] = useAuthStore((state) => [
-    state.user,
-    state.empresa,
-    state.candidaturas,
-    state.setCandidaturas,
-    state.isAuthenticated,
-    state.isCandidato,
-    state.isEmpregador,
-  ]);
+  const [user, candidaturas, setCandidaturas, isCandidato] = useAuthStore(
+    (state) => [
+      state.user,
+      state.candidaturas,
+      state.setCandidaturas,
+      state.isAuthenticated,
+      state.isCandidato,
+      state.isEmpregador,
+    ],
+  );
   const [vagas, setVagas] = useState<IVaga[]>(null);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
+  const { scrollRef, triggerScroll } = useScrollTo();
 
   const {
     register,
     formState: { errors },
-    trigger,
     watch,
   } = useForm({
     resolver: yupResolver(vagasSchema),
   });
 
-  const { query } = useRouter();
+  const {
+    empresa,
+    salario,
+    modelo_trabalho,
+    regime_contratual,
+    jornada_trabalho,
+  } = watch();
+
+  const { termo, selecionado } = useRouter().query;
 
   const handleSearch = async (query: QueueProps) => {
     try {
-      const { results } = await VagaService.getAll(query);
+      const clearQuery = omitBy(query, (v) => !v);
+      const { results } = await VagaService.getAll(clearQuery);
       setSelectedVaga(results.length > 0 ? results[0] : null);
       setVagas(results);
     } catch (error) {
@@ -92,15 +112,59 @@ const Page = () => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      if (query) {
-        await handleSearch({
-          termo: query.q as string,
-        });
-      }
-    })();
-  }, [query]);
+  useEffectTimeout(
+    () => {
+      handleSearch({
+        empresa,
+        salario: salario && currencyMask.unmask(salario),
+        modelo_trabalho,
+        regime_contratual,
+        jornada_trabalho,
+        termo: termo as string,
+        selecionado: selecionado as unknown as number,
+      });
+    },
+    300,
+    [
+      empresa,
+      salario,
+      modelo_trabalho,
+      regime_contratual,
+      jornada_trabalho,
+      termo,
+      selecionado,
+    ],
+  );
+
+  const modeloTrabalhoChoices = [
+    {
+      label: 'Selecione o modelo de trabalho',
+      value: '',
+      selected: true,
+      disabled: false,
+    },
+    ...ModeloTrabalhoChoices.choices,
+  ];
+
+  const regimeContratualChoices = [
+    {
+      label: 'Selecione o regime de contratação',
+      value: '',
+      selected: true,
+      disabled: false,
+    },
+    ...RegimeContratualChoices.choices,
+  ];
+
+  const jornadaTrabalhoChoices = [
+    {
+      label: 'Selecione o jornada de trabalho',
+      value: '',
+      selected: true,
+      disabled: false,
+    },
+    ...JornadaTrabalhoChoices.choices,
+  ];
 
   return (
     <>
@@ -124,16 +188,19 @@ const Page = () => {
               register={register}
               error={errors.modelo_trabalho?.message}
               labelClassName={'text-white'}
+              choices={modeloTrabalhoChoices}
             />
             <SelectRegimeContratual
               register={register}
               error={errors.regime_contratual?.message}
               labelClassName={'text-white'}
+              choices={regimeContratualChoices}
             />
             <SelectJornadaTrabalho
               register={register}
               error={errors.jornada_trabalho?.message}
               labelClassName={'text-white'}
+              choices={jornadaTrabalhoChoices}
             />
           </div>
         </form>
@@ -181,18 +248,18 @@ const Page = () => {
           </div>
         )}
 
-        <div className="flex gap-8">
-          <div className="w-4/12">
+        <div className="lg:flex gap-8">
+          <div className="lg:w-4/12">
             <div className="label">
               <span className="label-text">
                 Resultado a partir da busca ({vagas?.length} vagas)
               </span>
             </div>
-            <div className="w-full grid grid-cols-1 bg-white p-4 rounded">
-              {vagas ? (
-                vagas?.length > 0 ? (
-                  vagas?.map((vaga, index) => (
-                    <>
+            <div className="w-full ">
+              <div className="overflow-x-auto flex lg:grid lg:grid-cols-1 p-4 rounded bg-white snap-x snap-mandatory">
+                {vagas ? (
+                  vagas?.length > 0 ? (
+                    vagas?.map((vaga, index) => (
                       <CardVaga
                         key={vaga.id}
                         vaga={vaga}
@@ -200,25 +267,27 @@ const Page = () => {
                         isOwner={false}
                         onClick={() => setSelectedVaga(vaga)}
                         selected={vaga.id === selectedVaga?.id}
+                        className="snap-center"
                       />
-                    </>
-                  ))
+                    ))
+                  ) : (
+                    <div className="py-8">
+                      <p className="text-center">Não foram encontradas vagas</p>
+                    </div>
+                  )
                 ) : (
-                  <div className="py-8">
-                    <p className="text-center">Não foram encontradas vagas</p>
-                  </div>
-                )
-              ) : (
-                <CardVaga
-                  vaga={null}
-                  isCandidato={true}
-                  isOwner={false}
-                  skeleton={3}
-                />
-              )}
+                  <CardVaga
+                    vaga={null}
+                    isCandidato={true}
+                    isOwner={false}
+                    skeleton={3}
+                    className="snap-center"
+                  />
+                )}
+              </div>
             </div>
           </div>
-          <div className="w-8/12 sticky">
+          <div className="lg:w-8/12 sticky" ref={scrollRef}>
             <div className="sticky top-0">
               <div className="label">
                 <span className="label-text">Detalhes da vaga selecionada</span>

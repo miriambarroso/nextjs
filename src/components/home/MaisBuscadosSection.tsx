@@ -71,7 +71,7 @@ const MaisBuscadosSection = ({}: Props) => {
         <div className="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2 bg-white px-4 py-4">
           {tabs[tab].items.map((item, index) => (
             <Link
-              href={`/vagas/?q=${item}`}
+              href={`/vagas/?termo=${item}`}
               key={index}
               className="link link-hover"
             >

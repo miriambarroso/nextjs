@@ -34,7 +34,7 @@ const OportunidadesDestaqueSection = ({}: Props) => {
                   isCandidato={true}
                   isOwner={false}
                   onClick={() => {
-                    return Router.push(`/vagas/${vaga.id}`);
+                    return Router.push(`/vagas?selecionado=${vaga.id}`);
                   }}
                   isFeature={true}
                   className="hover:bg-base-100 snap-center p-0"

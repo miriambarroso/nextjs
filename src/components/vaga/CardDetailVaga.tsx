@@ -1,5 +1,4 @@
 import { IVaga } from '@/interfaces/vaga';
-import { formatDateToLocale } from '@/utils/date';
 import Link from 'next/link';
 import { BiGlasses, BiGroup, BiHome, BiTime } from 'react-icons/bi';
 import { BadgeGroup } from '@/components/atoms/Badge';
@@ -17,6 +16,8 @@ import { useAuthStore } from '@/store/auth';
 import { classNames } from '@/utils';
 import Router from 'next/router';
 import { toastWarning } from '@/utils/toasts';
+import { formatDateToLocale } from '@/utils/date';
+import { currencyMask } from '@/utils/masks';
 
 type Props = {
   vaga: IVaga;
@@ -27,13 +28,10 @@ type Props = {
   action?: () => void;
 };
 
-const CardDetailVaga = ({
-  vaga,
-  onDelete,
-  isCandidato,
-  isOwner,
-  action,
-}: Props) => {
+const CardDetailVaga = (
+  { vaga, onDelete, isCandidato, isOwner, action }: Props,
+  ref,
+) => {
   const [itemId, setItemId] = useState<number>(null);
   const { open, toggle } = useModal();
   const candidaturas = useAuthStore((state) => state.candidaturas);
@@ -81,12 +79,21 @@ const CardDetailVaga = ({
         <div className="card-body">
           <div className="flex">
             <div>
-              <TextSkeleton>
-                <h2 className="card-title font-noto-sans">{vaga?.cargo}</h2>
-              </TextSkeleton>
-              <span className="text-sm text-fade">
-                {formatDateToLocale(vaga?.created_at ?? '')}
-              </span>
+              <h2 className="card-title font-noto-sans">
+                <TextSkeleton>{vaga?.cargo}</TextSkeleton>
+              </h2>
+              <p className="card-subtitle text-gray-500">
+                <TextSkeleton as="span">
+                  {currencyMask.mask(vaga?.salario)}
+                </TextSkeleton>
+              </p>
+              <p className="text-sm text-fade">
+                <TextSkeleton as="span">
+                  {vaga?.created_at
+                    ? formatDateToLocale(vaga?.created_at)
+                    : null}
+                </TextSkeleton>
+              </p>
             </div>
             {isOwner && (
               <div className="ml-auto flex flex-col gap-2">
@@ -108,7 +115,7 @@ const CardDetailVaga = ({
               </div>
             )}
           </div>
-          <div className="lg:flex items-center">
+          <div className="lg:flex items-center space-y-4 lg:space-y-0 ">
             <BadgeGroup badges={badges} />
             {isCandidato && (
               <button
@@ -174,7 +181,10 @@ const CardDetailVaga = ({
           {/*</div>*/}
           <div className="card-actions items-center">
             {!isOwner && (
-              <div className="flex items-center gap-2">
+              <Link
+                href={`/empresa/${vaga?.empresa?.id}`}
+                className="flex items-center gap-2 rounded hover:bg-base-200 transition duration-150 p-2"
+              >
                 <div className="avatar">
                   <div className="w-10 rounded-full relative">
                     <Image
@@ -184,8 +194,16 @@ const CardDetailVaga = ({
                     />
                   </div>
                 </div>
-                <p>{vaga?.empresa?.nome_fantasia}</p>
-              </div>
+                <p>
+                  <TextSkeleton
+                    as="span"
+                    className="h-4 w-16
+                   bg-base-100"
+                  >
+                    {vaga?.empresa?.nome_fantasia}
+                  </TextSkeleton>
+                </p>
+              </Link>
             )}
             {isOwner && (
               <Link

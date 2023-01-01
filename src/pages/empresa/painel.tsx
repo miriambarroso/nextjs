@@ -1,4 +1,4 @@
-import { ADMIN, EMPREGADOR, SUPERADMIN } from '@/store/auth';
+import { ADMIN, EMPREGADOR, SUPERADMIN, useAuthStore } from '@/store/auth';
 import CardVaga from '@/components/vaga/CardVaga';
 import { Fragment, useEffect, useState } from 'react';
 import { toastError, toastSuccess } from '@/utils/toasts';
@@ -7,16 +7,18 @@ import { IVaga } from '@/interfaces/vaga';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import { range } from 'lodash';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
+import EmpregadorService from '@/services/EmpregadorService';
 
 type Props = {};
 
 const Page = ({}: Props) => {
   const [vagas, setVagas] = useState<IVaga[]>(null);
+  const [user] = useAuthStore((state) => [state.user]);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
 
   const fetchVagas = async () => {
     try {
-      const { results } = await VagaService.getAll();
+      const results = await EmpregadorService.getVagas(user?.id);
       const firstVaga = results.length > 0 ? results[0] : null;
       setSelectedVaga(firstVaga);
       setVagas(results);
@@ -26,8 +28,10 @@ const Page = ({}: Props) => {
   };
 
   useEffect(() => {
-    fetchVagas();
-  }, []);
+    if (user) {
+      fetchVagas();
+    }
+  }, [user]);
 
   const deleteItem = async (id: number) => {
     try {

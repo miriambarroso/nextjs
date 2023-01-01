@@ -1,7 +1,7 @@
 import { BiMenuAltRight, BiSearch, BiShocked } from 'react-icons/bi';
 import LogoAnapolis from '@/components/layout/LogoAnapolis';
 import LogoEmprega from '@/components/layout/LogoEmprega';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useAuthStore } from '@/store/auth';
 import { useRouter } from 'next/router';
 import { NavGuest } from '@/components/layout/NavBar/NavGuest';
@@ -30,31 +30,23 @@ const NavBar = ({}: Props) => {
 
   const [term, setTerm] = useState<string>('');
 
-  const ref = useRef(null);
-
   const searchTerm = (event) => {
-    clearTimeout(ref.current);
     event?.preventDefault();
-
-    if (!term && !event) return;
 
     if (isEmpregador()) {
       return router.push({
         pathname: '/candidatos',
-        query: { q: term },
+        query: { termo: term },
       });
     }
 
     return router.push({
       pathname: '/vagas',
-      query: { q: term },
+      query: { termo: term },
     });
   };
 
-  useEffect(() => {
-    ref.current = setTimeout(() => searchTerm(null), 1000);
-    return () => clearTimeout(ref.current);
-  }, [term]);
+  // useEffectTimeout(() => searchTerm(null), 1000, [term]);
 
   const navNivelUsuario = () => {
     if (isAdmin()) {
@@ -90,6 +82,7 @@ const NavBar = ({}: Props) => {
                   />
                   <button
                     className="absolute top-0 right-0 mr-2 mt-1 text-neutral cursor-pointer p-2"
+                    type="submit"
                     onClick={searchTerm}
                   >
                     <BiSearch />

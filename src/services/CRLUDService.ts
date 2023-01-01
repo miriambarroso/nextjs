@@ -17,7 +17,7 @@ class CRLUDService<C, R, L, U, D> {
     return data;
   }
 
-  async getAll(query): Promise<{
+  async getAll(query?: any): Promise<{
     count: number;
     next: number;
     previous: number;

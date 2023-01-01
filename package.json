@@ -34,8 +34,8 @@
     "zustand": "^4.1.5"
   },
   "devDependencies": {
-    "@types/node": "^17.0.14",
-    "@types/react": "latest",
+    "@types/node": "^18.11.18",
+    "@types/react": "^18.0.26",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.9.0",
     "eslint-config-next": "canary",
@@ -44,6 +44,6 @@
     "prettier": "^2.8.1",
     "tailwindcss": "^3.2.4",
     "tailwindcss-animate": "^1.0.5",
-    "typescript": "4.5.5"
+    "typescript": "^4.9.4"
   }
 }

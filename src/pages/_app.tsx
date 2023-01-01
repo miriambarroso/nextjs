@@ -13,7 +13,7 @@ import { GoogleAnalytics } from 'nextjs-google-analytics';
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
   permissions?: number[];
-  ignoreLayout?: boolean;
+  overrideLayout?: boolean;
 };
 
 type AppPropsWithLayout = AppProps & {

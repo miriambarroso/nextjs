@@ -46,7 +46,7 @@ const InputField = ({
         type={type}
         {...inputProps}
         placeholder={placeholder}
-        className={classNames('input', error && 'input-error')}
+        className={classNames('input w-full', error && 'input-error')}
       />
       <label className={classNames(!error && 'hidden', 'label')}>
         <span className="label-text-alt text-error">{error}</span>

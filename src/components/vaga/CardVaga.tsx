@@ -9,10 +9,9 @@ import {
   RegimeContratualChoices,
 } from '@/utils/choices';
 import Image from 'next/image';
-import { useState } from 'react';
-import useModal from '@/hooks/useModal';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
 import { classNames } from '@/utils';
+import { range } from 'lodash';
 
 type Props = {
   vaga: IVaga;
@@ -20,12 +19,19 @@ type Props = {
   isOwner?: boolean;
   selected?: boolean;
   onClick?: () => void;
+  className?: string;
+  skeleton?: number;
 };
 
-const CardVaga = ({ vaga, selected, onClick, isCandidato, isOwner }: Props) => {
-  const [itemId, setItemId] = useState<number>(null);
-  const { open, toggle } = useModal();
-
+const CardVaga = ({
+  vaga,
+  selected,
+  onClick,
+  isCandidato,
+  isOwner,
+  className,
+  skeleton = null,
+}: Props) => {
   const badges = [
     {
       kind: 'base',
@@ -47,49 +53,40 @@ const CardVaga = ({ vaga, selected, onClick, isCandidato, isOwner }: Props) => {
     {
       kind: 'base',
       icon: <BiGroup />,
-      label: vaga?.quantidade_vagas + ' vagas',
+      label: vaga ? vaga?.quantidade_vagas + ' vagas' : null,
     },
   ];
 
-  return (
-    <>
+  const renderItem = (vaga: IVaga, index?: number) => {
+    return (
       <div
+        key={index}
         className={classNames(
           'card rounded w-full cursor-pointer',
           selected ? 'bg-gray-100' : 'bg-white',
+          className,
         )}
         onClick={onClick}
       >
         <div className="card-body p-4">
-          <div className="flex">
-            <div>
-              <TextSkeleton>
-                <h2 className="card-title font-noto-sans">{vaga?.cargo}</h2>
+          <div>
+            <h2 className="card-title font-noto-sans">
+              <TextSkeleton className="h-6 w-48 bg-base-100">
+                {vaga?.cargo}
               </TextSkeleton>
-              <span className="text-sm text-fade">
-                {formatDateToLocale(vaga?.created_at ?? '')}
-              </span>
-            </div>
-            {/*<div className="ml-auto flex flex-col gap-2">*/}
-            {/*  <Link*/}
-            {/*    href={`/empresa/vaga/${vaga.id}/editar`}*/}
-            {/*    className="link link-hover link-neutral text-sm"*/}
-            {/*  >*/}
-            {/*    Editar*/}
-            {/*  </Link>*/}
-            {/*  <button*/}
-            {/*    onClick={() => {*/}
-            {/*      setItemId(vaga.id);*/}
-            {/*      toggle();*/}
-            {/*    }}*/}
-            {/*    className={'link link-hover link-error text-sm '}*/}
-            {/*  >*/}
-            {/*    Excluir*/}
-            {/*  </button>*/}
-            {/*</div>*/}
+            </h2>
+            <span className="text-sm text-fade">
+              <TextSkeleton className="h-4 w-32 bg-base-100">
+                {vaga?.created_at ? formatDateToLocale(vaga?.created_at) : null}
+              </TextSkeleton>
+            </span>
           </div>
           <BadgeGroup badges={badges} />
-          <p>{vaga?.atividades}</p>
+          <p className="truncate-4">
+            <TextSkeleton as="span" className="h-4 w-full bg-base-100" rows={4}>
+              {vaga?.atividades}
+            </TextSkeleton>
+          </p>
           <div className="card-actions items-center">
             {isCandidato && (
               <div className="flex items-center gap-2">
@@ -102,10 +99,18 @@ const CardVaga = ({ vaga, selected, onClick, isCandidato, isOwner }: Props) => {
                     />
                   </div>
                 </div>
-                <p>{vaga?.empresa}</p>
+                <p>
+                  <TextSkeleton
+                    as="span"
+                    className="h-4 w-16
+                   bg-base-100"
+                  >
+                    {vaga?.empresa}
+                  </TextSkeleton>
+                </p>
               </div>
             )}
-            {isOwner && (
+            {vaga && isOwner && (
               <Link
                 href={`/empresa/vaga/${vaga?.id}`}
                 className="link link-hover link-neutral text-sm ml-auto"
@@ -115,11 +120,15 @@ const CardVaga = ({ vaga, selected, onClick, isCandidato, isOwner }: Props) => {
             )}
           </div>
         </div>
-
-        {/*<figure>*/}
-        {/*  <img src="https://placeimg.com/400/225/arch" alt="Shoes" />*/}
-        {/*</figure>*/}
       </div>
+    );
+  };
+
+  return (
+    <>
+      {skeleton
+        ? range(skeleton).map((i) => renderItem(null, i))
+        : renderItem(vaga)}
     </>
   );
 };

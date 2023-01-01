@@ -15,6 +15,8 @@ import VagaService from '@/services/VagaService';
 import CandidaturaService from '@/services/CandidaturaService';
 import { useAuthStore } from '@/store/auth';
 import { toastError, toastSuccess } from '@/utils/toasts';
+import { range } from 'lodash';
+import TextSkeleton from '@/components/skeleton/TextSkeleton';
 
 type QueueProps = {
   termo: string;
@@ -43,7 +45,7 @@ const Page = () => {
     state.isCandidato,
     state.isEmpregador,
   ]);
-  const [vagas, setVagas] = useState<IVaga[]>([]);
+  const [vagas, setVagas] = useState<IVaga[]>(null);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
 
   const {
@@ -142,22 +144,38 @@ const Page = () => {
             <div className="w-full">
               <div className="label">
                 <span className="label-text">
-                  Recomendações para o candidato ({vagas.length} vagas)
+                  Recomendações para o candidato (
+                  <TextSkeleton>{vagas?.length}</TextSkeleton> vagas)
                 </span>
               </div>
               <div className="w-full grid grid-cols-3 gap-8 bg-white p-4 rounded">
-                {vagas.map((vaga, index) => (
-                  <>
+                {vagas ? (
+                  vagas?.length > 0 ? (
+                    vagas?.map((vaga, index) => (
+                      <>
+                        <CardVaga
+                          key={vaga.id}
+                          vaga={vaga}
+                          isCandidato={true}
+                          isOwner={false}
+                          onClick={() => setSelectedVaga(vaga)}
+                          selected={vaga.id === selectedVaga?.id}
+                        />
+                      </>
+                    ))
+                  ) : (
+                    <div>Não há vagas recomendadas para você</div>
+                  )
+                ) : (
+                  range(3).map((_, index) => (
                     <CardVaga
-                      key={vaga.id}
-                      vaga={vaga}
+                      key={index}
+                      vaga={null}
                       isCandidato={true}
                       isOwner={false}
-                      onClick={() => setSelectedVaga(vaga)}
-                      selected={vaga.id === selectedVaga?.id}
                     />
-                  </>
-                ))}
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -167,25 +185,37 @@ const Page = () => {
           <div className="w-4/12">
             <div className="label">
               <span className="label-text">
-                Resultado a partir da busca ({vagas.length} vagas)
+                Resultado a partir da busca ({vagas?.length} vagas)
               </span>
             </div>
             <div className="w-full grid grid-cols-1 bg-white p-4 rounded">
-              {vagas.map((vaga, index) => (
-                <>
-                  <CardVaga
-                    key={vaga.id}
-                    vaga={vaga}
-                    isCandidato={isCandidato()}
-                    isOwner={empresa?.id === vaga.empresa}
-                    onClick={() => setSelectedVaga(vaga)}
-                    selected={vaga.id === selectedVaga?.id}
-                  />
-                  {index !== vagas.length - 1 && (
-                    <div className="divider m-1"></div>
-                  )}
-                </>
-              ))}
+              {vagas ? (
+                vagas?.length > 0 ? (
+                  vagas?.map((vaga, index) => (
+                    <>
+                      <CardVaga
+                        key={vaga.id}
+                        vaga={vaga}
+                        isCandidato={true}
+                        isOwner={false}
+                        onClick={() => setSelectedVaga(vaga)}
+                        selected={vaga.id === selectedVaga?.id}
+                      />
+                    </>
+                  ))
+                ) : (
+                  <div className="py-8">
+                    <p className="text-center">Não foram encontradas vagas</p>
+                  </div>
+                )
+              ) : (
+                <CardVaga
+                  vaga={null}
+                  isCandidato={true}
+                  isOwner={false}
+                  skeleton={3}
+                />
+              )}
             </div>
           </div>
           <div className="w-8/12 sticky">
@@ -218,6 +248,6 @@ const Page = () => {
   );
 };
 
-Page.ignoreLayout = true;
+Page.overrideLayout = '';
 
 export default Page;

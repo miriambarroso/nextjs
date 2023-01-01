@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { classNames } from '@/utils';
+import TextSkeleton from '@/components/skeleton/TextSkeleton';
 
 type Props = {
   kind:
@@ -31,7 +32,7 @@ const Badge = ({ kind, icon, label }: Props) => {
         )}
       >
         {icon}
-        {label}
+        <TextSkeleton className="w-8 h-2 bg-gray-400">{label}</TextSkeleton>
       </div>
     </>
   );

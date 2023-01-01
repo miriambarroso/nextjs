@@ -60,6 +60,16 @@
   display: none;
 }
 
+@for $i from 1 through 10 {
+  .truncate-#{$i} {
+    display: -webkit-box;
+    -webkit-line-clamp: #{$i};
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+
 //.select::selection[value=""] {
 //  color: hsl(var(--bc) / var(--tw-text-opacity));
 //  --tw-text-opacity: 0.5;

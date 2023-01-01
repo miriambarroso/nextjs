@@ -18,7 +18,7 @@ const DefaultLayout = ({ children, page }: Props) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <NavBar />
-      <main className={classNames(page.ignoreLayout ? '' : 'container')}>
+      <main className={classNames(page.overrideLayout ?? 'container')}>
         {children}
       </main>
       <Footer />

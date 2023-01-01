@@ -1,15 +1,17 @@
 import { ADMIN, EMPREGADOR, SUPERADMIN } from '@/store/auth';
 import CardVaga from '@/components/vaga/CardVaga';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import VagaService from '@/services/VagaService';
 import { IVaga } from '@/interfaces/vaga';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
+import { range } from 'lodash';
+import TextSkeleton from '@/components/skeleton/TextSkeleton';
 
 type Props = {};
 
 const Page = ({}: Props) => {
-  const [vagas, setVagas] = useState<IVaga[]>([]);
+  const [vagas, setVagas] = useState<IVaga[]>(null);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
 
   const fetchVagas = async () => {
@@ -42,26 +44,44 @@ const Page = ({}: Props) => {
       <div className="flex gap-8">
         <div className="w-4/12">
           <div className="label">
-            <span className="label-text">
-              Vagas cadastradas ({vagas.length} vagas)
+            <span className="label-text inline-flex items-center">
+              Vagas cadastradas (
+              <TextSkeleton as={'span'} className="h-4 w-8 bg-base-200 mr-2">
+                {vagas?.length}
+              </TextSkeleton>{' '}
+              vagas)
             </span>
           </div>
           <div className="w-full grid grid-cols-1 bg-white p-4 rounded">
-            {vagas.map((vaga, index) => (
-              <>
-                <CardVaga
-                  key={vaga.id}
-                  vaga={vaga}
-                  isCandidato={false}
-                  isOwner={true}
-                  onClick={() => setSelectedVaga(vaga)}
-                  selected={vaga.id === selectedVaga?.id}
-                />
-                {index !== vagas.length - 1 && (
-                  <div className="divider m-1"></div>
-                )}
-              </>
-            ))}
+            {vagas
+              ? vagas?.map((vaga, index) => (
+                  <Fragment key={index}>
+                    <CardVaga
+                      vaga={vaga}
+                      isCandidato={false}
+                      isOwner={true}
+                      onClick={() => setSelectedVaga(vaga)}
+                      selected={vaga.id === selectedVaga?.id}
+                    />
+                    {index !== vagas?.length - 1 && (
+                      <div className="divider m-1"></div>
+                    )}
+                  </Fragment>
+                ))
+              : range(3).map((index) => (
+                  <>
+                    <CardVaga
+                      key={index}
+                      vaga={null}
+                      isCandidato={false}
+                      isOwner={true}
+                      selected={false}
+                    />
+                    {index !== vagas?.length - 1 && (
+                      <div className="divider m-1"></div>
+                    )}
+                  </>
+                ))}
           </div>
         </div>
         <div className="w-8/12 sticky">

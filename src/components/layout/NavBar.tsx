@@ -2,7 +2,7 @@ import { BiMenuAltRight, BiSearch, BiShocked } from 'react-icons/bi';
 import LogoAnapolis from '@/components/layout/LogoAnapolis';
 import LogoEmprega from '@/components/layout/LogoEmprega';
 import { useEffect, useRef, useState } from 'react';
-import { NivelUsuario, useAuthStore } from '@/store/auth';
+import { useAuthStore } from '@/store/auth';
 import { useRouter } from 'next/router';
 import { NavGuest } from '@/components/layout/NavBar/NavGuest';
 import { NavAdmin } from '@/components/layout/NavBar/NavAdmin';
@@ -13,7 +13,12 @@ import { toastCustom } from '@/utils/toasts';
 type Props = {};
 
 const NavBar = ({}: Props) => {
-  const user = useAuthStore((state) => state.user);
+  const [user, isCandidato, isEmpregador, isAdmin] = useAuthStore((state) => [
+    state.user,
+    state.isCandidato,
+    state.isEmpregador,
+    state.isAdmin,
+  ]);
   const logout = useAuthStore((state) => state.logout);
   const router = useRouter();
 
@@ -33,7 +38,7 @@ const NavBar = ({}: Props) => {
 
     if (!term && !event) return;
 
-    if (user?.nivel_usuario === NivelUsuario.EMPREGADOR) {
+    if (isEmpregador()) {
       return router.push({
         pathname: '/candidatos',
         query: { q: term },
@@ -47,19 +52,21 @@ const NavBar = ({}: Props) => {
   };
 
   useEffect(() => {
-    ref.current = setTimeout(searchTerm, 1000);
+    ref.current = setTimeout(() => searchTerm(null), 1000);
     return () => clearTimeout(ref.current);
   }, [term]);
 
   const navNivelUsuario = () => {
-    if (!user || !Object.values(NivelUsuario).includes(user?.nivel_usuario))
-      return <NavGuest />;
-    if (user?.nivel_usuario <= NivelUsuario.ADMIN)
+    if (isAdmin()) {
       return <NavAdmin user={user} logout={logoutHandler} />;
-    if (user?.nivel_usuario === NivelUsuario.EMPREGADOR)
+    }
+    if (isEmpregador()) {
       return <NavEmpregador user={user} logout={logoutHandler} />;
-    if (user?.nivel_usuario === NivelUsuario.CANDIDATO)
+    }
+    if (isCandidato()) {
       return <NavCandidato user={user} logout={logoutHandler} />;
+    }
+    return <NavGuest />;
   };
 
   return (

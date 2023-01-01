@@ -12,5 +12,5 @@ export const schema = yup.object().shape({
     .nullable()
     .required('Nível é obrigatório')
     .oneOf(IdiomaNivelChoices.valuesAsNumber, 'Nível inválido')
-    .transform((value) => (isNaN(value) ? null : value)),
+    .transform((value) => (Number.isNaN(value) ? null : value)),
 });

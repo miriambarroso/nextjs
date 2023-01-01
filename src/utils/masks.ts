@@ -198,7 +198,7 @@ export const currencyMask = masker({
       },
     },
   },
-  transform: (value) => {
+  transform: (value: string) => {
     return currencyMask.unmask(value).replace(',', '.');
   },
   maskDefault: (value: number) => {

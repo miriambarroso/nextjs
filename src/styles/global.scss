@@ -22,6 +22,10 @@
   }
 }
 
+.btn-primary {
+  @apply text-white;
+}
+
 .btn-outline.btn-neutral {
   @apply text-neutral border-neutral;
   &:hover {

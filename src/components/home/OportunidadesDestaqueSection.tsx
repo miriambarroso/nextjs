@@ -10,7 +10,7 @@ type Props = {};
 const OportunidadesDestaqueSection = ({}: Props) => {
   const [vagas, setVagas] = useState<IVaga[]>(null);
   useEffect(() => {
-    VagaService.getAll().then(({ results }) => {
+    VagaService.getAll({ limit: 3 }).then(({ results }) => {
       setVagas(results);
     });
   }, []);
@@ -36,7 +36,8 @@ const OportunidadesDestaqueSection = ({}: Props) => {
                   onClick={() => {
                     return Router.push(`/vagas/${vaga.id}`);
                   }}
-                  className="lg:hover:bg-base-100 snap-center p-0"
+                  isFeature={true}
+                  className="hover:bg-base-100 snap-center p-0"
                 />
               ))
             ) : (

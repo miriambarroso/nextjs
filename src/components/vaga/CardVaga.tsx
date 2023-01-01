@@ -12,9 +12,12 @@ import Image from 'next/image';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
 import { classNames } from '@/utils';
 import { range } from 'lodash';
+import { useAuthStore } from '@/store/auth';
+import { useEffect, useState } from 'react';
 
 type Props = {
   vaga: IVaga;
+  isFeature?: boolean;
   isCandidato?: boolean;
   isOwner?: boolean;
   selected?: boolean;
@@ -24,14 +27,23 @@ type Props = {
 };
 
 const CardVaga = ({
-  vaga,
-  selected,
-  onClick,
-  isCandidato,
-  isOwner,
-  className,
-  skeleton = null,
-}: Props) => {
+                    vaga,
+                    selected,
+                    onClick,
+                    isCandidato,
+                    isOwner,
+                    isFeature,
+                    className,
+                    skeleton = null,
+                  }: Props) => {
+  const [candidaturas] = useAuthStore((state) => [state.candidaturas]);
+
+  const [isCandidatado, setIsCandidatado] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsCandidatado(candidaturas.some((i) => i.vaga == vaga.id));
+  }, [candidaturas, vaga]);
+
   const badges = [
     {
       kind: 'base',
@@ -62,34 +74,45 @@ const CardVaga = ({
       <div
         key={index}
         className={classNames(
-          'card rounded w-full cursor-pointer',
+          'card rounded w-full ',
           selected ? 'bg-gray-100' : 'bg-white',
           className,
         )}
-        onClick={onClick}
       >
         <div className="card-body p-4">
-          <div>
-            <h2 className="card-title font-noto-sans">
-              <TextSkeleton className="h-6 w-48 bg-base-100">
-                {vaga?.cargo}
+          <div onClick={onClick} className="cursor-pointer">
+            <div>
+              <h2 className="card-title font-noto-sans">
+                <TextSkeleton className="h-6 w-48 bg-base-100">
+                  {vaga?.cargo}
+                </TextSkeleton>
+              </h2>
+              <span className="text-sm text-fade">
+                <TextSkeleton className="h-4 w-32 bg-base-100">
+                  {vaga?.created_at
+                    ? formatDateToLocale(vaga?.created_at)
+                    : null}
+                </TextSkeleton>
+              </span>
+            </div>
+            <BadgeGroup badges={badges} />
+            <p className="truncate-4">
+              <TextSkeleton
+                as="span"
+                className="h-4 w-full bg-base-100"
+                rows={4}
+              >
+                {vaga?.atividades}
               </TextSkeleton>
-            </h2>
-            <span className="text-sm text-fade">
-              <TextSkeleton className="h-4 w-32 bg-base-100">
-                {vaga?.created_at ? formatDateToLocale(vaga?.created_at) : null}
-              </TextSkeleton>
-            </span>
+            </p>
           </div>
-          <BadgeGroup badges={badges} />
-          <p className="truncate-4">
-            <TextSkeleton as="span" className="h-4 w-full bg-base-100" rows={4}>
-              {vaga?.atividades}
-            </TextSkeleton>
-          </p>
-          <div className="card-actions items-center">
+
+          <div className="card-actions items-center mt-auto">
             {isCandidato && (
-              <div className="flex items-center gap-2">
+              <Link
+                href={`/empresa/${vaga?.empresa?.id}`}
+                className="flex items-center gap-2 rounded hover:bg-base-200 transition duration-150 p-2"
+              >
                 <div className="avatar">
                   <div className="w-10 rounded-full relative">
                     <Image
@@ -105,10 +128,21 @@ const CardVaga = ({
                     className="h-4 w-16
                    bg-base-100"
                   >
-                    {vaga?.empresa}
+                    {vaga?.empresa?.nome_fantasia}
                   </TextSkeleton>
                 </p>
-              </div>
+              </Link>
+            )}
+            {isFeature && (
+              <Link
+                href={`/vaga/${vaga?.id}`}
+                className={classNames(
+                  'ml-auto btn btn-sm',
+                  isCandidatado && 'btn-error',
+                )}
+              >
+                {isCandidatado ? 'Cancelar candidatura' : 'Candidatar-se'}
+              </Link>
             )}
             {vaga && isOwner && (
               <Link

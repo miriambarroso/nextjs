@@ -108,20 +108,18 @@ const CardDetailVaga = ({
               </div>
             )}
           </div>
-          <div className="flex items-center">
+          <div className="lg:flex items-center">
             <BadgeGroup badges={badges} />
             {isCandidato && (
-              <div className="ml-auto flex flex-col gap-2">
-                <button
-                  onClick={action}
-                  className={classNames(
-                    'btn btn-sm',
-                    isCandidatado && 'btn-error',
-                  )}
-                >
-                  {isCandidatado ? 'Cancelar candidatura' : 'Candidatar-se'}
-                </button>
-              </div>
+              <button
+                onClick={action}
+                className={classNames(
+                  'ml-auto btn btn-sm',
+                  isCandidatado && 'btn-error',
+                )}
+              >
+                {isCandidatado ? 'Cancelar candidatura' : 'Candidatar-se'}
+              </button>
             )}
             {isGuest() && (
               <div className="ml-auto flex flex-col gap-2">
@@ -186,7 +184,7 @@ const CardDetailVaga = ({
                     />
                   </div>
                 </div>
-                <p>{vaga?.empresa}</p>
+                <p>{vaga?.empresa?.nome_fantasia}</p>
               </div>
             )}
             {isOwner && (

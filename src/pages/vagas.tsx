@@ -61,7 +61,7 @@ const Page = () => {
 
   const handleSearch = async (query: QueueProps) => {
     try {
-      const { results } = await VagaService.query(query);
+      const { results } = await VagaService.getAll(query);
       setSelectedVaga(results.length > 0 ? results[0] : null);
       setVagas(results);
     } catch (error) {

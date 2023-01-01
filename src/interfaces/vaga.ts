@@ -1,4 +1,5 @@
 import { IBeneficio } from '@/interfaces/beneficio';
+import { IEmpresaVaga } from '@/interfaces/empresa';
 
 export interface IVaga {
   id?: number;
@@ -16,7 +17,7 @@ export interface IVaga {
   quantidade_vagas: number;
   habilitado: boolean;
   beneficios: IBeneficio[];
-  empresa: number;
+  empresa: IEmpresaVaga;
   created_at?: string;
   updated_at?: string;
 }

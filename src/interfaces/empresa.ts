@@ -10,3 +10,10 @@ export interface IEmpresa {
   site: string;
   descricao: string;
 }
+
+export interface IEmpresaVaga {
+  id?: number;
+  cnpj: string;
+  razao_social: string;
+  nome_fantasia: string;
+}

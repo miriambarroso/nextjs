@@ -9,6 +9,7 @@ import { NavAdmin } from '@/components/layout/NavBar/NavAdmin';
 import { NavEmpregador } from '@/components/layout/NavBar/NavEmpregador';
 import { NavCandidato } from '@/components/layout/NavBar/NavCandidato';
 import { toastCustom } from '@/utils/toasts';
+import useEffectTimeout from '@/hooks/useEffectTimeout';
 
 type Props = {};
 
@@ -33,6 +34,8 @@ const NavBar = ({}: Props) => {
   const searchTerm = (event) => {
     event?.preventDefault();
 
+    if (!event && !term) return;
+
     if (isEmpregador()) {
       return router.push({
         pathname: '/candidatos',
@@ -46,7 +49,7 @@ const NavBar = ({}: Props) => {
     });
   };
 
-  // useEffectTimeout(() => searchTerm(null), 1000, [term]);
+  useEffectTimeout(() => searchTerm(null), 1000, [term]);
 
   const navNivelUsuario = () => {
     if (isAdmin()) {

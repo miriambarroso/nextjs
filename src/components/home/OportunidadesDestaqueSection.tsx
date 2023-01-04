@@ -1,9 +1,9 @@
 import GenericSection from '@/components/atoms/GenericSection';
-import CardVaga from '@/components/vaga/CardVaga';
 import Router from 'next/router';
 import { useEffect, useState } from 'react';
 import { IVaga } from '@/interfaces/vaga';
 import VagaService from '@/services/VagaService';
+import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 
 type Props = {};
 
@@ -28,10 +28,9 @@ const OportunidadesDestaqueSection = ({}: Props) => {
           <div className="overflow-x-auto flex lg:grid lg:grid-cols-3 snap-x snap-mandatory lg:gap-4 bg-white py-4 rounded">
             {vagas ? (
               vagas?.map((vaga, index) => (
-                <CardVaga
+                <CardDetailVaga
                   key={index}
                   vaga={vaga}
-                  isCandidato={true}
                   isOwner={false}
                   onClick={() => {
                     return Router.push(`/vagas?selecionado=${vaga.id}`);
@@ -41,9 +40,8 @@ const OportunidadesDestaqueSection = ({}: Props) => {
                 />
               ))
             ) : (
-              <CardVaga
+              <CardDetailVaga
                 vaga={null}
-                isCandidato={true}
                 isOwner={false}
                 className="snap-center p-0 cursor-default"
                 skeleton={3}

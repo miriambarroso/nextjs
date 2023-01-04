@@ -8,7 +8,7 @@ import CardFormWrapper from '@/components/atoms/CardFormWrapper';
 import CadastroVagaSobre from '@/components/vaga/cadastro/CadastroVagaSobre';
 import CadastroVagaInformacoes from '@/components/vaga/cadastro/CadastroVagaInformacoes';
 import CadastroVagaSalarioBeneficios from '@/components/vaga/cadastro/CadastroVagaSalarioBeneficios';
-import { ADMIN, EMPREGADOR, SUPERADMIN } from '@/store/auth';
+import { ADMIN, EMPREGADOR, SUPERADMIN, useAuthStore } from '@/store/auth';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import BeneficioService from '@/services/BeneficioService';
 import VagaService from '@/services/VagaService';
@@ -30,6 +30,9 @@ const CadastroVaga = ({}: Props) => {
     'Informações Categóricas',
   ];
   const [beneficios, setBeneficios] = useState([]);
+  const { query } = useRouter();
+
+  const [isEmpregador] = useAuthStore((state) => [state.isEmpregador]);
 
   const {
     register,
@@ -41,11 +44,15 @@ const CadastroVaga = ({}: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const { query } = useRouter();
-
   const onSubmit = async (data) => {
     try {
-      const request = omitBy(data, (v) => !v) as IVagaCreate;
+      let request = {
+        ...data,
+        empresa: data.empresa?.id,
+      };
+
+      request = omitBy(request, (v) => !v) as IVagaCreate;
+
       await VagaService.update(request);
       toastSuccess('Vaga atualizada!');
       Router.back();

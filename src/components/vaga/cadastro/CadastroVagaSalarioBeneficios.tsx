@@ -4,7 +4,7 @@ import ChoiceCheckboxBeneficio from '@/components/atoms/inputs/ChoiceCheckboxBen
 type Props = {
   register: any;
   errors: any;
-  beneficios: any;
+  beneficios?: any;
 };
 
 const CadastroVagaSalarioBeneficios = ({

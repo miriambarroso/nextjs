@@ -1,6 +1,7 @@
 import CRLUDService from '@/services/CRLUDService';
 import { IEmpregador, IEmpregadorCreate } from '@/interfaces/empregador';
 import axiosInstance from '@/utils/axios';
+import { IEmpresa } from '@/interfaces/empresa';
 
 class EmpregadorService extends CRLUDService<
   IEmpregador,
@@ -22,9 +23,9 @@ class EmpregadorService extends CRLUDService<
     return data;
   }
 
-  async getVagas(empregadorId: number) {
+  async getEmpresa(userID: number): Promise<IEmpresa> {
     const { data } = await axiosInstance.get(
-      `${this.baseUrl}/${empregadorId}/vagas`,
+      `${this.baseUrl}/${userID}/empresa`,
     );
     return data;
   }

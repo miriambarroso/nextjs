@@ -10,7 +10,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import { IVaga } from '@/interfaces/vaga';
-import CardVaga from '@/components/vaga/CardVaga';
 import VagaService from '@/services/VagaService';
 import CandidaturaService from '@/services/CandidaturaService';
 import { useAuthStore } from '@/store/auth';
@@ -24,16 +23,6 @@ import {
   RegimeContratualChoices,
 } from '@/utils/choices';
 import { currencyMask } from '@/utils/masks';
-import useScrollTo from '@/hooks/useScrollTo';
-import { createBreakpoint } from 'react-use';
-
-const useBreakpoint = createBreakpoint({
-  '2xl': 1536,
-  xl: 1280,
-  lg: 1024,
-  md: 768,
-  sm: 350,
-});
 
 type QueueProps = {
   termo?: string;
@@ -57,8 +46,8 @@ const Page = () => {
     ],
   );
   const [vagas, setVagas] = useState<IVaga[]>(null);
+  const [countVagas, setCountVagas] = useState(0);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
-  const { scrollRef, triggerScroll } = useScrollTo();
 
   const {
     register,
@@ -81,9 +70,10 @@ const Page = () => {
   const handleSearch = async (query: QueueProps) => {
     try {
       const clearQuery = omitBy(query, (v) => !v);
-      const { results } = await VagaService.getAll(clearQuery);
+      const { results, count } = await VagaService.getAll(clearQuery);
       setSelectedVaga(results.length > 0 ? results[0] : null);
       setVagas(results);
+      setCountVagas(count);
     } catch (error) {
       toastError('Erro ao buscar vagas');
     }
@@ -212,7 +202,13 @@ const Page = () => {
               <div className="label">
                 <span className="label-text">
                   Recomendações para o candidato (
-                  <TextSkeleton>{vagas?.length}</TextSkeleton> vagas)
+                  <TextSkeleton
+                    as={'span'}
+                    className="h-4 w-8 bg-base-200 mr-2"
+                  >
+                    {countVagas}
+                  </TextSkeleton>{' '}
+                  vagas)
                 </span>
               </div>
               <div className="w-full grid grid-cols-3 gap-8 bg-white p-4 rounded">
@@ -220,10 +216,9 @@ const Page = () => {
                   vagas?.length > 0 ? (
                     vagas?.map((vaga, index) => (
                       <>
-                        <CardVaga
+                        <CardDetailVaga
                           key={vaga.id}
                           vaga={vaga}
-                          isCandidato={true}
                           isOwner={false}
                           onClick={() => setSelectedVaga(vaga)}
                           selected={vaga.id === selectedVaga?.id}
@@ -235,11 +230,11 @@ const Page = () => {
                   )
                 ) : (
                   range(3).map((_, index) => (
-                    <CardVaga
+                    <CardDetailVaga
                       key={index}
                       vaga={null}
-                      isCandidato={true}
                       isOwner={false}
+                      skeleton={1}
                     />
                   ))
                 )}
@@ -256,18 +251,20 @@ const Page = () => {
               </span>
             </div>
             <div className="w-full ">
-              <div className="overflow-x-auto flex lg:grid lg:grid-cols-1 p-4 rounded bg-white snap-x snap-mandatory">
+              <div className="flex flex-col lg:grid lg:grid-cols-1 p-0 lg:p-4 rounded lg:bg-white gap-4">
                 {vagas ? (
                   vagas?.length > 0 ? (
-                    vagas?.map((vaga, index) => (
-                      <CardVaga
+                    vagas?.map((vaga) => (
+                      <CardDetailVaga
                         key={vaga.id}
                         vaga={vaga}
-                        isCandidato={true}
                         isOwner={false}
-                        onClick={() => setSelectedVaga(vaga)}
+                        onAction={() => {
+                          setSelectedVaga(vaga);
+                        }}
+                        onClick={() => handleCandidate(selectedVaga.id)}
                         selected={vaga.id === selectedVaga?.id}
-                        className="snap-center"
+                        isExpandable={true}
                       />
                     ))
                   ) : (
@@ -276,10 +273,8 @@ const Page = () => {
                     </div>
                   )
                 ) : (
-                  <CardVaga
+                  <CardDetailVaga
                     vaga={null}
-                    isCandidato={true}
-                    isOwner={false}
                     skeleton={3}
                     className="snap-center"
                   />
@@ -287,7 +282,7 @@ const Page = () => {
               </div>
             </div>
           </div>
-          <div className="lg:w-8/12 sticky" ref={scrollRef}>
+          <div className="lg:w-8/12 hidden lg:block">
             <div className="sticky top-0">
               <div className="label">
                 <span className="label-text">Detalhes da vaga selecionada</span>
@@ -296,8 +291,7 @@ const Page = () => {
                 {selectedVaga ? (
                   <CardDetailVaga
                     vaga={selectedVaga}
-                    isCandidato={isCandidato()}
-                    action={() => handleCandidate(selectedVaga.id)}
+                    onClick={() => handleCandidate(selectedVaga.id)}
                   />
                 ) : (
                   <div className="card rounded w-full bg-white shadow h-48">

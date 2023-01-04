@@ -48,6 +48,7 @@ const Index = ({}: Props) => {
     formState: { errors },
     trigger,
     watch,
+    getValues,
   } = useForm({
     resolver: yupResolver(schema),
   });

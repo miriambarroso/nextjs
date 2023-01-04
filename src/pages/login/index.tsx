@@ -18,6 +18,7 @@ const Login = ({}: Props) => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -28,7 +29,8 @@ const Login = ({}: Props) => {
     const { query } = router;
 
     try {
-      await login(cpf, password);
+      console.log(getValues('keep_logged'));
+      await login(cpf, password, getValues('keep_logged'));
 
       toastSuccess('Login realizado!');
 

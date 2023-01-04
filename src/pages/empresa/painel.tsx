@@ -1,5 +1,4 @@
 import { ADMIN, EMPREGADOR, SUPERADMIN, useAuthStore } from '@/store/auth';
-import CardVaga from '@/components/vaga/CardVaga';
 import { Fragment, useEffect, useState } from 'react';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import VagaService from '@/services/VagaService';
@@ -7,31 +6,30 @@ import { IVaga } from '@/interfaces/vaga';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import { range } from 'lodash';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
-import EmpregadorService from '@/services/EmpregadorService';
 
 type Props = {};
 
 const Page = ({}: Props) => {
   const [vagas, setVagas] = useState<IVaga[]>(null);
-  const [user] = useAuthStore((state) => [state.user]);
+  const [user, empresa] = useAuthStore((state) => [state.user, state.empresa]);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
+  const [countVagas, setCountVagas] = useState(0);
 
   const fetchVagas = async () => {
     try {
-      const results = await EmpregadorService.getVagas(user?.id);
+      const { results, count } = await VagaService.getVagasEmpresa(empresa?.id);
       const firstVaga = results.length > 0 ? results[0] : null;
       setSelectedVaga(firstVaga);
       setVagas(results);
+      setCountVagas(count);
     } catch (error) {
       toastError('Erro ao buscar vagas');
     }
   };
 
   useEffect(() => {
-    if (user) {
-      fetchVagas();
-    }
-  }, [user]);
+    fetchVagas();
+  }, []);
 
   const deleteItem = async (id: number) => {
     try {
@@ -45,64 +43,67 @@ const Page = ({}: Props) => {
 
   return (
     <>
-      <div className="flex gap-8">
-        <div className="w-4/12">
+      <div className="flex flex-col lg:flex-row gap-8 mb-8 mt-4">
+        <div className="lg:w-4/12">
           <div className="label">
             <span className="label-text inline-flex items-center">
               Vagas cadastradas (
               <TextSkeleton as={'span'} className="h-4 w-8 bg-base-200 mr-2">
-                {vagas?.length}
+                {countVagas}
               </TextSkeleton>{' '}
               vagas)
             </span>
           </div>
-          <div className="w-full grid grid-cols-1 bg-white p-4 rounded">
-            {vagas
-              ? vagas?.map((vaga, index) => (
-                  <Fragment key={index}>
-                    <CardVaga
-                      vaga={vaga}
-                      isCandidato={false}
-                      isOwner={true}
-                      onClick={() => setSelectedVaga(vaga)}
-                      selected={vaga.id === selectedVaga?.id}
-                    />
-                    {index !== vagas?.length - 1 && (
-                      <div className="divider m-1"></div>
-                    )}
-                  </Fragment>
-                ))
-              : range(3).map((index) => (
-                  <>
-                    <CardVaga
-                      key={index}
-                      vaga={null}
-                      isCandidato={false}
-                      isOwner={true}
-                      selected={false}
-                    />
-                    {index !== vagas?.length - 1 && (
-                      <div className="divider m-1"></div>
-                    )}
-                  </>
-                ))}
+          <div className="w-full">
+            <div className="overflow-x-auto flex lg:grid lg:grid-cols-1 snap-x snap-mandatory bg-white p-4 rounded">
+              {vagas
+                ? vagas?.map((vaga, index) => (
+                    <Fragment key={index}>
+                      <CardDetailVaga
+                        vaga={vaga}
+                        isOwner={true}
+                        onAction={() => setSelectedVaga(vaga)}
+                        selected={vaga.id === selectedVaga?.id}
+                        isFeature={true}
+                        className="snap-center"
+                      />
+                      {index !== vagas?.length - 1 && (
+                        <div className="divider m-1"></div>
+                      )}
+                    </Fragment>
+                  ))
+                : range(3).map((index) => (
+                    <>
+                      <CardDetailVaga
+                        key={index}
+                        vaga={null}
+                        isOwner={true}
+                        selected={false}
+                        skeleton={1}
+                        className="snap-center"
+                      />
+                      {index !== vagas?.length - 1 && (
+                        <div className="divider m-1"></div>
+                      )}
+                    </>
+                  ))}
+            </div>
           </div>
         </div>
-        <div className="w-8/12 sticky">
+        <div className="lg:w-8/12 sticky">
           <div className="sticky top-0">
             <div className="label">
               <span className="label-text">Detalhes da vaga selecionada</span>
             </div>
-            <div className="w-full grid grid-cols-1 gap-4  ">
+            <div className="w-full grid grid-cols-1 bg-white p-4">
               {selectedVaga ? (
                 <CardDetailVaga
                   vaga={selectedVaga}
-                  isCandidato={false}
                   isOwner={true}
                   onDelete={() => deleteItem(selectedVaga.id)}
                 />
               ) : (
-                <div className="card rounded w-full bg-white shadow h-48">
+                <div className="card rounded w-full bg-white h-48">
                   <div className="card-body items-center justify-center">
                     <h2 className="text-center font-noto-sans">
                       Selecione uma vaga para detalhar

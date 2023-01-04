@@ -13,6 +13,7 @@ export interface IEmpregadorCreate
       { email: 'empresa_email'; telefone: 'empresa_telefone' }
     > {
   password: string;
+  empresa?: number;
 }
 
 export interface IEmpregadorPerfil extends IEmpregador {

@@ -18,5 +18,4 @@ export interface IUser {
   foto: string;
   curriculo: string;
   habilitado: boolean;
-  empresa?: number;
 }

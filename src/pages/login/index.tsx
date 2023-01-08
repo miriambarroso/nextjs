@@ -29,7 +29,6 @@ const Login = ({}: Props) => {
     const { query } = router;
 
     try {
-      console.log(getValues('keep_logged'));
       await login(cpf, password, getValues('keep_logged'));
 
       toastSuccess('Login realizado!');

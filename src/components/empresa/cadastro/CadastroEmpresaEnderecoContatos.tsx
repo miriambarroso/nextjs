@@ -48,7 +48,7 @@ const CadastroEmpresaEnderecoContatos = ({
         });
       }
     },
-    1000,
+    300,
     [cep],
   );
 

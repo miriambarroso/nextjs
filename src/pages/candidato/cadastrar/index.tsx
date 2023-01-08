@@ -14,6 +14,7 @@ import { toastError, toastSuccess } from '@/utils/toasts';
 import CandidatoService from '@/services/CandidatoService';
 import { format } from 'date-fns';
 import Router, { useRouter } from 'next/router';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 type Props = {};
 
@@ -41,6 +42,7 @@ const Index = ({}: Props) => {
   const startForm = useRef(null);
   const steps = ['Dados Pessoais', 'Dados de Contato', 'Candidatura'];
   const router = useRouter();
+  const recaptchaRef = useRef(null);
 
   const {
     register,
@@ -65,11 +67,14 @@ const Index = ({}: Props) => {
     }
   };
   const onSubmit = async (data) => {
+    const recaptchaValue = await recaptchaRef.current.executeAsync();
+
     try {
       const requestData = {
         ...data,
         data_nascimento: format(data.data_nascimento, 'yyyy-MM-dd'),
         salario: parseFloat(data.salario),
+        recaptcha: recaptchaValue,
       };
 
       await CandidatoService.create(requestData);
@@ -78,6 +83,8 @@ const Index = ({}: Props) => {
     } catch (error) {
       toastError('Erro ao realizar cadastro!');
     }
+
+    recaptchaRef.current.reset();
   };
 
   const changeStep = async (value) => {
@@ -117,7 +124,10 @@ const Index = ({}: Props) => {
   };
 
   const subTitle = (
-    <p ref={startForm} className={classNames(step == 0 ? 'ml-auto' : 'hidden')}>
+    <p
+      ref={startForm}
+      className={classNames(step == 0 ? 'lg:ml-auto' : 'hidden')}
+    >
       Cadastre-se como{' '}
       <Link
         href={'/empresa/cadastrar'}
@@ -147,41 +157,50 @@ const Index = ({}: Props) => {
           <CadastroCandidatoCandidatura register={register} errors={errors} />
         )}
 
-        <div className="flex space-x-4 justify-end">
-          <button
-            type="button"
-            className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
-            onClick={Router.back}
-          >
-            cancelar
-          </button>
-          <button
-            onClick={() => changeStep(step - 1)}
-            type="button"
-            className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
-          >
-            voltar
-          </button>
+        <div className="flex flex-wrap justify-between mt-4">
+          <ReCAPTCHA
+            badge="inline"
+            size="invisible"
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}
+            ref={recaptchaRef}
+          />
 
-          <button
-            onClick={() => changeStep(step + 1)}
-            type="button"
-            className={classNames(
-              step == steps.length - 1 && 'hidden',
-              'btn btn-primary mt-4 text-white',
-            )}
-          >
-            continuar
-          </button>
-          <button
-            type="submit"
-            className={classNames(
-              step < steps.length - 1 && 'hidden',
-              'btn btn-primary mt-4 text-white',
-            )}
-          >
-            cadastrar
-          </button>
+          <div className="space-x-4 ml-auto">
+            <button
+              type="button"
+              className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
+              onClick={Router.back}
+            >
+              cancelar
+            </button>
+            <button
+              onClick={() => changeStep(step - 1)}
+              type="button"
+              className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
+            >
+              voltar
+            </button>
+
+            <button
+              onClick={() => changeStep(step + 1)}
+              type="button"
+              className={classNames(
+                step == steps.length - 1 && 'hidden',
+                'btn btn-primary mt-4 text-white',
+              )}
+            >
+              continuar
+            </button>
+            <button
+              type="submit"
+              className={classNames(
+                step < steps.length - 1 && 'hidden',
+                'btn btn-primary mt-4 text-white',
+              )}
+            >
+              cadastrar
+            </button>
+          </div>
         </div>
       </form>
     </CardFormWrapper>

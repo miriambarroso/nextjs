@@ -8,7 +8,7 @@ import CardFormWrapper from '@/components/atoms/CardFormWrapper';
 import CadastroVagaSobre from '@/components/vaga/cadastro/CadastroVagaSobre';
 import CadastroVagaInformacoes from '@/components/vaga/cadastro/CadastroVagaInformacoes';
 import CadastroVagaSalarioBeneficios from '@/components/vaga/cadastro/CadastroVagaSalarioBeneficios';
-import { ADMIN, EMPREGADOR, SUPERADMIN, useAuthStore } from '@/store/auth';
+import { ADMIN, EMPREGADOR, SUPERADMIN } from '@/store/auth';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import BeneficioService from '@/services/BeneficioService';
 import VagaService from '@/services/VagaService';
@@ -16,10 +16,9 @@ import { omitBy } from 'lodash';
 import { IVagaCreate } from '@/interfaces/vaga';
 import Router, { useRouter } from 'next/router';
 import { currencyMask } from '@/utils/masks';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 type Props = {};
-
-// TODO: Adicionar validação de campos
 
 const CadastroVaga = ({}: Props) => {
   const [step, setStep] = useState(0);
@@ -31,8 +30,7 @@ const CadastroVaga = ({}: Props) => {
   ];
   const [beneficios, setBeneficios] = useState([]);
   const { query } = useRouter();
-
-  const [isEmpregador] = useAuthStore((state) => [state.isEmpregador]);
+  const recaptchaRef = useRef(null);
 
   const {
     register,
@@ -45,10 +43,13 @@ const CadastroVaga = ({}: Props) => {
   });
 
   const onSubmit = async (data) => {
+    const recaptchaValue = await recaptchaRef.current.executeAsync();
+
     try {
       let request = {
         ...data,
         empresa: data.empresa?.id,
+        recaptcha: recaptchaValue,
       };
 
       request = omitBy(request, (v) => !v) as IVagaCreate;
@@ -139,41 +140,50 @@ const CadastroVaga = ({}: Props) => {
           <CadastroVagaInformacoes register={register} errors={errors} />
         )}
 
-        <div className="flex space-x-4 justify-end">
-          <button
-            type="button"
-            className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
-            onClick={Router.back}
-          >
-            cancelar
-          </button>
-          <button
-            onClick={() => changeStep(step - 1)}
-            type="button"
-            className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
-          >
-            voltar
-          </button>
+        <div className="flex flex-wrap justify-between mt-4">
+          <ReCAPTCHA
+            badge="inline"
+            size="invisible"
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}
+            ref={recaptchaRef}
+          />
 
-          <button
-            onClick={() => changeStep(step + 1)}
-            type="button"
-            className={classNames(
-              step == steps.length - 1 && 'hidden',
-              'btn btn-primary mt-4 text-white',
-            )}
-          >
-            continuar
-          </button>
-          <button
-            type="submit"
-            className={classNames(
-              step < steps.length - 1 && 'hidden',
-              'btn btn-primary mt-4 text-white',
-            )}
-          >
-            Salvar
-          </button>
+          <div className="space-x-4 ml-auto">
+            <button
+              type="button"
+              className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
+              onClick={Router.back}
+            >
+              cancelar
+            </button>
+            <button
+              onClick={() => changeStep(step - 1)}
+              type="button"
+              className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
+            >
+              voltar
+            </button>
+
+            <button
+              onClick={() => changeStep(step + 1)}
+              type="button"
+              className={classNames(
+                step == steps.length - 1 && 'hidden',
+                'btn btn-primary mt-4 text-white',
+              )}
+            >
+              continuar
+            </button>
+            <button
+              type="submit"
+              className={classNames(
+                step < steps.length - 1 && 'hidden',
+                'btn btn-primary mt-4 text-white',
+              )}
+            >
+              cadastrar
+            </button>
+          </div>
         </div>
       </form>
     </CardFormWrapper>

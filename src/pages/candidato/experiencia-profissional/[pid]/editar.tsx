@@ -57,7 +57,11 @@ const Index = ({}: Props) => {
   return (
     <BasicForm
       title={'Experiência Profissional'}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(recaptcha) => {
+        handleSubmit((data) => {
+          onSubmit({ ...data, recaptcha });
+        })();
+      }}
       component={CadastroExperienciaProfissional}
       watch={watch}
       register={register}

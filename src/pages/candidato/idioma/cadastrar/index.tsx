@@ -31,7 +31,11 @@ const Index = ({}: Props) => {
   return (
     <BasicForm
       title={'Idioma'}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(recaptcha) => {
+        handleSubmit((data) => {
+          onSubmit({ ...data, recaptcha });
+        })();
+      }}
       component={CadastroIdioma}
       register={register}
       errors={errors}

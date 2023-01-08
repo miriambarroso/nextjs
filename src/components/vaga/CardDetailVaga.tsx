@@ -29,10 +29,12 @@ type Props = {
   onAction?: () => void;
   onClick?: () => void;
   onDelete?: (id: number) => void;
+  onExpanded?: () => void;
   className?: string;
   skeleton?: number;
   isExpandable?: boolean;
   isExpanded?: boolean;
+  canCandidate?: boolean;
 };
 
 const CardDetailVaga = ({
@@ -41,12 +43,14 @@ const CardDetailVaga = ({
   onClick,
   onDelete,
   onAction,
+  onExpanded,
   isOwner,
   isFeature,
   className,
   isExpandable,
   isExpanded,
   skeleton = null,
+  canCandidate = false,
 }: Props) => {
   const topRef = useRef<HTMLDivElement>(null);
   const [itemId, setItemId] = useState<number>(null);
@@ -97,11 +101,16 @@ const CardDetailVaga = ({
   const handleAction = () => {
     if (isExpandable && isBreakpoint('lg')) {
       setExpanded(!expanded);
+      onExpanded && onExpanded();
       topRef.current.scrollIntoView({ behavior: 'smooth' });
     } else {
       onAction && onAction();
     }
   };
+
+  useEffect(() => {
+    setExpanded(isExpanded);
+  }, [isExpanded]);
 
   // useEffect(() => {
   //   setExpanded(false);
@@ -115,7 +124,7 @@ const CardDetailVaga = ({
         key={index}
         className={classNames(
           'card rounded w-full bg-white',
-          onAction && 'cursor-pointer',
+          (onAction || isFeature) && 'cursor-pointer',
           selected ? 'lg:bg-gray-100' : 'bg-white',
           className,
         )}
@@ -165,8 +174,10 @@ const CardDetailVaga = ({
           <div className="lg:flex flex-wrap items-center justify-between space-y-4 lg:space-y-0 gap-4">
             <BadgeGroup badges={badges} />
 
-            {isGuest() ||
-              (isCandidato() && (
+            {(isGuest() || isCandidato()) &&
+              canCandidate &&
+              !isFeature &&
+              !skeleton && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -179,7 +190,7 @@ const CardDetailVaga = ({
                 >
                   {isCandidatado ? 'Cancelar candidatura' : 'Candidatar-se'}
                 </button>
-              ))}
+              )}
           </div>
 
           {skeleton || (isExpandable && !expanded) || isFeature ? (
@@ -259,19 +270,21 @@ const CardDetailVaga = ({
                 </p>
               </Link>
             )}
-            {isFeature && !isOwner && (
-              <Link
-                href={`/vaga/${vaga?.id}`}
+            {canCandidate && isFeature && !isOwner && isCandidato() && (
+              <button
                 className={classNames(
-                  'ml-auto btn btn-sm',
+                  'mx-auto lg:ml-auto btn btn-sm btn-wide',
                   isCandidatado && 'btn-error',
                 )}
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  isGuest() ? handleGuestCandidate() : onClick();
+                }}
               >
                 {isCandidatado ? 'Cancelar candidatura' : 'Candidatar-se'}
-              </Link>
+              </button>
             )}
-            {vaga && isOwner && (
+            {isOwner && (
               <Link
                 href={`/empresa/vaga/${vaga?.id}`}
                 className="link link-hover link-neutral text-sm ml-auto"

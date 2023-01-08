@@ -51,7 +51,11 @@ const Edit = ({}: Props) => {
     <>
       <BasicForm
         title={'Objetivo Profissional'}
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={(recaptcha) => {
+          handleSubmit((data) => {
+            onSubmit({ ...data, recaptcha });
+          })();
+        }}
         component={CadastroObjetivoProfissional}
         register={register}
         errors={errors}

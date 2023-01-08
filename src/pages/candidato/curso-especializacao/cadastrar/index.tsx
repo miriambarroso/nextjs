@@ -37,7 +37,11 @@ const Index = ({}: Props) => {
   return (
     <BasicForm
       title={'Curso e Especialização'}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(recaptcha) => {
+        handleSubmit((data) => {
+          onSubmit({ ...data, recaptcha });
+        })();
+      }}
       component={CadastroCursoEspecializacao}
       register={register}
       errors={errors}

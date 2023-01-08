@@ -59,9 +59,9 @@ const CadastroEmpresaDadosEmpresa = ({ register, errors, editMode }: Props) => {
         name="descricao"
         register={register}
         error={errors.descricao?.message}
-        options={{
-          required: true,
-        }}
+        // options={{
+        //   required: true,
+        // }}
         placeholder={'Descreva as atividade exercidas pela empresa'}
       />
     </>

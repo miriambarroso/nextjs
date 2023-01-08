@@ -1,5 +1,5 @@
 import { ADMIN, EMPREGADOR, SUPERADMIN, useAuthStore } from '@/store/auth';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import VagaService from '@/services/VagaService';
 import { IVaga } from '@/interfaces/vaga';
@@ -14,6 +14,7 @@ const Page = ({}: Props) => {
   const [user, empresa] = useAuthStore((state) => [state.user, state.empresa]);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
   const [countVagas, setCountVagas] = useState(0);
+  const scrollDetail = useRef<HTMLDivElement>(null);
 
   const fetchVagas = async () => {
     try {
@@ -28,8 +29,14 @@ const Page = ({}: Props) => {
   };
 
   useEffect(() => {
-    fetchVagas();
-  }, []);
+    if (empresa) {
+      fetchVagas();
+    }
+  }, [empresa]);
+
+  useEffect(() => {
+    scrollDetail.current?.scrollTo(0, 0);
+  }, [selectedVaga]);
 
   const deleteItem = async (id: number) => {
     try {
@@ -66,6 +73,7 @@ const Page = ({}: Props) => {
                         selected={vaga.id === selectedVaga?.id}
                         isFeature={true}
                         className="snap-center"
+                        canCandidate={true}
                       />
                       {index !== vagas?.length - 1 && (
                         <div className="divider m-1"></div>
@@ -90,28 +98,29 @@ const Page = ({}: Props) => {
             </div>
           </div>
         </div>
-        <div className="lg:w-8/12 sticky">
-          <div className="sticky top-0">
-            <div className="label">
-              <span className="label-text">Detalhes da vaga selecionada</span>
-            </div>
-            <div className="w-full grid grid-cols-1 bg-white p-4">
-              {selectedVaga ? (
-                <CardDetailVaga
-                  vaga={selectedVaga}
-                  isOwner={true}
-                  onDelete={() => deleteItem(selectedVaga.id)}
-                />
-              ) : (
-                <div className="card rounded w-full bg-white h-48">
-                  <div className="card-body items-center justify-center">
-                    <h2 className="text-center font-noto-sans">
-                      Selecione uma vaga para detalhar
-                    </h2>
-                  </div>
+        <div className="lg:w-8/12">
+          <div className="label">
+            <span className="label-text">Detalhes da vaga selecionada</span>
+          </div>
+          <div
+            className="sticky top-0 max-h-screen overflow-y-auto flex w-full bg-white rounded"
+            ref={scrollDetail}
+          >
+            {selectedVaga ? (
+              <CardDetailVaga
+                vaga={selectedVaga}
+                isOwner={true}
+                onDelete={() => deleteItem(selectedVaga.id)}
+              />
+            ) : (
+              <div className="card rounded w-full bg-white h-48">
+                <div className="card-body items-center justify-center">
+                  <h2 className="text-center font-noto-sans">
+                    Selecione uma vaga para detalhar
+                  </h2>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

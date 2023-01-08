@@ -16,6 +16,7 @@ import { omitBy } from 'lodash';
 import { IEmpregadorCreate } from '@/interfaces/empregador';
 import Router, { useRouter } from 'next/router';
 import { formatDateToAPI } from '@/utils/date';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 type Props = {};
 
@@ -24,12 +25,14 @@ const CadastroEmpresa = ({}: Props) => {
   const startForm = useRef(null);
   const login = useAuthStore((state) => state.login);
   const steps = ['Dados Pessoais', 'Dados da Empresa', 'Endereço e Contatos'];
+  const recaptchaRef = useRef(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
     trigger,
   } = useForm({
     resolver: yupResolver(schema),
@@ -49,11 +52,14 @@ const CadastroEmpresa = ({}: Props) => {
     }
   };
   const onSubmit = async (data) => {
+    const recaptchaValue = await recaptchaRef.current.executeAsync();
+
     try {
       const requestData = omitBy(data, (v) => !v) as IEmpregadorCreate;
       requestData['data_nascimento'] = formatDateToAPI(
         requestData['data_nascimento'],
       );
+      requestData['recaptcha'] = recaptchaValue;
       await EmpregadorService.create(requestData);
       toastSuccess('Cadastro realizado!');
       await loginAction(data);
@@ -66,6 +72,8 @@ const CadastroEmpresa = ({}: Props) => {
       setStep(0);
       toastError('Erro ao salvar usuário ou empresa, verifique os campos!');
     }
+
+    recaptchaRef.current.reset();
   };
 
   const changeStep = async (value) => {
@@ -119,7 +127,10 @@ const CadastroEmpresa = ({}: Props) => {
   };
 
   const subTitle = (
-    <p ref={startForm} className={classNames(step == 0 ? 'ml-auto' : 'hidden')}>
+    <p
+      ref={startForm}
+      className={classNames(step == 0 ? 'lg:ml-auto' : 'hidden')}
+    >
       Cadastre-se como{' '}
       <Link
         href={'/candidato/cadastrar'}
@@ -145,44 +156,54 @@ const CadastroEmpresa = ({}: Props) => {
           <CadastroEmpresaEnderecoContatos
             register={register}
             errors={errors}
+            setValue={setValue}
           />
         )}
 
-        <div className="flex space-x-4 justify-end">
-          <button
-            type="button"
-            className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
-            onClick={Router.back}
-          >
-            cancelar
-          </button>
-          <button
-            onClick={() => changeStep(step - 1)}
-            type="button"
-            className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
-          >
-            voltar
-          </button>
+        <div className="flex flex-wrap justify-between mt-4">
+          <ReCAPTCHA
+            badge="inline"
+            size="invisible"
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}
+            ref={recaptchaRef}
+          />
 
-          <button
-            onClick={() => changeStep(step + 1)}
-            type="button"
-            className={classNames(
-              step == steps.length - 1 && 'hidden',
-              'btn btn-primary mt-4 text-white',
-            )}
-          >
-            continuar
-          </button>
-          <button
-            type="submit"
-            className={classNames(
-              step < steps.length - 1 && 'hidden',
-              'btn btn-primary mt-4 text-white',
-            )}
-          >
-            cadastrar
-          </button>
+          <div className="space-x-4 ml-auto">
+            <button
+              type="button"
+              className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
+              onClick={Router.back}
+            >
+              cancelar
+            </button>
+            <button
+              onClick={() => changeStep(step - 1)}
+              type="button"
+              className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
+            >
+              voltar
+            </button>
+
+            <button
+              onClick={() => changeStep(step + 1)}
+              type="button"
+              className={classNames(
+                step == steps.length - 1 && 'hidden',
+                'btn btn-primary mt-4 text-white',
+              )}
+            >
+              continuar
+            </button>
+            <button
+              type="submit"
+              className={classNames(
+                step < steps.length - 1 && 'hidden',
+                'btn btn-primary mt-4 text-white',
+              )}
+            >
+              cadastrar
+            </button>
+          </div>
         </div>
       </form>
     </CardFormWrapper>

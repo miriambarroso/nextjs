@@ -102,7 +102,7 @@ const useAuthStore = create<IAuthStore>((set, get) => ({
 
       if (get().user.nivel_usuario === EMPREGADOR) {
         data = await EmpregadorService.get(get().user.id);
-        get().fetchEmpresa(get().user.id);
+        if (!get().empresa) get().fetchEmpresa(get().user.id);
       }
 
       get().update(data, get().token, get().expires, get().storage.toString());

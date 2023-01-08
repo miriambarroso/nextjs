@@ -55,7 +55,11 @@ const Page = ({}: Props) => {
   return (
     <BasicForm
       title={'Dados Cadastrais'}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(recaptcha) => {
+        handleSubmit((data) => {
+          onSubmit({ ...data, recaptcha });
+        })();
+      }}
       component={EditEmpregadorDadosCadastrais}
       register={register}
       errors={errors}

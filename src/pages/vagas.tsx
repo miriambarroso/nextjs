@@ -6,7 +6,7 @@ import SelectModeloTrabalho from '@/components/atoms/inputs/SelectModeloTrabalho
 import SelectRegimeContratual from '@/components/atoms/inputs/SelectRegimeContratual';
 import SelectJornadaTrabalho from '@/components/atoms/inputs/SelectJornadaTrabalho';
 import InputNomeFantasia from '@/components/atoms/inputs/InputNomeFantasia';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import { IVaga } from '@/interfaces/vaga';
@@ -40,14 +40,17 @@ const Page = () => {
       state.user,
       state.candidaturas,
       state.setCandidaturas,
-      state.isAuthenticated,
       state.isCandidato,
-      state.isEmpregador,
     ],
   );
   const [vagas, setVagas] = useState<IVaga[]>(null);
   const [countVagas, setCountVagas] = useState(0);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
+  const scrollDetail = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    scrollDetail.current.scrollTo(0, 0);
+  }, [selectedVaga]);
 
   const {
     register,
@@ -211,33 +214,41 @@ const Page = () => {
                   vagas)
                 </span>
               </div>
-              <div className="w-full grid grid-cols-3 gap-8 bg-white p-4 rounded">
-                {vagas ? (
-                  vagas?.length > 0 ? (
-                    vagas?.map((vaga, index) => (
-                      <>
-                        <CardDetailVaga
-                          key={vaga.id}
-                          vaga={vaga}
-                          isOwner={false}
-                          onClick={() => setSelectedVaga(vaga)}
-                          selected={vaga.id === selectedVaga?.id}
-                        />
-                      </>
-                    ))
+              <div className="w-full">
+                <div className="overflow-x-auto flex snap-x snap-mandatory bg-white p-0 lg:p-4 rounded">
+                  {vagas ? (
+                    vagas?.length > 0 ? (
+                      vagas?.map((vaga, index) => (
+                        <>
+                          <CardDetailVaga
+                            key={vaga.id}
+                            vaga={vaga}
+                            isOwner={false}
+                            onAction={() => {
+                              setSelectedVaga(vaga);
+                            }}
+                            onClick={() => handleCandidate(selectedVaga.id)}
+                            selected={vaga.id === selectedVaga?.id}
+                            className="snap-center flex-none lg:w-4/12"
+                            canCandidate={true}
+                            isFeature={true}
+                          />
+                        </>
+                      ))
+                    ) : (
+                      <div>Não há vagas recomendadas para você</div>
+                    )
                   ) : (
-                    <div>Não há vagas recomendadas para você</div>
-                  )
-                ) : (
-                  range(3).map((_, index) => (
-                    <CardDetailVaga
-                      key={index}
-                      vaga={null}
-                      isOwner={false}
-                      skeleton={1}
-                    />
-                  ))
-                )}
+                    range(3).map((_, index) => (
+                      <CardDetailVaga
+                        key={index}
+                        vaga={null}
+                        isOwner={false}
+                        skeleton={1}
+                      />
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -265,6 +276,8 @@ const Page = () => {
                         onClick={() => handleCandidate(selectedVaga.id)}
                         selected={vaga.id === selectedVaga?.id}
                         isExpandable={true}
+                        isFeature={false}
+                        canCandidate={true}
                       />
                     ))
                   ) : (
@@ -283,26 +296,27 @@ const Page = () => {
             </div>
           </div>
           <div className="lg:w-8/12 hidden lg:block">
-            <div className="sticky top-0">
-              <div className="label">
-                <span className="label-text">Detalhes da vaga selecionada</span>
-              </div>
-              <div className="w-full grid grid-cols-1 gap-4  ">
-                {selectedVaga ? (
-                  <CardDetailVaga
-                    vaga={selectedVaga}
-                    onClick={() => handleCandidate(selectedVaga.id)}
-                  />
-                ) : (
-                  <div className="card rounded w-full bg-white shadow h-48">
-                    <div className="card-body items-center justify-center">
-                      <h2 className="text-center font-noto-sans">
-                        Selecione uma vaga para detalhar
-                      </h2>
-                    </div>
+            <div className="label">
+              <span className="label-text">Detalhes da vaga selecionada</span>
+            </div>
+            <div
+              className="sticky top-0 lg:max-h-screen lg:overflow-y-auto flex w-full bg-white rounded"
+              ref={scrollDetail}
+            >
+              {selectedVaga ? (
+                <CardDetailVaga
+                  vaga={selectedVaga}
+                  onClick={() => handleCandidate(selectedVaga.id)}
+                />
+              ) : (
+                <div className="card rounded w-full bg-white shadow h-48">
+                  <div className="card-body items-center justify-center">
+                    <h2 className="text-center font-noto-sans">
+                      Selecione uma vaga para detalhar
+                    </h2>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

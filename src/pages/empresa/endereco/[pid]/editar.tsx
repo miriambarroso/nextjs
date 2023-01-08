@@ -18,6 +18,7 @@ const Page = ({}: Props) => {
     formState: { errors },
     handleSubmit,
     watch,
+    setValue,
     reset,
   } = useForm({
     resolver: yupResolver(schema),
@@ -53,11 +54,16 @@ const Page = ({}: Props) => {
   return (
     <BasicForm
       title={'Endereço'}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(recaptcha) => {
+        handleSubmit((data) => {
+          onSubmit({ ...data, recaptcha });
+        })();
+      }}
       component={EditarEnderecoDadosCadastrais}
       register={register}
       errors={errors}
       watch={watch}
+      setValue={setValue}
     >
       <button type="button" className="btn btn-base mt-4" onClick={Router.back}>
         voltar

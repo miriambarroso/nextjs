@@ -8,14 +8,50 @@ import InputComplemento from '@/components/atoms/inputs/endereco/InputComplement
 import InputBairro from '@/components/atoms/inputs/endereco/InputBairro';
 import InputCidade from '@/components/atoms/inputs/endereco/InputCidade';
 import DataListEstados from '@/components/atoms/inputs/endereco/DataListEstados';
+import { cepMask } from '@/utils/masks';
+import useEffectTimeout from '@/hooks/useEffectTimeout';
+import { toastError } from '@/utils/toasts';
+import { useState } from 'react';
 
-type Props = { register: any; errors: any; editMode?: boolean };
+type Props = { register: any; errors: any; editMode?: boolean; setValue: any };
 
 const CadastroEmpresaEnderecoContatos = ({
   register,
   errors,
   editMode,
+  setValue,
 }: Props) => {
+  const [cep, setCep] = useState('');
+
+  const lookUpCEP = async (cep) => {
+    const url = `https://viacep.com.br/ws/${cep}/json/`;
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.erro) {
+      toastError('CEP não encontrado!');
+      return;
+    }
+    return data;
+  };
+
+  useEffectTimeout(
+    () => {
+      if (cep.length === 9) {
+        lookUpCEP(cep).then((data) => {
+          if (data) {
+            setValue('logradouro', data.logradouro);
+            setValue('bairro', data.bairro);
+            setValue('complemento', data.complemento);
+            setValue('cidade', data.localidade);
+            setValue('estado', data.uf);
+          }
+        });
+      }
+    },
+    1000,
+    [cep],
+  );
+
   return (
     <>
       {!editMode && (
@@ -38,7 +74,17 @@ const CadastroEmpresaEnderecoContatos = ({
         </>
       )}
 
-      <InputCEP register={register} error={errors.cep?.message} />
+      <InputCEP
+        register={register}
+        error={errors.cep?.message}
+        options={{
+          required: true,
+          onChange: (e) => {
+            setCep(e.target.value);
+            return cepMask.onChange(e);
+          },
+        }}
+      />
       <InputLogradouro register={register} error={errors.logradouro?.message} />
       <InputNumero register={register} error={errors.numero?.message} />
       <InputComplemento

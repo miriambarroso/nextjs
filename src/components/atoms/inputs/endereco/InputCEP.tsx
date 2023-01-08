@@ -7,6 +7,7 @@ type Props = {
   required?: boolean;
   label?: string;
   name?: string;
+  options?: any;
 };
 
 const InputCEP = ({
@@ -15,6 +16,7 @@ const InputCEP = ({
   required = false,
   label = 'CEP',
   name = 'cep',
+  options,
 }: Props) => {
   return (
     <>
@@ -27,6 +29,7 @@ const InputCEP = ({
         options={{
           onChange: cepMask.onChange,
           required: required,
+          ...options,
         }}
       />
     </>

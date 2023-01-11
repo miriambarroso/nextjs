@@ -38,20 +38,20 @@ type Props = {
 };
 
 const CardDetailVaga = ({
-  vaga,
-  selected,
-  onClick,
-  onDelete,
-  onAction,
-  onExpanded,
-  isOwner,
-  isFeature,
-  className,
-  isExpandable,
-  isExpanded,
-  skeleton = null,
-  canCandidate = false,
-}: Props) => {
+                          vaga,
+                          selected,
+                          onClick,
+                          onDelete,
+                          onAction,
+                          onExpanded,
+                          isOwner,
+                          isFeature,
+                          className,
+                          isExpandable,
+                          isExpanded,
+                          skeleton = null,
+                          canCandidate = false,
+                        }: Props) => {
   const topRef = useRef<HTMLDivElement>(null);
   const [itemId, setItemId] = useState<number>(null);
   const { open, toggle } = useModal();
@@ -89,7 +89,7 @@ const CardDetailVaga = ({
     {
       kind: 'base',
       icon: <BiGroup />,
-      label: vaga?.quantidade_vagas + ' vagas',
+      label: vaga?.quantidade_vagas ? vaga?.quantidade_vagas + ' vagas' : null,
     },
   ];
 

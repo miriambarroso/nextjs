@@ -1,4 +1,6 @@
 import axiosInstance from '@/utils/axios';
+import { AxiosRequestConfig } from 'axios';
+import { omitBy } from 'lodash';
 
 class CRLUDService<C, R, L, U, D> {
   protected readonly baseUrl: string;
@@ -7,17 +9,34 @@ class CRLUDService<C, R, L, U, D> {
     this.baseUrl = baseUrl;
   }
 
-  async create(item: C): Promise<R> {
-    const { data } = await axiosInstance.post(`${this.baseUrl}`, item);
+  cleanUp(item) {
+    if (item instanceof FormData) {
+      return item;
+    }
+    return omitBy(item, (v) => !v);
+  }
+
+  async create(item: C | FormData, config?: AxiosRequestConfig): Promise<R> {
+    const cleanedUp = this.cleanUp(item);
+    const { data } = await axiosInstance.post(`${this.baseUrl}`, cleanedUp, {
+      headers: {
+        'Content-Type':
+          item instanceof FormData ? 'multipart/form-data' : 'application/json',
+      },
+      ...config,
+    });
     return data;
   }
 
-  async get(id: number): Promise<R> {
-    const { data } = await axiosInstance.get(`/${this.baseUrl}/${id}`);
+  async get(id: number, config?: AxiosRequestConfig): Promise<R> {
+    const { data } = await axiosInstance.get(`/${this.baseUrl}/${id}`, config);
     return data;
   }
 
-  async getAll(query?: any): Promise<{
+  async getAll(
+    query?: any,
+    config?: AxiosRequestConfig,
+  ): Promise<{
     count: number;
     next: number;
     previous: number;
@@ -25,20 +44,60 @@ class CRLUDService<C, R, L, U, D> {
   }> {
     const { data } = await axiosInstance.get(`/${this.baseUrl}`, {
       params: query,
+      ...config,
     });
     return data;
   }
 
-  async update(item: U extends { id: number } ? U : any): Promise<U> {
+  async update(
+    item: U extends { id: number } ? U : any | FormData,
+    id?: number,
+    config?: AxiosRequestConfig,
+  ): Promise<U> {
+    const cleanedUp = this.cleanUp(item);
     const { data } = await axiosInstance.put(
-      `/${this.baseUrl}/${item.id}`,
-      item,
+      `/${this.baseUrl}/${id ?? item.id}`,
+      cleanedUp,
+      {
+        headers: {
+          'Content-Type':
+            item instanceof FormData
+              ? 'multipart/form-data'
+              : 'application/json',
+        },
+        ...config,
+      },
     );
     return data;
   }
 
-  async delete(id: number): Promise<D> {
-    const { data } = await axiosInstance.delete(`/${this.baseUrl}/${id}`);
+  async partialUpdate(
+    item: U extends { id: number } ? U : any | FormData,
+    id?: number,
+    config?: AxiosRequestConfig,
+  ): Promise<U> {
+    const cleanedUp = this.cleanUp(item);
+    const { data } = await axiosInstance.patch(
+      `/${this.baseUrl}/${id ?? item.id}`,
+      cleanedUp,
+      {
+        headers: {
+          'Content-Type':
+            item instanceof FormData
+              ? 'multipart/form-data'
+              : 'application/json',
+        },
+        ...config,
+      },
+    );
+    return data;
+  }
+
+  async delete(id: number, config?: AxiosRequestConfig): Promise<D> {
+    const { data } = await axiosInstance.delete(
+      `/${this.baseUrl}/${id}`,
+      config,
+    );
     return data;
   }
 }

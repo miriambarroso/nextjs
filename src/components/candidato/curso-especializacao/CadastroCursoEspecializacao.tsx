@@ -2,6 +2,7 @@ import InputInstituicao from '@/components/atoms/inputs/InputInstituicao';
 import InputCurso from '@/components/atoms/inputs/InputCurso';
 import InputDate from '@/components/atoms/inputs/InputDate';
 import InputDuracaoHoras from '@/components/atoms/inputs/InputDuracaoHoras';
+import InputFileField from '@/components/atoms/InputFileField';
 
 type Props = {
   register: any;
@@ -29,16 +30,15 @@ const CadastroCursoEspecializacao = ({ register, errors }: Props) => {
         error={errors.duracao_horas?.message}
         required
       />
-      <div className="form-control">
-        <label className="label">
-          <span className="label-text">Certificado</span>
-        </label>
-        <input
-          type="file"
-          {...register('certificado')}
-          className="file-input w-full "
-        />
-      </div>
+      <InputFileField
+        label="Certificado"
+        name="certificado"
+        register={register}
+        inputProps={{
+          accept: '.pdf',
+        }}
+        error={errors.certificado?.message}
+      />
     </>
   );
 };

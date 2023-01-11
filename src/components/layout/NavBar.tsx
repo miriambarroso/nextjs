@@ -1,5 +1,4 @@
 import { BiMenuAltRight, BiSearch, BiShocked } from 'react-icons/bi';
-import LogoAnapolis from '@/components/layout/LogoAnapolis';
 import LogoEmprega from '@/components/layout/LogoEmprega';
 import { useState } from 'react';
 import { useAuthStore } from '@/store/auth';
@@ -70,7 +69,7 @@ const NavBar = ({}: Props) => {
         <div className="navbar container ">
           <div className="navbar-start space-x-4">
             <LogoEmprega className="h-20 w-60 text-neutral" />
-            <LogoAnapolis className="h-20 w-48 hidden 2xl:block" />
+            {/*<LogoAnapolis className="h-20 w-48 hidden 2xl:block" />*/}
           </div>
           <div className="navbar-center hidden xl:block">
             <form onSubmit={searchTerm}>

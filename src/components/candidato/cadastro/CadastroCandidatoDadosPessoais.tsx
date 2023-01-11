@@ -11,17 +11,51 @@ import InputDate from '@/components/atoms/inputs/InputDate';
 import InputCPF from '@/components/atoms/inputs/InputCPF';
 import InputEmail from '@/components/atoms/inputs/InputEmail';
 import InputTelefone from '@/components/atoms/inputs/InputTelefone';
+import InputFileField from '@/components/atoms/InputFileField';
+import { ICandidato } from '@/interfaces/candidato';
+import EditFoto from '@/components/atoms/EditFoto';
 
-type Props = { register: any; errors: any; watch: any; editMode?: boolean };
+type Props = {
+  register: any;
+  errors: any;
+  watch: any;
+  editMode?: boolean;
+  setValue?: any;
+  handlers?: {
+    onPartialSubmit: (data) => Promise<ICandidato>;
+  };
+};
 
 const CadastroCandidatoDadosPessoais = ({
   register,
   errors,
   watch,
   editMode,
+  setValue,
+  handlers,
 }: Props) => {
   return (
     <>
+      {editMode && (
+        <EditFoto
+          register={register('foto')}
+          error={errors.foto?.message}
+          watch={watch}
+          onDelete={() => {
+            handlers.onPartialSubmit({ foto: new File([], '') }).then(() => {
+              setValue('foto', null);
+            });
+          }}
+          onSubmit={(e) => {
+            handlers
+              .onPartialSubmit({ foto: e.target.files[0] })
+              .then((data) => {
+                setValue('foto', data?.foto);
+              });
+          }}
+        />
+      )}
+
       <InputNome register={register} error={errors.nome?.message} required />
       <InputDate
         label="Data de Nascimento"
@@ -85,6 +119,17 @@ const CadastroCandidatoDadosPessoais = ({
           }}
           register={register}
           choices={TipoDeficienciaChoices.choices}
+        />
+      )}
+      {editMode && (
+        <InputFileField
+          label="Currículo"
+          name="curriculo"
+          register={register}
+          inputProps={{
+            accept: '.pdf',
+          }}
+          error={errors.curriculo?.message}
         />
       )}
     </>

@@ -24,7 +24,7 @@ const Index = ({}: Props) => {
     try {
       const requestData = {
         ...data,
-        data_conclusao: data.data_atual ? null : data.data_conclusao,
+        data_fim: data.data_atual ? null : data.data_fim,
       };
       await ExperienciaProfissionalService.create(requestData);
       toastSuccess('Experiência profissional salva!');

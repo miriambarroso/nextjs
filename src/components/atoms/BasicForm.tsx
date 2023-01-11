@@ -13,9 +13,12 @@ type Props = {
   trigger?: any;
   data?: any;
   setValue?: any;
+  handlers?: any;
+  props?: any;
 };
 
 const BasicForm = ({
+  props,
   onSubmit,
   component,
   children,
@@ -26,17 +29,20 @@ const BasicForm = ({
   trigger,
   data,
   setValue,
+  handlers,
 }: Props) => {
   const recaptchaRef = useRef(null);
   const DynamicComponent: FunctionComponent<{}> = component;
 
   DynamicComponent.defaultProps = {
+    ...props,
     register,
     errors,
     watch,
     data,
     trigger,
     setValue,
+    handlers,
   };
 
   const handleSubmit = async (e) => {

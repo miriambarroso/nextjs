@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { NivelUsuario, useAuthStore } from '@/store/auth';
 import { NextPageWithLayout } from '@/pages/_app';
@@ -12,9 +12,12 @@ type Props = {
 
 const RouteGuard = ({ page, children }: Props) => {
   const authStore = useAuthStore();
-
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
+  const resetWindowScrollPosition = useCallback(
+    () => window.scrollTo(0, 0),
+    [],
+  );
 
   useEffect(() => {
     page.permissions = page.permissions ?? Object.values(NivelUsuario);

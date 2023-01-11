@@ -8,6 +8,8 @@ import Router, { useRouter } from 'next/router';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import CursoEspecializacaoService from '@/services/CursoEspecializacaoService';
 import { useEffect } from 'react';
+import { objectFormData } from '@/utils';
+import { isEmpty } from 'lodash';
 
 type Props = {};
 
@@ -25,7 +27,11 @@ const Index = ({}: Props) => {
 
   const onSubmit = async (data) => {
     try {
-      await CursoEspecializacaoService.update(data);
+      const requestData = objectFormData({
+        ...data,
+        certificado: isEmpty(data.certificado) ? null : data.certificado[0],
+      });
+      await CursoEspecializacaoService.update(requestData, data.id);
       toastSuccess('Curso e escialização atualizado!');
       Router.back();
     } catch (e) {

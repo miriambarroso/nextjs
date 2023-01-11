@@ -10,6 +10,7 @@ import CandidatoService from '@/services/CandidatoService';
 import { cpfMask, phoneMask } from '@/utils/masks';
 import { format } from 'date-fns';
 import { ADMIN, CANDIDATO, SUPERADMIN } from '@/store/auth';
+import { objectFormData } from '@/utils';
 
 type Props = {};
 
@@ -18,6 +19,7 @@ const Edit = ({}: Props) => {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
     watch,
     reset,
   } = useForm({
@@ -26,16 +28,43 @@ const Edit = ({}: Props) => {
 
   const { query } = useRouter();
 
+  const onPartialSubmit = async (data: any) => {
+    const formData = objectFormData(data);
+    try {
+      const data = await CandidatoService.partialUpdate(
+        formData,
+        query.pid as unknown as number,
+      );
+      toastSuccess('Dados cadastrais atualizado!');
+      return data;
+    } catch (e) {
+      toastError('Erro ao atualizar os dados cadastrais!');
+      return null;
+    }
+  };
+
   const onSubmit = async (data) => {
     try {
-      const requestData = {
+      let requestData = {
         ...data,
         data_nascimento: format(data.data_nascimento, 'yyyy-MM-dd'),
+        curriculo: data.curriculo ? data.curriculo[0] : null,
+        foto: data.foto ? data.foto[0] : null,
       };
-      await CandidatoService.update(requestData);
+
+      requestData = CandidatoService.cleanUp(requestData);
+
+      requestData = objectFormData(requestData);
+
+      await CandidatoService.update(requestData, data.id, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       toastSuccess('Dados cadastrais atualizado!');
       Router.back();
     } catch (e) {
+      console.log(e);
       toastError('Erro ao atualizar os dados cadastrais!');
     }
   };
@@ -68,6 +97,10 @@ const Edit = ({}: Props) => {
       register={register}
       errors={errors}
       watch={watch}
+      setValue={setValue}
+      handlers={{
+        onPartialSubmit,
+      }}
     >
       <button type="button" className="btn btn-base mt-4" onClick={Router.back}>
         voltar

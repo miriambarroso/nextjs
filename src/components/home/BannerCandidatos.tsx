@@ -11,10 +11,10 @@ const BannerCandidatos = ({}: Props) => {
   return (
     <>
       <GenericBanner
-        title="Heading"
+        // title="Heading"
         subtitle="Para Candidatos"
         description={
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl nec ultricies ultricies, nisl nunc aliquam massa, nec ultricies nisl nunc vel nisl. Sed euismod, nisl nec ultricies ultricies, nisl nunc aliquam massa, nec ultricies nisl nunc vel nisl.'
+          'Números do Caged mostram que a Anápolis é o município goiano que mais gera empregos. Em 2022 foram cerca de 7 mil novas vagas. A atividade econômica de Prestação de Serviços foi a que mais se destacou, seguida pela Indústria, Construção, Comércio e Agropecuária. Cadastre seu currículo e seja o próximo (a) a ser contratado.'
         }
         image={{
           src: '/img/carteira_trabalho.jpeg',

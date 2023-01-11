@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 type Props = {
   layout: 'right' | 'left';
-  title: string;
+  title?: string;
   image: {
     src: string;
     alt: string;
@@ -43,7 +43,9 @@ const GenericBanner = ({
         <div className="p-8">
           <div className="space-y-4 mb-8">
             <h2>{subtitle}</h2>
-            <h3 className="text-2xl font-semibold font-noto-sans">{title}</h3>
+            {title && (
+              <h3 className="text-2xl font-semibold font-noto-sans">{title}</h3>
+            )}
             <h4 className="text-2xl">{description}</h4>
           </div>
 

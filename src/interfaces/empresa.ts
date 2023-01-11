@@ -1,4 +1,5 @@
 export interface IEmpresa {
+  foto: string;
   id?: number;
   cnpj: string;
   razao_social: string;

@@ -8,6 +8,7 @@ import Router from 'next/router';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import CursoEspecializacaoService from '@/services/CursoEspecializacaoService';
 import { isEmpty } from 'lodash';
+import { objectFormData } from '@/utils';
 
 type Props = {};
 
@@ -22,11 +23,11 @@ const Index = ({}: Props) => {
 
   const onSubmit = async (data) => {
     try {
-      const requestData = {
+      const requestData = objectFormData({
         ...data,
-        certificado: isEmpty(data.certificado) ? null : data.certificado,
-      };
-      await CursoEspecializacaoService.create(requestData);
+        certificado: isEmpty(data.certificado) ? null : data.certificado[0],
+      });
+      await CursoEspecializacaoService.create(requestData, data.id);
       toastSuccess('Curso ou escialização salvo!');
       Router.back();
     } catch (e) {

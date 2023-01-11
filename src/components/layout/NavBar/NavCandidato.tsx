@@ -1,9 +1,10 @@
-import { BiLogOut, BiSearch } from 'react-icons/bi';
+import { BiCog, BiLogOut, BiSearch } from 'react-icons/bi';
 import Link from 'next/link';
 import DropdownNav from '@/components/layout/DropdownNav';
 import Image from 'next/image';
 import { IUser } from '@/interfaces/user';
 import DrawerLink from '@/components/atoms/drawer/DrawerLink';
+import NavProfileAvatar from '@/components/layout/NavBar/NavProfileAvatar';
 
 type Props = {
   user: IUser;
@@ -15,6 +16,7 @@ const dropdownItems = [
     {
       name: 'Meu Perfil',
       href: '/candidato/perfil',
+      icon: BiCog,
     },
   ],
   // [
@@ -63,17 +65,10 @@ const NavCandidato = ({ user, logout }: Props) => {
         <DropdownNav
           items={accordion}
           content={
-            <>
-              <div className="text-right">
-                <p className="text-neutral">{user?.nome}</p>
-                <p className="text-sm">Candidato</p>
-              </div>
-              <div className="avatar">
-                <div className="w-12 rounded-full relative">
-                  <Image src="" fill alt="Retrato do Usuário" />
-                </div>
-              </div>
-            </>
+            <DropdownNav
+              items={accordion}
+              content={<NavProfileAvatar user={user} />}
+            />
           }
         />
       </li>

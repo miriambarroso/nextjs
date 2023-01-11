@@ -9,6 +9,7 @@ import { cnpjMask, phoneMask } from '@/utils/masks';
 import BasicForm from '@/components/atoms/BasicForm';
 import EditarEmpresaDadosCadastrais from '@/components/empresa/editar/EditarEmpresaDadosCadastrais';
 import EmpresaService from '@/services/EmpresaService';
+import { objectFormData } from '@/utils';
 
 type Props = {};
 
@@ -19,11 +20,27 @@ const Page = ({}: Props) => {
     handleSubmit,
     watch,
     reset,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
   const { query } = useRouter();
+
+  const onPartialSubmit = async (data) => {
+    const formData = objectFormData(data);
+    try {
+      const data = await EmpresaService.partialUpdate(
+        formData,
+        query.pid as unknown as number,
+      );
+      toastSuccess('Dados cadastrais atualizado!');
+      return data;
+    } catch (e) {
+      toastError('Erro ao atualizar os dados cadastrais!');
+      return null;
+    }
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -62,6 +79,10 @@ const Page = ({}: Props) => {
       register={register}
       errors={errors}
       watch={watch}
+      setValue={setValue}
+      handlers={{
+        onPartialSubmit,
+      }}
     >
       <button type="button" className="btn btn-base mt-4" onClick={Router.back}>
         voltar

@@ -7,7 +7,7 @@ import { IUser } from '@/interfaces/user';
 
 export interface ICandidato extends IUser {}
 
-export interface ICandidatoCreate extends ICandidato, IObjetivoProfissional {}
+export interface ICandidatoCreate extends FormData {}
 
 export interface ICandidatoPerfil extends ICandidato {
   objetivo_profissional: IObjetivoProfissional;

@@ -23,7 +23,7 @@ export const schema = yup.object().shape({
   confirm_password: schemas.confirm_password(true),
   cargo: schemas.cargo(true),
   salario: schemas.salario(true),
-  modelo_trabalho: schemas.modelo_trabalho(true),
-  regime_contratual: schemas.regime_contratual(true),
-  jornada_trabalho: schemas.jornada_trabalho(true),
+  modelo_trabalho: schemas.modelo_trabalho(true, true),
+  regime_contratual: schemas.regime_contratual(true, true),
+  jornada_trabalho: schemas.jornada_trabalho(true, true),
 });

@@ -7,12 +7,49 @@ import InputEmail from '@/components/atoms/inputs/InputEmail';
 import InputSite from '@/components/atoms/inputs/InputSite';
 import InputNumeroFuncionarios from '@/components/atoms/inputs/InputNumeroFuncionarios';
 import TextAreaField from '@/components/atoms/TextAreaField';
+import { IEmpresa } from '@/interfaces/empresa';
+import EditFoto from '@/components/atoms/EditFoto';
 
-type Props = { register: any; errors: any; editMode?: boolean };
+type Props = {
+  register: any;
+  errors: any;
+  editMode?: boolean;
+  watch: any;
+  setValue?: any;
+  handlers?: {
+    onPartialSubmit: (data) => Promise<IEmpresa>;
+  };
+};
 
-const CadastroEmpresaDadosEmpresa = ({ register, errors, editMode }: Props) => {
+const CadastroEmpresaDadosEmpresa = ({
+  register,
+  errors,
+  editMode,
+  watch,
+  handlers,
+  setValue,
+}: Props) => {
   return (
     <>
+      {editMode && (
+        <EditFoto
+          register={register('foto')}
+          error={errors.foto?.message}
+          watch={watch}
+          onDelete={() => {
+            handlers.onPartialSubmit({ foto: new File([], '') }).then(() => {
+              setValue('foto', null);
+            });
+          }}
+          onSubmit={(e) => {
+            handlers
+              .onPartialSubmit({ foto: e.target.files[0] })
+              .then((data) => {
+                setValue('foto', data?.foto);
+              });
+          }}
+        />
+      )}
       <InputCNPJ
         register={register}
         error={errors.cnpj?.message}
@@ -54,6 +91,7 @@ const CadastroEmpresaDadosEmpresa = ({ register, errors, editMode }: Props) => {
         register={register}
         error={errors.numero_funcionarios?.message}
       />
+
       <TextAreaField
         label="Descrição"
         name="descricao"

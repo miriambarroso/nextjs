@@ -8,7 +8,11 @@ import InputEmail from '@/components/atoms/inputs/InputEmail';
 import InputSenha from '@/components/atoms/inputs/InputSenha';
 import { subYears } from 'date-fns';
 
-type Props = { register: any; errors: any; editMode?: boolean };
+type Props = {
+  register: any;
+  errors: any;
+  editMode?: boolean;
+};
 
 const CadastroEmpresaDadosPessoais = ({
   register,

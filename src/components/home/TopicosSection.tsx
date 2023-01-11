@@ -9,25 +9,27 @@ const TopicosSection = ({}: Props) => {
       description:
         'Contrate com agilidade e otimize a gestão de seus processos seletivos. Desde a atração de talentos até a seleção final, nossa plataforma centraliza todo o recrutamento em um único lugar, com análise de dados e relatórios relevantes para a sua tomada de decisão certa para cada vaga',
       url: {
-        label: 'Link 1',
-        href: 'https://google.com',
-        target: '_blank',
+        label: 'Cadastrar Vaga',
+        href: '/empresa/cadastrar',
+        // target: '_blank',
       },
     },
     {
-      title: 'Card 1',
-      description: 'Description 1',
+      title: 'Cadastre seu currículo',
+      description:
+        'Você que está a procura de emprego ou uma melhor recolocação no mercado de trabalho, cadastre seus dados. É rápido, fácil e simples. Os recrutadores vão analisar seus dados e entrar em contato com você.',
       url: {
-        label: 'Link 1',
-        href: 'https://google.com',
-        target: '_blank',
+        label: 'Cadastrar currículo',
+        href: '/candidato/cadastrar',
+        // target: '_blank',
       },
     },
     {
-      title: 'Card 1',
-      description: 'Description 1',
+      title: 'Nossos resultados',
+      description:
+        'Acesse os indicadores, que comprovam a efetividade do nosso projeto. Políticas públicas que fomentam a economia e o desenvolvimento de Anápolis, por meio da inteligência artificial que promove conexões.',
       url: {
-        label: 'Link 1',
+        label: 'Acessar agora',
         href: 'https://google.com',
         target: '_blank',
       },

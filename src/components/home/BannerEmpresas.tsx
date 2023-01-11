@@ -11,10 +11,10 @@ const BannerEmpresas = ({}: Props) => {
   return (
     <>
       <GenericBanner
-        title="Heading"
+        // title="Heading"
         subtitle="Para Empresas"
         description={
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl nec ultricies ultricies, nisl nunc aliquam massa, nec ultricies nisl nunc vel nisl. Sed euismod, nisl nec ultricies ultricies, nisl nunc aliquam massa, nec ultricies nisl nunc vel nisl.'
+          'As políticas de fomento à produção industrial, ao desenvolvimento econômico, a criação de novas empresas e empreendimentos têm levado o Estado de Goiás a ser referência nacional. O município de Anápolis é um dos mais importantes em decorrência da sua localização estratégica, potencialidades e vocações. As empresas locais estão sempre contratando novos colaboradores! Acesse aqui as vagas, que podem ter o seu perfil.'
         }
         image={{
           src: '/img/empresa.jpg',

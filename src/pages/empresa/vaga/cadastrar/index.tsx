@@ -9,13 +9,11 @@ import CadastroVagaSobre from '@/components/vaga/cadastro/CadastroVagaSobre';
 import CadastroVagaInformacoes from '@/components/vaga/cadastro/CadastroVagaInformacoes';
 import CadastroVagaSalarioBeneficios from '@/components/vaga/cadastro/CadastroVagaSalarioBeneficios';
 import { ADMIN, EMPREGADOR, SUPERADMIN } from '@/store/auth';
-import { toastError, toastSuccess } from '@/utils/toasts';
+import { toastError } from '@/utils/toasts';
 import BeneficioService from '@/services/BeneficioService';
-import VagaService from '@/services/VagaService';
-import { omitBy } from 'lodash';
-import { IVagaCreate } from '@/interfaces/vaga';
 import Router from 'next/router';
 import ReCAPTCHA from 'react-google-recaptcha';
+import CadastroVagaCurriculos from '@/components/vaga/cadastro/CadastroVagaCurriculos';
 
 type Props = {};
 
@@ -26,6 +24,7 @@ const CadastroVaga = ({}: Props) => {
     'Sobre a Vaga',
     'Salário e Benefícios',
     'Informações Categóricas',
+    'Currículos',
   ];
   const [beneficios, setBeneficios] = useState([]);
   const recaptchaRef = useRef(null);
@@ -35,21 +34,22 @@ const CadastroVaga = ({}: Props) => {
     handleSubmit,
     formState: { errors },
     trigger,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
   });
   const onSubmit = async (data) => {
     const recaptchaValue = await recaptchaRef.current.executeAsync();
-
-    try {
-      const request = omitBy(data, (v) => !v) as IVagaCreate;
-      request['recaptcha'] = recaptchaValue;
-      await VagaService.create(request);
-      toastSuccess('Vaga criada!');
-      Router.back();
-    } catch (e) {
-      toastError('Erro ao criar vaga!');
-    }
+    console.log(data);
+    // try {
+    //   const request = omitBy(data, (v) => !v) as IVagaCreate;
+    //   request['recaptcha'] = recaptchaValue;
+    //   await VagaService.create(request);
+    //   toastSuccess('Vaga criada!');
+    //   Router.back();
+    // } catch (e) {
+    //   toastError('Erro ao criar vaga!');
+    // }
   };
 
   const fetchBeneficios = async () => {
@@ -82,16 +82,17 @@ const CadastroVaga = ({}: Props) => {
             'idade_maxima',
             'quantidade_vagas',
           ]),
+        3: async () => await trigger(['curriculos']),
       };
 
       const result = await validateForm[step]();
 
       startForm.current.scrollIntoView({ behavior: 'smooth' });
-      if (!result) return;
+      // if (!result) return;
     }
 
     startForm.current.scrollIntoView({ behavior: 'smooth' });
-    setStep(clamp(value, 0, 2));
+    setStep(clamp(value, 0, steps.length - 1));
   };
 
   useEffect(() => {
@@ -116,6 +117,13 @@ const CadastroVaga = ({}: Props) => {
         )}
         {step == 2 && (
           <CadastroVagaInformacoes register={register} errors={errors} />
+        )}
+        {step == 3 && (
+          <CadastroVagaCurriculos
+            register={register}
+            errors={errors}
+            watch={watch}
+          />
         )}
 
         <div className="flex flex-wrap justify-between mt-4">

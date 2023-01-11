@@ -33,6 +33,7 @@ const CadastroEmpresa = ({}: Props) => {
     formState: { errors },
     setError,
     setValue,
+    watch,
     trigger,
   } = useForm({
     resolver: yupResolver(schema),
@@ -150,7 +151,11 @@ const CadastroEmpresa = ({}: Props) => {
           <CadastroEmpresaDadosPessoais register={register} errors={errors} />
         )}
         {step == 1 && (
-          <CadastroEmpresaDadosEmpresa register={register} errors={errors} />
+          <CadastroEmpresaDadosEmpresa
+            register={register}
+            errors={errors}
+            watch={watch}
+          />
         )}
         {step == 2 && (
           <CadastroEmpresaEnderecoContatos

@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { clamp, classNames } from '@/utils';
+import { clamp, classNames, objectFormData } from '@/utils';
 import { useRef, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '@/components/candidato/cadastro/schema';
@@ -51,6 +51,7 @@ const Index = ({}: Props) => {
     trigger,
     watch,
     getValues,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -67,24 +68,30 @@ const Index = ({}: Props) => {
     }
   };
   const onSubmit = async (data) => {
-    const recaptchaValue = await recaptchaRef.current.executeAsync();
-
     try {
-      const requestData = {
+      const recaptchaValue = await recaptchaRef.current.executeAsync();
+      recaptchaRef.current.reset();
+
+      const requestData = objectFormData({
         ...data,
         data_nascimento: format(data.data_nascimento, 'yyyy-MM-dd'),
         salario: parseFloat(data.salario),
         recaptcha: recaptchaValue,
-      };
+        curriculo: data.curriculo ? data.curriculo[0] : null,
+      });
 
-      await CandidatoService.create(requestData);
+      await CandidatoService.create(requestData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
       toastSuccess('Cadastro realizado!');
       await loginAction(data);
     } catch (error) {
+      console.log(error);
       toastError('Erro ao realizar cadastro!');
     }
-
-    recaptchaRef.current.reset();
   };
 
   const changeStep = async (value) => {
@@ -116,12 +123,33 @@ const Index = ({}: Props) => {
 
       startForm.current.scrollIntoView({ behavior: 'smooth' });
 
-      if (!result) return;
+      // if (!result) return;
     }
 
     startForm.current.scrollIntoView({ behavior: 'smooth' });
     setStep(clamp(value, 0, 2));
   };
+
+  // useEffect(() => {
+  //   const mock = {
+  //     jornada_trabalho: 1,
+  //     regime_contratual: 2,
+  //     modelo_trabalho: 1,
+  //     salario: 2000,
+  //     cargo: 'Analista',
+  //     confirm_password: 'Admin1234)',
+  //     password: 'Admin1234)',
+  //     telefone: '98988751446',
+  //     email: 'raquel_carvalho@uninet.com.br',
+  //     possui_deficiencia: false,
+  //     estado_civil: 1,
+  //     sexo: 1,
+  //     cpf: '64751788450',
+  //     data_nascimento: '1952-05-01',
+  //     nome: 'Raquel Marcela Carvalho',
+  //   };
+  //   reset(mock);
+  // }, []);
 
   const subTitle = (
     <p

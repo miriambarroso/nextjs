@@ -9,16 +9,25 @@ const HeroSection = ({}: Props) => {
       <div className="hero grid-cols-1 lg:grid-cols-2 py-16 lg:py-48">
         {/*<div className="hero-overlay bg-opacity-60"></div>*/}
         <div className="hero-content max-w-2xl text-left text-neutral">
-          <div className="w-full">
-            <h1 className="mb-5 text-3xl lg:text-5xl font-bold font-nato-sans uppercase">
-              Inteligência Artificial conectando a cidade de Anápolis com
-              empregados e empregadores
+          <div className="w-full space-y-5">
+            <h1 className="text-2xl lg:text-4xl font-bold font-nato-sans uppercase">
+              Vagas Anápolis - Recrutamento com Inteligência Artificial a
+              serviço dos apolinos
             </h1>
-            {/*<p className="mb-5">*/}
-            {/*  Provident cupiditate voluptatem et in. Quaerat fugiat ut*/}
-            {/*  assumenda excepturi exercitationem quasi. In deleniti eaque aut*/}
-            {/*  repudiandae et a id nisi.*/}
-            {/*</p>*/}
+            <div>
+              <p>
+                Somos uma política pública de fomento a geração de emprego e
+                renda.
+              </p>
+              <p>
+                Aproximamos trabalhadores e empresas por meio da inovação e
+                tecnologia.
+              </p>
+              <p>
+                Seja bem vindo!
+              </p>
+            </div>
+
             <Link
               href={'/candidato/cadastrar'}
               className="btn btn-primary text-white"

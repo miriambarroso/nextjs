@@ -87,6 +87,7 @@ const Page = ({}: Props) => {
                         vaga={null}
                         isOwner={true}
                         selected={false}
+                        isFeature={true}
                         skeleton={1}
                         className="snap-center"
                       />

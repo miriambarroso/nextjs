@@ -6,8 +6,6 @@ const LogoEmprega = ({ className }: Props) => {
   return (
     <Link href="/">
       <svg
-        width="248"
-        height="60"
         viewBox="0 0 248 60"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

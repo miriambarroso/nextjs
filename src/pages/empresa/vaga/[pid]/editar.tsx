@@ -17,6 +17,7 @@ import { IVagaCreate } from '@/interfaces/vaga';
 import Router, { useRouter } from 'next/router';
 import { currencyMask } from '@/utils/masks';
 import ReCAPTCHA from 'react-google-recaptcha';
+import CadastroVagaCurriculos from '@/components/vaga/cadastro/CadastroVagaCurriculos';
 
 type Props = {};
 
@@ -38,6 +39,7 @@ const CadastroVaga = ({}: Props) => {
     formState: { errors },
     trigger,
     reset,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -138,6 +140,13 @@ const CadastroVaga = ({}: Props) => {
         )}
         {step == 2 && (
           <CadastroVagaInformacoes register={register} errors={errors} />
+        )}
+        {step == 3 && (
+          <CadastroVagaCurriculos
+            register={register}
+            errors={errors}
+            watch={watch}
+          />
         )}
 
         <div className="flex flex-wrap justify-between mt-4">

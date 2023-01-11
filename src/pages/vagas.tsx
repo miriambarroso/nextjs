@@ -288,6 +288,8 @@ const Page = () => {
                 ) : (
                   <CardDetailVaga
                     vaga={null}
+                    isOwner={false}
+                    isFeature={false}
                     skeleton={3}
                     className="snap-center"
                   />

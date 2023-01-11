@@ -11,7 +11,7 @@ type Props = {};
 
 const Page = ({}: Props) => {
   const [vagas, setVagas] = useState<IVaga[]>(null);
-  const [user, empresa] = useAuthStore((state) => [state.user, state.empresa]);
+  const [empresa] = useAuthStore((state) => [state.user, state.empresa]);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
   const [countVagas, setCountVagas] = useState(0);
   const scrollDetail = useRef<HTMLDivElement>(null);
@@ -32,7 +32,7 @@ const Page = ({}: Props) => {
     if (empresa) {
       fetchVagas();
     }
-  }, [empresa]);
+  }, [empresa, fetchVagas]);
 
   useEffect(() => {
     scrollDetail.current?.scrollTo(0, 0);

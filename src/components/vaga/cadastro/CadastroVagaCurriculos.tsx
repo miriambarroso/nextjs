@@ -26,7 +26,7 @@ const CadastroVagaCurriculos = ({ register, errors, watch }: Props) => {
           <tbody>
             {curriculos?.length ? (
               Array.from(curriculos).map((curriculo: File, index) => (
-                <tr>
+                <tr key={index}>
                   <th>{index + 1}</th>
                   <td>{curriculo?.name}</td>
                   <td>{(curriculo.size / 1000).toFixed(2)}KB</td>

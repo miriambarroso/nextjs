@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 const useEffectTimeout = (effect: () => void, time: number, deps: any[]) => {
   const timeout = useRef(null);
@@ -9,7 +9,7 @@ const useEffectTimeout = (effect: () => void, time: number, deps: any[]) => {
       clearTimeout(timeout.current);
     }, time);
     return () => clearTimeout(timeout.current);
-  }, deps);
+  }, [...deps]);
 };
 
 export default useEffectTimeout;

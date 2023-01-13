@@ -49,6 +49,9 @@ const NavEmpregador = ({ user, logout }: Props) => {
         <Link href="/empresa/painel">Painel</Link>
       </li>
       <li>
+        <Link href="/sobre-nos">Sobre Nós</Link>
+      </li>
+      <li>
         <DropdownNav
           items={accordion}
           content={<NavProfileAvatar user={user} />}
@@ -83,11 +86,13 @@ const NavMobileEmpregador = ({
         </div>
         <div className="text-center">
           <p className="text-white">{user?.nome}</p>
-          <p className="text-sm text-base-300">Empregador</p>
         </div>
       </div>
       <DrawerLink onClick={close} href="/empresa/painel">
         Painel
+      </DrawerLink>
+      <DrawerLink onClick={close} href="/empresa/painel">
+        Sobre nós
       </DrawerLink>
 
       {accordion.map((item, index) =>

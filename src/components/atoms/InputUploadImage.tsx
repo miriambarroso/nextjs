@@ -3,9 +3,23 @@ import { classNames } from '@/utils';
 import { BiTrash } from 'react-icons/bi';
 import { useEffect, useState } from 'react';
 
-type Props = { watch; onSubmit; onDelete; register; error };
+type Props = {
+  visualize?: boolean;
+  watch;
+  onSubmit;
+  onDelete;
+  register;
+  error;
+};
 
-const EditFoto = ({ onDelete, onSubmit, watch, register, error }: Props) => {
+const InputUploadImage = ({
+  visualize = true,
+  onDelete,
+  onSubmit,
+  watch,
+  register,
+  error,
+}: Props) => {
   const { foto } = watch();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
@@ -20,16 +34,21 @@ const EditFoto = ({ onDelete, onSubmit, watch, register, error }: Props) => {
           <span className="label-text">Foto</span>
         </div>
         <div className="flex justify-center items-center gap-4">
-          <div className="avatar">
-            <div className="w-40 rounded-full relative">
-              <Image
-                src={foto?.length ? foto : 'https://placeimg.com/400/225/arch'}
-                fill
-                className="object-cover"
-                alt="Logo da Empresa"
-              />
+          {visualize && (
+            <div className="avatar">
+              <div className="w-40 rounded-full relative">
+                <Image
+                  src={
+                    foto?.length ? foto : 'https://placeimg.com/400/225/arch'
+                  }
+                  fill
+                  className="object-cover"
+                  alt="Logo da Empresa"
+                />
+              </div>
             </div>
-          </div>
+          )}
+
           <div className="w-60">
             <input
               {...register}
@@ -56,4 +75,4 @@ const EditFoto = ({ onDelete, onSubmit, watch, register, error }: Props) => {
   );
 };
 
-export default EditFoto;
+export default InputUploadImage;

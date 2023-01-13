@@ -1,6 +1,5 @@
-import { IVaga } from '@/interfaces/vaga';
 import Link from 'next/link';
-import { BiGlasses, BiGroup, BiHome, BiTime } from 'react-icons/bi';
+import { BiGlasses, BiHome, BiTime } from 'react-icons/bi';
 import { BadgeGroup } from '@/components/atoms/Badge';
 import {
   JornadaTrabalhoChoices,
@@ -20,9 +19,10 @@ import { formatDateToLocale } from '@/utils/date';
 import { currencyMask } from '@/utils/masks';
 import { range } from 'lodash';
 import useBreakpoint from '@/hooks/useBreakpoint';
+import { ICandidatoList } from '@/interfaces/candidato';
 
 type Props = {
-  vaga: IVaga;
+  candidato: ICandidatoList;
   isFeature?: boolean;
   isOwner?: boolean;
   selected?: boolean;
@@ -38,8 +38,8 @@ type Props = {
   isCandidated?: boolean;
 };
 
-const CardDetailVaga = ({
-  vaga,
+const CardDetailCandidato = ({
+  candidato,
   selected,
   onClick,
   onDelete,
@@ -68,24 +68,23 @@ const CardDetailVaga = ({
     {
       kind: 'base',
       icon: <BiGlasses />,
-      label: RegimeContratualChoices.findByIntValue(vaga?.regime_contratual)
-        ?.label,
+      label: RegimeContratualChoices.findByIntValue(
+        candidato?.objetivo_profissional.regime_contratual,
+      )?.label,
     },
     {
       kind: 'base',
       icon: <BiHome />,
-      label: ModeloTrabalhoChoices.findByIntValue(vaga?.modelo_trabalho)?.label,
+      label: ModeloTrabalhoChoices.findByIntValue(
+        candidato?.objetivo_profissional.modelo_trabalho,
+      )?.label,
     },
     {
       kind: 'base',
       icon: <BiTime />,
-      label: JornadaTrabalhoChoices.findByIntValue(vaga?.jornada_trabalho)
-        ?.label,
-    },
-    {
-      kind: 'base',
-      icon: <BiGroup />,
-      label: vaga?.quantidade_vagas ? vaga?.quantidade_vagas + ' vagas' : null,
+      label: JornadaTrabalhoChoices.findByIntValue(
+        candidato?.objetivo_profissional.jornada_trabalho,
+      )?.label,
     },
   ];
 
@@ -131,7 +130,7 @@ const CardDetailVaga = ({
       </button>
     );
 
-  const renderItem = (vaga: IVaga, index?: number, ref?) => {
+  const renderItem = (vaga: ICandidatoList, index?: number, ref?) => {
     return (
       <div
         ref={ref}
@@ -190,47 +189,47 @@ const CardDetailVaga = ({
             {!isExpandable && !isFeature && btnAction()}
           </div>
 
-          {skeleton || (isExpandable && !expanded) || isFeature ? (
-            <p className="whitespace-pre-line truncate-4">
-              <TextSkeleton
-                as="span"
-                className="h-4 w-full bg-base-100"
-                rows={4}
-              >
-                {vaga?.atividades}
-              </TextSkeleton>
-            </p>
-          ) : (
-            <>
-              {vaga?.atividades && (
-                <div>
-                  <p className="text-fade">Atividades envolvidas na cargo</p>
-                  <p className="whitespace-pre-line">{vaga?.atividades}</p>
-                </div>
-              )}
-              {vaga?.requisitos && (
-                <div>
-                  <h2 className="text-fade">
-                    Requisitos necessários ou desejáveis
-                  </h2>
-                  <p className="whitespace-pre-line">{vaga?.requisitos}</p>
-                </div>
-              )}
+          {/*{skeleton || (isExpandable && !expanded) || isFeature ? (*/}
+          {/*  <p className="whitespace-pre-line truncate-4">*/}
+          {/*    <TextSkeleton*/}
+          {/*      as="span"*/}
+          {/*      className="h-4 w-full bg-base-100"*/}
+          {/*      rows={4}*/}
+          {/*    >*/}
+          {/*      {vaga?.atividades}*/}
+          {/*    </TextSkeleton>*/}
+          {/*  </p>*/}
+          {/*) : (*/}
+          {/*  <>*/}
+          {/*    {vaga?.atividades && (*/}
+          {/*      <div>*/}
+          {/*        <p className="text-fade">Atividades envolvidas na cargo</p>*/}
+          {/*        <p className="whitespace-pre-line">{vaga?.atividades}</p>*/}
+          {/*      </div>*/}
+          {/*    )}*/}
+          {/*    {vaga?.requisitos && (*/}
+          {/*      <div>*/}
+          {/*        <h2 className="text-fade">*/}
+          {/*          Requisitos necessários ou desejáveis*/}
+          {/*        </h2>*/}
+          {/*        <p className="whitespace-pre-line">{vaga?.requisitos}</p>*/}
+          {/*      </div>*/}
+          {/*    )}*/}
 
-              {!!vaga?.beneficios.length && (
-                <div>
-                  <h2 className="text-fade">Benefícios</h2>
-                  <ul className="list list-disc list-inside">
-                    {vaga?.beneficios?.map((beneficio) => (
-                      <li key={beneficio.id}>{beneficio.nome}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+          {/*    {!!vaga?.beneficios.length && (*/}
+          {/*      <div>*/}
+          {/*        <h2 className="text-fade">Benefícios</h2>*/}
+          {/*        <ul className="list list-disc list-inside">*/}
+          {/*          {vaga?.beneficios?.map((beneficio) => (*/}
+          {/*            <li key={beneficio.id}>{beneficio.nome}</li>*/}
+          {/*          ))}*/}
+          {/*        </ul>*/}
+          {/*      </div>*/}
+          {/*    )}*/}
 
-              <div className="divider"></div>
-            </>
-          )}
+          {/*    <div className="divider"></div>*/}
+          {/*  </>*/}
+          {/*)}*/}
 
           {/*<div>*/}
           {/*  <h2 className="text-fade">Candidatos</h2>*/}
@@ -288,7 +287,7 @@ const CardDetailVaga = ({
     <>
       {skeleton
         ? range(skeleton).map((i) => renderItem(null, i))
-        : renderItem(vaga, null, topRef)}
+        : renderItem(candidato, null, topRef)}
       {isOwner && (
         <ConfirmModal
           open={open}
@@ -302,4 +301,4 @@ const CardDetailVaga = ({
   );
 };
 
-export default CardDetailVaga;
+export default CardDetailCandidato;

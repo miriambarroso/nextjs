@@ -12,7 +12,7 @@ const HeroSection = ({}: Props) => {
           <div className="w-full space-y-5">
             <h1 className="text-2xl lg:text-4xl font-bold font-nato-sans uppercase">
               Vagas Anápolis - Recrutamento com Inteligência Artificial a
-              serviço dos apolinos
+              serviço dos Anapolinos
             </h1>
             <div>
               <p>
@@ -23,9 +23,7 @@ const HeroSection = ({}: Props) => {
                 Aproximamos trabalhadores e empresas por meio da inovação e
                 tecnologia.
               </p>
-              <p>
-                Seja bem vindo!
-              </p>
+              <p>Seja bem vindo!</p>
             </div>
 
             <Link

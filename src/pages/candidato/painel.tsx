@@ -1,4 +1,4 @@
-import { ADMIN, EMPREGADOR, SUPERADMIN, useAuthStore } from '@/store/auth';
+import { ADMIN, CANDIDATO, SUPERADMIN, useAuthStore } from '@/store/auth';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import VagaService from '@/services/VagaService';
@@ -6,19 +6,26 @@ import { IVaga } from '@/interfaces/vaga';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import { range } from 'lodash';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
+import CandidaturaService from '@/services/CandidaturaService';
 
 type Props = {};
 
 const Page = ({}: Props) => {
   const [vagas, setVagas] = useState<IVaga[]>(null);
-  const [empresa] = useAuthStore((state) => [state.empresa]);
+  const [user, candidaturas, setCandidaturas] = useAuthStore((state) => [
+    state.user,
+    state.candidaturas,
+    state.setCandidaturas,
+  ]);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
   const [countVagas, setCountVagas] = useState(0);
   const scrollDetail = useRef<HTMLDivElement>(null);
 
   const fetchVagas = async () => {
     try {
-      const { results, count } = await VagaService.getVagasEmpresa(empresa?.id);
+      const { results, count } = await VagaService.getVagasCandidaturas(
+        user?.id,
+      );
       const firstVaga = results.length > 0 ? results[0] : null;
       setSelectedVaga(firstVaga);
       setVagas(results);
@@ -29,22 +36,35 @@ const Page = ({}: Props) => {
   };
 
   useEffect(() => {
-    if (empresa) {
+    if (user) {
       fetchVagas();
     }
-  }, [empresa]);
+  }, [user]);
 
   useEffect(() => {
     scrollDetail.current?.scrollTo(0, 0);
   }, [selectedVaga]);
 
-  const deleteItem = async (id: number) => {
+  const handleCandidate = async (id: number) => {
     try {
-      await VagaService.delete(id);
-      toastSuccess('Vaga excluída!');
-      setVagas(vagas.filter((item) => item.id !== id));
+      const item = candidaturas.findIndex((i) => i.vaga == id);
+
+      if (item > -1) {
+        await CandidaturaService.delete(candidaturas[item].id);
+        toastSuccess('Candidatura cancelada!');
+        let newCandidaturas = candidaturas;
+        newCandidaturas.splice(item, 1);
+        setCandidaturas([...newCandidaturas]);
+      } else {
+        const data = await CandidaturaService.create({
+          vaga: id,
+          usuario: user?.id,
+        });
+        toastSuccess('Candidatura realizada!');
+        setCandidaturas([...candidaturas, data]);
+      }
     } catch (error) {
-      toastError('Erro ao excluir vaga!');
+      toastError('Erro ao realizar candidatura!');
     }
   };
 
@@ -54,48 +74,57 @@ const Page = ({}: Props) => {
         <div className="lg:w-4/12">
           <div className="label">
             <span className="label-text inline-flex items-center">
-              Vagas cadastradas (
+              Candidaturas ativas (
               <TextSkeleton as={'span'} className="h-4 w-8 bg-base-200 mr-2">
                 {countVagas}
               </TextSkeleton>{' '}
-              vagas)
+              candidaturas)
             </span>
           </div>
           <div className="w-full">
             <div className="overflow-x-auto flex lg:grid lg:grid-cols-1 snap-x snap-mandatory bg-white p-4 rounded">
-              {vagas
-                ? vagas?.map((vaga, index) => (
+              {vagas ? (
+                vagas.length ? (
+                  vagas?.map((vaga, index) => (
                     <Fragment key={index}>
                       <CardDetailVaga
                         vaga={vaga}
-                        isOwner={true}
+                        isOwner={false}
                         onAction={() => setSelectedVaga(vaga)}
+                        onClick={() => handleCandidate(vaga.id)}
                         selected={vaga.id === selectedVaga?.id}
                         isFeature={true}
                         className="snap-center"
                         canCandidate={true}
+                        isCandidated={candidaturas?.some(
+                          (i) => i.vaga == vaga.id,
+                        )}
                       />
                       {index !== vagas?.length - 1 && (
                         <div className="divider m-1"></div>
                       )}
                     </Fragment>
                   ))
-                : range(3).map((index) => (
-                    <>
-                      <CardDetailVaga
-                        key={index}
-                        vaga={null}
-                        isOwner={true}
-                        selected={false}
-                        isFeature={true}
-                        skeleton={1}
-                        className="snap-center"
-                      />
-                      {index !== vagas?.length - 1 && (
-                        <div className="divider m-1"></div>
-                      )}
-                    </>
-                  ))}
+                ) : (
+                  <div className="py-8">
+                    <p className="text-center">Não há candidaturas ativas</p>
+                  </div>
+                )
+              ) : (
+                range(3).map((index) => (
+                  <>
+                    <CardDetailVaga
+                      key={index}
+                      vaga={null}
+                      skeleton={1}
+                      className="snap-center"
+                    />
+                    {index !== vagas?.length - 1 && (
+                      <div className="divider m-1"></div>
+                    )}
+                  </>
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -110,8 +139,12 @@ const Page = ({}: Props) => {
             {selectedVaga ? (
               <CardDetailVaga
                 vaga={selectedVaga}
-                isOwner={true}
-                onDelete={() => deleteItem(selectedVaga.id)}
+                isOwner={false}
+                canCandidate={true}
+                onClick={() => handleCandidate(selectedVaga.id)}
+                isCandidated={candidaturas?.some(
+                  (i) => i.vaga == selectedVaga.id,
+                )}
               />
             ) : (
               <div className="card rounded w-full bg-white h-48">
@@ -129,6 +162,6 @@ const Page = ({}: Props) => {
   );
 };
 
-Page.permissions = [SUPERADMIN, ADMIN, EMPREGADOR];
+Page.permissions = [SUPERADMIN, ADMIN, CANDIDATO];
 
 export default Page;

@@ -2,6 +2,7 @@ import axiosInstance from '@/utils/axios';
 import {
   ICandidato,
   ICandidatoCreate,
+  ICandidatoList,
   ICandidatoPerfil,
 } from '@/interfaces/candidato';
 import CRLUDService from '@/services/CRLUDService';
@@ -9,7 +10,7 @@ import CRLUDService from '@/services/CRLUDService';
 class CandidatoService extends CRLUDService<
   ICandidatoCreate,
   ICandidato,
-  ICandidatoCreate,
+  ICandidatoList,
   ICandidatoCreate,
   ICandidatoCreate
 > {
@@ -28,6 +29,20 @@ class CandidatoService extends CRLUDService<
           .replace('.', ','),
       };
     }
+
+    return data;
+  }
+
+  async getAll(query?: any) {
+    let data = await super.getAll(query);
+
+    data.results.forEach((candidato) => {
+      candidato.objetivo_profissional.salario = parseFloat(
+        candidato.objetivo_profissional.salario,
+      )
+        .toFixed(2)
+        .replace('.', ',');
+    });
 
     return data;
   }

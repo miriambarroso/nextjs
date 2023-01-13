@@ -7,7 +7,7 @@ type Props = { user: ICandidato | IEmpregador };
 const NavProfileAvatar = ({ user }: Props) => {
   return (
     <>
-      <div className="inline-flex gap-2 items-center">
+      <div className="inline-flex gap-2 items-center hover:bg-base-200 p-3 rounded">
         <div className="text-right">
           <p className="text-neutral w-32 truncate">{user?.nome}</p>
           {/*<p className="text-sm">Empregador</p>*/}

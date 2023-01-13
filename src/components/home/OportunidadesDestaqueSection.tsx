@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { IVaga } from '@/interfaces/vaga';
 import VagaService from '@/services/VagaService';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
+import { useAuthStore } from '@/store/auth';
 
 type Props = {};
 
 const OportunidadesDestaqueSection = ({}: Props) => {
+  const [empresa] = useAuthStore((state) => [state.empresa]);
   const [vagas, setVagas] = useState<IVaga[]>(null);
   useEffect(() => {
     VagaService.getAll({ limit: 3 }).then(({ results }) => {
@@ -31,18 +33,18 @@ const OportunidadesDestaqueSection = ({}: Props) => {
                 <CardDetailVaga
                   key={index}
                   vaga={vaga}
-                  isOwner={false}
+                  isOwner={empresa?.id === vaga.empresa.id}
                   onClick={() => {
                     return Router.push(`/vagas?selecionado=${vaga.id}`);
                   }}
                   isFeature={true}
+                  canCandidate={true}
                   className="hover:bg-base-100 snap-center p-0"
                 />
               ))
             ) : (
               <CardDetailVaga
                 vaga={null}
-                isOwner={false}
                 className="snap-center p-0 cursor-default"
                 skeleton={3}
               />

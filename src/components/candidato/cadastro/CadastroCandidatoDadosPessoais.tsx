@@ -13,7 +13,7 @@ import InputEmail from '@/components/atoms/inputs/InputEmail';
 import InputTelefone from '@/components/atoms/inputs/InputTelefone';
 import InputFileField from '@/components/atoms/InputFileField';
 import { ICandidato } from '@/interfaces/candidato';
-import EditFoto from '@/components/atoms/EditFoto';
+import InputUploadImage from '@/components/atoms/InputUploadImage';
 
 type Props = {
   register: any;
@@ -37,7 +37,7 @@ const CadastroCandidatoDadosPessoais = ({
   return (
     <>
       {editMode && (
-        <EditFoto
+        <InputUploadImage
           register={register('foto')}
           error={errors.foto?.message}
           watch={watch}

@@ -5,14 +5,10 @@ import InputSalario from '@/components/atoms/inputs/InputSalario';
 import SelectModeloTrabalho from '@/components/atoms/inputs/SelectModeloTrabalho';
 import SelectRegimeContratual from '@/components/atoms/inputs/SelectRegimeContratual';
 import SelectJornadaTrabalho from '@/components/atoms/inputs/SelectJornadaTrabalho';
-import InputNomeFantasia from '@/components/atoms/inputs/InputNomeFantasia';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import CardDetailVaga from '@/components/vaga/CardDetailVaga';
-import { IVaga } from '@/interfaces/vaga';
-import VagaService from '@/services/VagaService';
 import CandidaturaService from '@/services/CandidaturaService';
-import { useAuthStore } from '@/store/auth';
+import { EMPREGADOR, useAuthStore } from '@/store/auth';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import { omitBy, range } from 'lodash';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
@@ -23,6 +19,9 @@ import {
   RegimeContratualChoices,
 } from '@/utils/choices';
 import { currencyMask } from '@/utils/masks';
+import CandidatoService from '@/services/CandidatoService';
+import { ICandidatoList } from '@/interfaces/candidato';
+import CardDetailCandidato from '@/components/candidato/CardCandidatoVaga';
 
 type QueueProps = {
   termo?: string;
@@ -43,14 +42,15 @@ const Page = () => {
       state.isCandidato,
       state.empresa,
     ]);
-  const [vagas, setVagas] = useState<IVaga[]>(null);
-  const [countVagas, setCountVagas] = useState(0);
-  const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
+  const [candidatos, setCandidatos] = useState<ICandidatoList[]>(null);
+  const [countCandidatos, setCountCandidatos] = useState(0);
+  const [selectedCandidato, setSelectedCandidato] =
+    useState<ICandidatoList>(null);
   const scrollDetail = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     scrollDetail.current.scrollTo(0, 0);
-  }, [selectedVaga]);
+  }, [selectedCandidato]);
 
   const {
     register,
@@ -60,23 +60,18 @@ const Page = () => {
     resolver: yupResolver(vagasSchema),
   });
 
-  const {
-    empresa,
-    salario,
-    modelo_trabalho,
-    regime_contratual,
-    jornada_trabalho,
-  } = watch();
+  const { salario, modelo_trabalho, regime_contratual, jornada_trabalho } =
+    watch();
 
   const { termo, selecionado } = useRouter().query;
 
   const handleSearch = async (query: QueueProps) => {
     try {
       const clearQuery = omitBy(query, (v) => !v);
-      const { results, count } = await VagaService.getAll(clearQuery);
-      setSelectedVaga(results.length > 0 ? results[0] : null);
-      setVagas(results);
-      setCountVagas(count);
+      const { results, count } = await CandidatoService.getAll(clearQuery);
+      setSelectedCandidato(results.length > 0 ? results[0] : null);
+      setCandidatos(results);
+      setCountCandidatos(count);
     } catch (error) {
       toastError('Erro ao buscar vagas');
     }
@@ -108,7 +103,6 @@ const Page = () => {
   useEffectTimeout(
     () => {
       handleSearch({
-        empresa,
         salario: salario && currencyMask.unmask(salario),
         modelo_trabalho,
         regime_contratual,
@@ -119,7 +113,6 @@ const Page = () => {
     },
     300,
     [
-      empresa,
       salario,
       modelo_trabalho,
       regime_contratual,
@@ -163,15 +156,7 @@ const Page = () => {
     <>
       <div className="bg-neutral w-full">
         <form className="container pb-4">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <InputNomeFantasia
-              register={register}
-              error={errors.empresa?.message}
-              label={'Empresa'}
-              name={'empresa'}
-              required={false}
-              labelClassName={'text-white'}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <InputSalario
               register={register}
               error={errors.salario?.message}
@@ -204,36 +189,35 @@ const Page = () => {
             <div className="w-full">
               <div className="label">
                 <span className="label-text">
-                  Recomendações para o candidato (
+                  Recomendações de candidatos (
                   <TextSkeleton
                     as={'span'}
                     className="h-4 w-8 bg-base-200 mr-2"
                   >
-                    {countVagas}
+                    {countCandidatos}
                   </TextSkeleton>{' '}
-                  vagas)
+                  candidatos)
                 </span>
               </div>
               <div className="w-full">
                 <div className="overflow-x-auto flex snap-x snap-mandatory bg-white p-0 lg:p-4 rounded">
-                  {vagas ? (
-                    vagas?.length > 0 ? (
-                      vagas?.map((vaga, index) => (
+                  {candidatos ? (
+                    candidatos?.length > 0 ? (
+                      candidatos?.map((candidato, index) => (
                         <>
-                          <CardDetailVaga
-                            key={vaga.id}
-                            vaga={vaga}
-                            isOwner={userEmpresa?.id == vaga.empresa.id}
+                          <CardDetailCandidato
+                            key={candidato.id}
+                            candidato={candidato}
                             onAction={() => {
-                              setSelectedVaga(vaga);
+                              setSelectedCandidato(candidato);
                             }}
-                            onClick={() => handleCandidate(vaga.id)}
-                            selected={vaga.id === selectedVaga?.id}
+                            onClick={() => handleCandidate(candidato.id)}
+                            selected={candidato.id === selectedCandidato?.id}
                             className="snap-center flex-none lg:w-4/12"
                             canCandidate={true}
                             isFeature={true}
                             isCandidated={candidaturas?.some(
-                              (i) => i.vaga == vaga.id,
+                              (i) => i.vaga == candidato.id,
                             )}
                           />
                         </>
@@ -243,7 +227,7 @@ const Page = () => {
                     )
                   ) : (
                     range(3).map((_, index) => (
-                      <CardDetailVaga
+                      <CardDetailCandidato
                         key={index}
                         vaga={null}
                         isOwner={false}
@@ -261,28 +245,27 @@ const Page = () => {
           <div className="lg:w-4/12">
             <div className="label">
               <span className="label-text">
-                Resultado a partir da busca ({vagas?.length} vagas)
+                Resultado a partir da busca ({candidatos?.length} vagas)
               </span>
             </div>
             <div className="w-full ">
               <div className="flex flex-col lg:grid lg:grid-cols-1 p-0 lg:p-4 rounded lg:bg-white gap-4">
-                {vagas ? (
-                  vagas?.length > 0 ? (
-                    vagas?.map((vaga) => (
-                      <CardDetailVaga
-                        key={vaga.id}
-                        vaga={vaga}
-                        isOwner={userEmpresa?.id == vaga.empresa.id}
+                {candidatos ? (
+                  candidatos?.length > 0 ? (
+                    candidatos?.map((candidato) => (
+                      <CardDetailCandidato
+                        key={candidato.id}
+                        candidato={candidato}
                         onAction={() => {
-                          setSelectedVaga(vaga);
+                          setSelectedCandidato(candidato);
                         }}
-                        onClick={() => handleCandidate(vaga.id)}
-                        selected={vaga.id === selectedVaga?.id}
+                        onClick={() => handleCandidate(candidato.id)}
+                        selected={candidato.id === selectedCandidato?.id}
                         isExpandable={true}
                         isFeature={false}
                         canCandidate={true}
                         isCandidated={candidaturas?.some(
-                          (i) => i.vaga == vaga.id,
+                          (i) => i.vaga == candidato.id,
                         )}
                       />
                     ))
@@ -292,7 +275,7 @@ const Page = () => {
                     </div>
                   )
                 ) : (
-                  <CardDetailVaga
+                  <CardDetailCandidato
                     vaga={null}
                     isOwner={false}
                     isFeature={false}
@@ -311,14 +294,13 @@ const Page = () => {
               className="sticky top-0 lg:max-h-screen lg:overflow-y-auto flex w-full bg-white rounded"
               ref={scrollDetail}
             >
-              {selectedVaga ? (
-                <CardDetailVaga
-                  vaga={selectedVaga}
-                  onClick={() => handleCandidate(selectedVaga.id)}
+              {selectedCandidato ? (
+                <CardDetailCandidato
+                  candidato={selectedCandidato}
+                  onClick={() => handleCandidate(selectedCandidato.id)}
                   canCandidate={true}
-                  isOwner={userEmpresa?.id == selectedVaga.empresa.id}
                   isCandidated={candidaturas?.some(
-                    (i) => i.vaga == selectedVaga.id,
+                    (i) => i.vaga == selectedCandidato.id,
                   )}
                 />
               ) : (
@@ -339,5 +321,6 @@ const Page = () => {
 };
 
 Page.overrideLayout = '';
+Page.permissions = [EMPREGADOR];
 
 export default Page;

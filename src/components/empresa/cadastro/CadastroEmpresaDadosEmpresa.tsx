@@ -8,7 +8,7 @@ import InputSite from '@/components/atoms/inputs/InputSite';
 import InputNumeroFuncionarios from '@/components/atoms/inputs/InputNumeroFuncionarios';
 import TextAreaField from '@/components/atoms/TextAreaField';
 import { IEmpresa } from '@/interfaces/empresa';
-import EditFoto from '@/components/atoms/EditFoto';
+import InputUploadImage from '@/components/atoms/InputUploadImage';
 
 type Props = {
   register: any;
@@ -32,7 +32,7 @@ const CadastroEmpresaDadosEmpresa = ({
   return (
     <>
       {editMode && (
-        <EditFoto
+        <InputUploadImage
           register={register('foto')}
           error={errors.foto?.message}
           watch={watch}

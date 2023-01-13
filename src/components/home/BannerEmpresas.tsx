@@ -14,7 +14,7 @@ const BannerEmpresas = ({}: Props) => {
         // title="Heading"
         subtitle="Para Empresas"
         description={
-          'As políticas de fomento à produção industrial, ao desenvolvimento econômico, a criação de novas empresas e empreendimentos têm levado o Estado de Goiás a ser referência nacional. O município de Anápolis é um dos mais importantes em decorrência da sua localização estratégica, potencialidades e vocações. As empresas locais estão sempre contratando novos colaboradores! Acesse aqui as vagas, que podem ter o seu perfil.'
+          'As políticas de fomento à produção industrial, ao desenvolvimento econômico, a criação de novas empresas e empreendimentos têm levado o Estado de Goiás a ser referência nacional. O município de Anápolis é um dos mais importantes em decorrência da sua localização estratégica, potencialidades e vocações. As empresas locais estão sempre contratando novos colaboradores! Cadastre suas vagas aqui e selecione novos talentos.'
         }
         image={{
           src: '/img/empresa.jpg',

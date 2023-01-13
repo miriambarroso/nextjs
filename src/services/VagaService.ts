@@ -40,6 +40,18 @@ class VagaService extends CRLUDService<
 
     return data;
   }
+
+  async getVagasCandidaturas(id: number) {
+    let { data } = await axiosInstance.get(
+      `${this.baseUrl}/candidaturas/${id}`,
+    );
+
+    data.results.forEach((vaga: IVaga) => {
+      vaga.salario = parseFloat(vaga.salario).toFixed(2).replace('.', ',');
+    });
+
+    return data;
+  }
 }
 
 export default new VagaService();

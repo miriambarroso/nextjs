@@ -151,11 +151,6 @@ const CardDetailCandidato = ({
                   {vaga?.cargo}
                 </TextSkeleton>
               </h2>
-              <p className="card-subtitle text-gray-500">
-                <TextSkeleton as="span">
-                  {vaga?.salario && currencyMask.mask(vaga?.salario)}
-                </TextSkeleton>
-              </p>
               <p className="text-sm text-fade">
                 <TextSkeleton as="span">
                   {vaga?.created_at && formatDateToLocale(vaga?.created_at)}
@@ -239,45 +234,6 @@ const CardDetailCandidato = ({
           {/*    ))}*/}
           {/*  </ul>*/}
           {/*</div>*/}
-          <div className="card-actions justify-between items-center mt-auto">
-            {!isOwner && (
-              <Link
-                href={`/empresa/${vaga?.empresa?.id}`}
-                className="flex items-center gap-2 rounded hover:bg-base-200 transition duration-150 p-2 w-1/2"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="avatar">
-                  <div className="w-10 rounded-full relative">
-                    <Image
-                      src="https://placeimg.com/400/225/arch"
-                      fill
-                      alt="Logo da empresa"
-                    />
-                  </div>
-                </div>
-                <p className="truncate">
-                  <TextSkeleton
-                    as="span"
-                    className="h-4 w-16
-                   bg-base-100"
-                  >
-                    {vaga?.empresa?.nome_fantasia}
-                  </TextSkeleton>
-                </p>
-              </Link>
-            )}
-
-            {(isExpandable || isFeature) && btnAction()}
-            {isOwner && (
-              <Link
-                href={`/empresa/vaga/${vaga?.id}`}
-                className="link link-hover link-neutral text-sm ml-auto"
-                onClick={(e) => e.stopPropagation()}
-              >
-                Ver candidatos
-              </Link>
-            )}
-          </div>
         </div>
       </div>
     );

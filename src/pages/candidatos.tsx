@@ -1,27 +1,27 @@
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import vagasSchema from '@/components/pesquisa/vagasSchema';
-import InputSalario from '@/components/atoms/inputs/InputSalario';
-import SelectModeloTrabalho from '@/components/atoms/inputs/SelectModeloTrabalho';
-import SelectRegimeContratual from '@/components/atoms/inputs/SelectRegimeContratual';
-import SelectJornadaTrabalho from '@/components/atoms/inputs/SelectJornadaTrabalho';
-import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
-import CandidaturaService from '@/services/CandidaturaService';
-import { EMPREGADOR, useAuthStore } from '@/store/auth';
-import { toastError, toastSuccess } from '@/utils/toasts';
-import { omitBy, range } from 'lodash';
-import TextSkeleton from '@/components/skeleton/TextSkeleton';
-import useEffectTimeout from '@/hooks/useEffectTimeout';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import vagasSchema from "@/components/pesquisa/vagasSchema";
+import InputSalario from "@/components/atoms/inputs/InputSalario";
+import SelectModeloTrabalho from "@/components/atoms/inputs/SelectModeloTrabalho";
+import SelectRegimeContratual from "@/components/atoms/inputs/SelectRegimeContratual";
+import SelectJornadaTrabalho from "@/components/atoms/inputs/SelectJornadaTrabalho";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
+import CandidaturaService from "@/services/CandidaturaService";
+import { EMPREGADOR, useAuthStore } from "@/store/auth";
+import { toastError, toastSuccess } from "@/utils/toasts";
+import { omitBy, range } from "lodash";
+import TextSkeleton from "@/components/skeleton/TextSkeleton";
+import useEffectTimeout from "@/hooks/useEffectTimeout";
 import {
   JornadaTrabalhoChoices,
   ModeloTrabalhoChoices,
-  RegimeContratualChoices,
-} from '@/utils/choices';
-import { currencyMask } from '@/utils/masks';
-import CandidatoService from '@/services/CandidatoService';
-import { ICandidatoList } from '@/interfaces/candidato';
-import CardDetailCandidato from '@/components/candidato/CardCandidatoVaga';
+  RegimeContratualChoices
+} from "@/utils/choices";
+import { currencyMask } from "@/utils/masks";
+import CandidatoService from "@/services/CandidatoService";
+import { ICandidatoList } from "@/interfaces/candidato";
+import CardDetailCandidato from "@/components/candidato/CardCandidatoVaga";
 
 type QueueProps = {
   termo?: string;
@@ -40,7 +40,7 @@ const Page = () => {
       state.candidaturas,
       state.setCandidaturas,
       state.isCandidato,
-      state.empresa,
+      state.empresa
     ]);
   const [candidatos, setCandidatos] = useState<ICandidatoList[]>(null);
   const [countCandidatos, setCountCandidatos] = useState(0);
@@ -55,9 +55,9 @@ const Page = () => {
   const {
     register,
     formState: { errors },
-    watch,
+    watch
   } = useForm({
-    resolver: yupResolver(vagasSchema),
+    resolver: yupResolver(vagasSchema)
   });
 
   const { salario, modelo_trabalho, regime_contratual, jornada_trabalho } =
@@ -73,7 +73,7 @@ const Page = () => {
       setCandidatos(results);
       setCountCandidatos(count);
     } catch (error) {
-      toastError('Erro ao buscar vagas');
+      toastError("Erro ao buscar vagas");
     }
   };
 
@@ -83,20 +83,20 @@ const Page = () => {
 
       if (item > -1) {
         await CandidaturaService.delete(candidaturas[item].id);
-        toastSuccess('Candidatura cancelada!');
+        toastSuccess("Candidatura cancelada!");
         let newCandidaturas = candidaturas;
         newCandidaturas.splice(item, 1);
         setCandidaturas([...newCandidaturas]);
       } else {
         const data = await CandidaturaService.create({
           vaga: id,
-          usuario: user?.id,
+          usuario: user?.id
         });
-        toastSuccess('Candidatura realizada!');
+        toastSuccess("Candidatura realizada!");
         setCandidaturas([...candidaturas, data]);
       }
     } catch (error) {
-      toastError('Erro ao realizar candidatura!');
+      toastError("Erro ao realizar candidatura!");
     }
   };
 
@@ -108,7 +108,7 @@ const Page = () => {
         regime_contratual,
         jornada_trabalho,
         termo: termo as string,
-        selecionado: selecionado as unknown as number,
+        selecionado: selecionado as unknown as number
       });
     },
     300,
@@ -118,38 +118,38 @@ const Page = () => {
       regime_contratual,
       jornada_trabalho,
       termo,
-      selecionado,
-    ],
+      selecionado
+    ]
   );
 
   const modeloTrabalhoChoices = [
     {
-      label: 'Selecione o modelo de trabalho',
-      value: '',
+      label: "Selecione o modelo de trabalho",
+      value: "",
       selected: true,
-      disabled: false,
+      disabled: false
     },
-    ...ModeloTrabalhoChoices.choices,
+    ...ModeloTrabalhoChoices.choices
   ];
 
   const regimeContratualChoices = [
     {
-      label: 'Selecione o regime de contratação',
-      value: '',
+      label: "Selecione o regime de contratação",
+      value: "",
       selected: true,
-      disabled: false,
+      disabled: false
     },
-    ...RegimeContratualChoices.choices,
+    ...RegimeContratualChoices.choices
   ];
 
   const jornadaTrabalhoChoices = [
     {
-      label: 'Selecione o jornada de trabalho',
-      value: '',
+      label: "Selecione o jornada de trabalho",
+      value: "",
       selected: true,
-      disabled: false,
+      disabled: false
     },
-    ...JornadaTrabalhoChoices.choices,
+    ...JornadaTrabalhoChoices.choices
   ];
 
   return (
@@ -160,24 +160,24 @@ const Page = () => {
             <InputSalario
               register={register}
               error={errors.salario?.message}
-              labelClassName={'text-white'}
+              labelClassName={"text-white"}
             />
             <SelectModeloTrabalho
               register={register}
               error={errors.modelo_trabalho?.message}
-              labelClassName={'text-white'}
+              labelClassName={"text-white"}
               choices={modeloTrabalhoChoices}
             />
             <SelectRegimeContratual
               register={register}
               error={errors.regime_contratual?.message}
-              labelClassName={'text-white'}
+              labelClassName={"text-white"}
               choices={regimeContratualChoices}
             />
             <SelectJornadaTrabalho
               register={register}
               error={errors.jornada_trabalho?.message}
-              labelClassName={'text-white'}
+              labelClassName={"text-white"}
               choices={jornadaTrabalhoChoices}
             />
           </div>
@@ -191,11 +191,11 @@ const Page = () => {
                 <span className="label-text">
                   Recomendações de candidatos (
                   <TextSkeleton
-                    as={'span'}
+                    as={"span"}
                     className="h-4 w-8 bg-base-200 mr-2"
                   >
                     {countCandidatos}
-                  </TextSkeleton>{' '}
+                  </TextSkeleton>{" "}
                   candidatos)
                 </span>
               </div>
@@ -217,7 +217,7 @@ const Page = () => {
                             canCandidate={true}
                             isFeature={true}
                             isCandidated={candidaturas?.some(
-                              (i) => i.vaga == candidato.id,
+                              (i) => i.vaga == candidato.id
                             )}
                           />
                         </>
@@ -229,7 +229,7 @@ const Page = () => {
                     range(3).map((_, index) => (
                       <CardDetailCandidato
                         key={index}
-                        vaga={null}
+                        candidato={null}
                         isOwner={false}
                         skeleton={1}
                       />
@@ -265,7 +265,7 @@ const Page = () => {
                         isFeature={false}
                         canCandidate={true}
                         isCandidated={candidaturas?.some(
-                          (i) => i.vaga == candidato.id,
+                          (i) => i.vaga == candidato.id
                         )}
                       />
                     ))
@@ -276,7 +276,7 @@ const Page = () => {
                   )
                 ) : (
                   <CardDetailCandidato
-                    vaga={null}
+                    candidato={null}
                     isOwner={false}
                     isFeature={false}
                     skeleton={3}
@@ -300,7 +300,7 @@ const Page = () => {
                   onClick={() => handleCandidate(selectedCandidato.id)}
                   canCandidate={true}
                   isCandidated={candidaturas?.some(
-                    (i) => i.vaga == selectedCandidato.id,
+                    (i) => i.vaga == selectedCandidato.id
                   )}
                 />
               ) : (
@@ -320,7 +320,7 @@ const Page = () => {
   );
 };
 
-Page.overrideLayout = '';
+Page.overrideLayout = "";
 Page.permissions = [EMPREGADOR];
 
 export default Page;

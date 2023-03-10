@@ -93,7 +93,7 @@ const CadastroVaga = ({}: Props) => {
             'idade_maxima',
             'quantidade_vagas',
           ]),
-        3: async () => await trigger(['curriculos']),
+        // 3: async () => await trigger(['curriculos']),
       };
 
       const result = await validateForm[step]();
@@ -129,13 +129,13 @@ const CadastroVaga = ({}: Props) => {
         {step == 2 && (
           <CadastroVagaInformacoes register={register} errors={errors} />
         )}
-        {step == 3 && (
+        {/* {step == 3 && (
           <CadastroVagaCurriculos
             register={register}
             errors={errors}
             watch={watch}
           />
-        )}
+        )} */}
 
         <div className="flex flex-wrap justify-between mt-4">
           <ReCAPTCHA

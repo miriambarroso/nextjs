@@ -27,7 +27,7 @@ const CadastroVaga = ({}: Props) => {
     'Sobre a Vaga',
     'Salário e Benefícios',
     'Informações Categóricas',
-    'Currículos',
+    // 'Currículos',
   ];
   const [beneficios, setBeneficios] = useState([]);
   const recaptchaRef = useRef(null);

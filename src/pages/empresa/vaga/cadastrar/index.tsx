@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { clamp, classNames } from '@/utils';
+import { clamp, classNames, objectFormData } from '@/utils';
 import { useEffect, useRef, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '@/components/vaga/cadastro/schema';
@@ -43,11 +43,17 @@ const CadastroVaga = ({}: Props) => {
   });
   const onSubmit = async (data) => {
     const recaptchaValue = await recaptchaRef.current.executeAsync();
-    console.log(data);
+
     try {
-      const request = omitBy(data, (v) => !v) as IVagaCreate;
-      request['recaptcha'] = recaptchaValue;
-      await VagaService.create(request);
+      let requestData = omitBy(data, (v) => !v);
+      requestData['recaptcha'] = recaptchaValue;
+      requestData = objectFormData(requestData);
+
+      await VagaService.create(requestData as FormData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
       toastSuccess('Vaga criada!');
       Router.back();
     } catch (e) {

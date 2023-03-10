@@ -43,7 +43,6 @@ const CadastroVaga = ({}: Props) => {
   });
   const onSubmit = async (data) => {
     const recaptchaValue = await recaptchaRef.current.executeAsync();
-    recaptchaRef.current.reset();
 
     try {
       let requestData = omitBy(data, (v) => !v);
@@ -60,6 +59,8 @@ const CadastroVaga = ({}: Props) => {
     } catch (e) {
       toastError('Erro ao criar vaga!');
     }
+
+    recaptchaRef.current.reset();
   };
 
   const fetchBeneficios = async () => {

@@ -69,10 +69,9 @@ const Index = ({}: Props) => {
     }
   };
   const onSubmit = async (data) => {
-    try {
-      const recaptchaValue = await recaptchaRef.current.executeAsync();
-      recaptchaRef.current.reset();
+    const recaptchaValue = await recaptchaRef.current.executeAsync();
 
+    try {
       let requestData = {
         ...data,
         data_nascimento: format(data.data_nascimento, "yyyy-MM-dd"),
@@ -97,6 +96,8 @@ const Index = ({}: Props) => {
       console.log(error);
       toastError("Erro ao realizar cadastro!");
     }
+
+    recaptchaRef.current.reset();
   };
 
   const changeStep = async (value) => {

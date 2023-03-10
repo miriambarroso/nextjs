@@ -43,6 +43,7 @@ const CadastroVaga = ({}: Props) => {
   });
   const onSubmit = async (data) => {
     const recaptchaValue = await recaptchaRef.current.executeAsync();
+    recaptchaRef.current.reset();
 
     try {
       let requestData = omitBy(data, (v) => !v);

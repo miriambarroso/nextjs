@@ -62,6 +62,8 @@ const CadastroVaga = ({}: Props) => {
     } catch (e) {
       toastError('Erro ao atualizar vaga!');
     }
+
+    recaptchaRef.current.reset();
   };
 
   const fetchBeneficios = async () => {

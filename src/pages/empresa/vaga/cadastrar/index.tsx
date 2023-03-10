@@ -9,11 +9,14 @@ import CadastroVagaSobre from '@/components/vaga/cadastro/CadastroVagaSobre';
 import CadastroVagaInformacoes from '@/components/vaga/cadastro/CadastroVagaInformacoes';
 import CadastroVagaSalarioBeneficios from '@/components/vaga/cadastro/CadastroVagaSalarioBeneficios';
 import { ADMIN, EMPREGADOR, SUPERADMIN } from '@/store/auth';
-import { toastError } from '@/utils/toasts';
+import { toastError, toastSuccess } from '@/utils/toasts';
 import BeneficioService from '@/services/BeneficioService';
 import Router from 'next/router';
 import ReCAPTCHA from 'react-google-recaptcha';
 import CadastroVagaCurriculos from '@/components/vaga/cadastro/CadastroVagaCurriculos';
+import { omitBy } from 'lodash';
+import VagaService from '@/services/VagaService';
+import { IVagaCreate } from '@/interfaces/vaga';
 
 type Props = {};
 
@@ -41,15 +44,15 @@ const CadastroVaga = ({}: Props) => {
   const onSubmit = async (data) => {
     const recaptchaValue = await recaptchaRef.current.executeAsync();
     console.log(data);
-    // try {
-    //   const request = omitBy(data, (v) => !v) as IVagaCreate;
-    //   request['recaptcha'] = recaptchaValue;
-    //   await VagaService.create(request);
-    //   toastSuccess('Vaga criada!');
-    //   Router.back();
-    // } catch (e) {
-    //   toastError('Erro ao criar vaga!');
-    // }
+    try {
+      const request = omitBy(data, (v) => !v) as IVagaCreate;
+      request['recaptcha'] = recaptchaValue;
+      await VagaService.create(request);
+      toastSuccess('Vaga criada!');
+      Router.back();
+    } catch (e) {
+      toastError('Erro ao criar vaga!');
+    }
   };
 
   const fetchBeneficios = async () => {

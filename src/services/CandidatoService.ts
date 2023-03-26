@@ -10,7 +10,7 @@ import CRLUDService from '@/services/CRLUDService';
 class CandidatoService extends CRLUDService<
   ICandidatoCreate,
   ICandidato,
-  ICandidatoList,
+  ICandidatoPerfil,
   ICandidatoCreate,
   ICandidatoCreate
 > {

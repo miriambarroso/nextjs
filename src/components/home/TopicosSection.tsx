@@ -1,8 +1,11 @@
 import Link from 'next/link';
+import { useAuthStore } from '@/store/auth';
 
 type Props = {};
 
 const TopicosSection = ({}: Props) => {
+  const user = useAuthStore((state) => state.user);
+
   const cards = [
     {
       title: 'Recrutamento & Seleção',
@@ -10,7 +13,7 @@ const TopicosSection = ({}: Props) => {
         'Contrate com agilidade e otimize a gestão de seus processos seletivos. Desde a atração de talentos até a seleção final, nossa plataforma centraliza todo o recrutamento em um único lugar, com análise de dados e relatórios relevantes para a sua tomada de decisão certa para cada vaga',
       url: {
         label: 'Cadastrar Vaga',
-        href: '/empresa/cadastrar',
+        href: () => (user ? '/empresa/vaga/cadastrar' : '/empresa/cadastrar'),
         // target: '_blank',
       },
     },
@@ -48,7 +51,11 @@ const TopicosSection = ({}: Props) => {
               <p>{card.description}</p>
               <div className="card-actions justify-center lg:justify-start">
                 <Link
-                  href={card.url?.href}
+                  href={
+                    typeof card.url?.href == 'function'
+                      ? card.url?.href()
+                      : card.url?.href
+                  }
                   className="btn btn-neutral btn-wide lg:w-max lg:btn-medium"
                 >
                   {card.url?.label}

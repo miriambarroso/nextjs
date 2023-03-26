@@ -3,8 +3,8 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import VagaService from '@/services/VagaService';
 import { IVaga } from '@/interfaces/vaga';
-import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import { range } from 'lodash';
+import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
 
 type Props = {};

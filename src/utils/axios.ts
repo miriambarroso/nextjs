@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   // if url do not end with / adds / to the end
-  if (!config.url.endsWith('/')) {
+  if (!config.url.endsWith('/') && !config.url.includes('?')) {
     config.url += '/';
   }
 
@@ -25,16 +25,19 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-axiosInstance.interceptors.response.use(response => response, error => {
-  if (error.response.status === 401) {
-    useAuthStore.getState().logout();
-  }
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 401) {
+      useAuthStore.getState().logout();
+    }
 
-  if (error.response.status === 403) {
-    toastWarning('Você não tem permissão para acessar essa informação.')
-  }
+    if (error.response.status === 403) {
+      toastWarning('Você não tem permissão para acessar essa informação.');
+    }
 
-  return Promise.reject(error);
-})
+    return Promise.reject(error);
+  },
+);
 
 export default axiosInstance;

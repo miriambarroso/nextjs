@@ -23,6 +23,9 @@ import {
   RegimeContratualChoices,
 } from '@/utils/choices';
 import { currencyMask } from '@/utils/masks';
+import PaginationService from '@/services/PaginationService';
+import InfiniteScroller from '@/components/InfiniteScroller';
+import { BiLoaderCircle } from 'react-icons/bi';
 
 type QueueProps = {
   termo?: string;
@@ -32,6 +35,7 @@ type QueueProps = {
   regime_contratual?: number;
   jornada_trabalho?: number;
   selecionado?: number;
+  recommendation?: string;
 };
 
 const Page = () => {
@@ -43,8 +47,12 @@ const Page = () => {
       state.isCandidato,
       state.empresa,
     ]);
-  const [vagas, setVagas] = useState<IVaga[]>(null);
-  const [countVagas, setCountVagas] = useState(0);
+  const [vagasPagination, setVagasPagination] =
+    useState<PaginationService<IVaga>>();
+  const [recomendedVagasPagination, setRecomendedVagasPagination] =
+    useState<PaginationService<IVaga>>();
+  const [vagas, setVagas] = useState<IVaga[]>();
+  const [recomendedVagas, setRecomendedVagas] = useState<IVaga[]>();
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
   const scrollDetail = useRef<HTMLDivElement>(null);
 
@@ -73,10 +81,42 @@ const Page = () => {
   const handleSearch = async (query: QueueProps) => {
     try {
       const clearQuery = omitBy(query, (v) => !v);
-      const { results, count } = await VagaService.getAll(clearQuery);
-      setSelectedVaga(results.length > 0 ? results[0] : null);
-      setVagas(results);
-      setCountVagas(count);
+      const data = await VagaService.getAll(clearQuery);
+      setVagasPagination(new PaginationService(data));
+      setVagas(data.results);
+    } catch (error) {
+      toastError('Erro ao buscar vagas');
+    }
+  };
+
+  const handleRecomendedSearch = async (query: QueueProps) => {
+    try {
+      const clearQuery = omitBy(query, (v) => !v);
+      const data = await VagaService.getAll(clearQuery);
+      setRecomendedVagasPagination(new PaginationService(data));
+      setRecomendedVagas(data.results);
+    } catch (error) {
+      toastError('Erro ao buscar vagas');
+    }
+  };
+
+  const handleVagasNextPage = async () => {
+    try {
+      if (!vagasPagination.hasNext()) return;
+
+      const paginationData = await vagasPagination.fetchNext();
+      setVagasPagination(paginationData);
+      setVagas((v) => [...v, ...paginationData.results]);
+    } catch (error) {
+      toastError('Erro ao buscar vagas');
+    }
+  };
+
+  const handleRecomendedVagasNextPage = async () => {
+    try {
+      const paginationData = await recomendedVagasPagination.fetchNext();
+      setRecomendedVagasPagination(paginationData);
+      setRecomendedVagas((v) => [...v, ...paginationData.results]);
     } catch (error) {
       toastError('Erro ao buscar vagas');
     }
@@ -116,6 +156,19 @@ const Page = () => {
         termo: termo as string,
         selecionado: selecionado as unknown as number,
       });
+
+      if (user) {
+        handleRecomendedSearch({
+          empresa,
+          salario: salario && currencyMask.unmask(salario),
+          modelo_trabalho,
+          regime_contratual,
+          jornada_trabalho,
+          termo: termo as string,
+          selecionado: selecionado as unknown as number,
+          recommendation: 'tfidf',
+        });
+      }
     },
     300,
     [
@@ -126,6 +179,7 @@ const Page = () => {
       jornada_trabalho,
       termo,
       selecionado,
+      user,
     ],
   );
 
@@ -209,34 +263,32 @@ const Page = () => {
                     as={'span'}
                     className="h-4 w-8 bg-base-200 mr-2"
                   >
-                    {countVagas}
+                    {recomendedVagasPagination?.count}
                   </TextSkeleton>{' '}
                   vagas)
                 </span>
               </div>
               <div className="w-full">
                 <div className="overflow-x-auto flex snap-x snap-mandatory bg-white p-0 lg:p-4 rounded">
-                  {vagas ? (
-                    vagas?.length > 0 ? (
-                      vagas?.map((vaga, index) => (
-                        <>
-                          <CardDetailVaga
-                            key={vaga.id}
-                            vaga={vaga}
-                            isOwner={userEmpresa?.id == vaga.empresa.id}
-                            onAction={() => {
-                              setSelectedVaga(vaga);
-                            }}
-                            onClick={() => handleCandidate(vaga.id)}
-                            selected={vaga.id === selectedVaga?.id}
-                            className="snap-center flex-none lg:w-4/12"
-                            canCandidate={true}
-                            isFeature={true}
-                            isCandidated={candidaturas?.some(
-                              (i) => i.vaga == vaga.id,
-                            )}
-                          />
-                        </>
+                  {recomendedVagas ? (
+                    recomendedVagas?.length > 0 ? (
+                      recomendedVagas?.map((vaga, index) => (
+                        <CardDetailVaga
+                          key={vaga.id}
+                          vaga={vaga}
+                          isOwner={userEmpresa?.id == vaga.empresa.id}
+                          onAction={() => {
+                            setSelectedVaga(vaga);
+                          }}
+                          onClick={() => handleCandidate(vaga.id)}
+                          selected={vaga.id === selectedVaga?.id}
+                          className="snap-center flex-none lg:w-4/12"
+                          canCandidate={true}
+                          isFeature={true}
+                          isCandidated={candidaturas?.some(
+                            (i) => i.vaga == vaga.id,
+                          )}
+                        />
                       ))
                     ) : (
                       <div>Não há vagas recomendadas para você</div>
@@ -261,7 +313,7 @@ const Page = () => {
           <div className="lg:w-4/12">
             <div className="label">
               <span className="label-text">
-                Resultado a partir da busca ({vagas?.length} vagas)
+                Resultado a partir da busca ({vagasPagination?.count} vagas)
               </span>
             </div>
             <div className="w-full ">
@@ -300,6 +352,11 @@ const Page = () => {
                     className="snap-center"
                   />
                 )}
+                <InfiniteScroller callback={handleVagasNextPage}>
+                  <div className="flex items-center justify-center">
+                    <BiLoaderCircle className="text-3xl animate-spin" />
+                  </div>
+                </InfiniteScroller>
               </div>
             </div>
           </div>

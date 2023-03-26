@@ -26,7 +26,7 @@ const dropdownItems = [
     },
     {
       name: 'Listar Vagas',
-      href: '/empresa/vagas',
+      href: '/empresa/vaga',
     },
   ],
 ];
@@ -48,9 +48,9 @@ const NavEmpregador = ({ user, logout }: Props) => {
       <li>
         <Link href="/empresa/painel">Painel</Link>
       </li>
-      <li>
-        <Link href="/sobre-nos">Sobre Nós</Link>
-      </li>
+      {/*<li>*/}
+      {/*  <Link href="/sobre-nos">Sobre Nós</Link>*/}
+      {/*</li>*/}
       <li>
         <DropdownNav
           items={accordion}

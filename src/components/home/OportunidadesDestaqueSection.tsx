@@ -12,7 +12,7 @@ const OportunidadesDestaqueSection = ({}: Props) => {
   const [empresa] = useAuthStore((state) => [state.empresa]);
   const [vagas, setVagas] = useState<IVaga[]>(null);
   useEffect(() => {
-    VagaService.getAll({ limit: 3 }).then(({ results }) => {
+    VagaService.getAll({ page_size: 3 }).then(({ results }) => {
       setVagas(results);
     });
   }, []);
@@ -27,7 +27,7 @@ const OportunidadesDestaqueSection = ({}: Props) => {
         }}
       >
         <div className="w-full">
-          <div className="overflow-x-auto flex lg:grid lg:grid-cols-3 snap-x snap-mandatory lg:gap-4 bg-white py-4 rounded">
+          <div className="overflow-x-auto flex snap-x snap-mandatory lg:gap-4 bg-white py-4 rounded">
             {vagas ? (
               vagas?.map((vaga, index) => (
                 <CardDetailVaga

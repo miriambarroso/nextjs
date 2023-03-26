@@ -19,4 +19,6 @@ export interface ICandidatoPerfil extends ICandidato {
 
 export interface ICandidatoList extends ICandidato {
   objetivo_profissional: IObjetivoProfissional;
+  formacao_academica: IFormacaoAcademica[];
+  experiencia_profissional: IExperienciaProfissional[];
 }

@@ -2,6 +2,8 @@ import * as dateFns from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 export function formatDateToExtense(date: string) {
+  if (!date) return '';
+
   const parsedDate = new Date(Date.parse(date));
   const dateFormat = 'LLLL, yyyy';
   return dateFns.format(parsedDate, dateFormat, { locale: ptBR });

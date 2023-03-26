@@ -1,6 +1,6 @@
 {
-  "name": "PWA App",
-  "short_name": "App",
+  "name": "Vagas Anápolis",
+  "short_name": "Vagas Anápolis",
   "icons": [
     {
       "src": "/icons/android-chrome-192x192.png",
@@ -19,8 +19,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#FFFFFF",
-  "background_color": "#FFFFFF",
+  "theme_color": "#F18701",
+  "background_color": "#EEEFF1",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait"

@@ -1,6 +1,7 @@
-import axiosInstance from '@/utils/axios';
-import { AxiosRequestConfig } from 'axios';
-import { omitBy } from 'lodash';
+import axiosInstance from "@/utils/axios";
+import { AxiosRequestConfig } from "axios";
+import { omitBy } from "lodash";
+import { IPagination } from "@/interfaces/pagination";
 
 class CRLUDService<C, R, L, U, D> {
   protected readonly baseUrl: string;
@@ -20,10 +21,10 @@ class CRLUDService<C, R, L, U, D> {
     const cleanedUp = this.cleanUp(item);
     const { data } = await axiosInstance.post(`${this.baseUrl}`, cleanedUp, {
       headers: {
-        'Content-Type':
-          item instanceof FormData ? 'multipart/form-data' : 'application/json',
+        "Content-Type":
+          item instanceof FormData ? "multipart/form-data" : "application/json"
       },
-      ...config,
+      ...config
     });
     return data;
   }
@@ -35,16 +36,11 @@ class CRLUDService<C, R, L, U, D> {
 
   async getAll(
     query?: any,
-    config?: AxiosRequestConfig,
-  ): Promise<{
-    count: number;
-    next: number;
-    previous: number;
-    results: L[];
-  }> {
+    config?: AxiosRequestConfig
+  ): Promise<IPagination<L>> {
     const { data } = await axiosInstance.get(`/${this.baseUrl}`, {
       params: query,
-      ...config,
+      ...config
     });
     return data;
   }
@@ -52,7 +48,7 @@ class CRLUDService<C, R, L, U, D> {
   async update(
     item: U extends { id: number } ? U : any | FormData,
     id?: number,
-    config?: AxiosRequestConfig,
+    config?: AxiosRequestConfig
   ): Promise<U> {
     const cleanedUp = this.cleanUp(item);
     const { data } = await axiosInstance.put(
@@ -60,13 +56,13 @@ class CRLUDService<C, R, L, U, D> {
       cleanedUp,
       {
         headers: {
-          'Content-Type':
+          "Content-Type":
             item instanceof FormData
-              ? 'multipart/form-data'
-              : 'application/json',
+              ? "multipart/form-data"
+              : "application/json"
         },
-        ...config,
-      },
+        ...config
+      }
     );
     return data;
   }
@@ -74,7 +70,7 @@ class CRLUDService<C, R, L, U, D> {
   async partialUpdate(
     item: U extends { id: number } ? U : any | FormData,
     id?: number,
-    config?: AxiosRequestConfig,
+    config?: AxiosRequestConfig
   ): Promise<U> {
     const cleanedUp = this.cleanUp(item);
     const { data } = await axiosInstance.patch(
@@ -82,13 +78,13 @@ class CRLUDService<C, R, L, U, D> {
       cleanedUp,
       {
         headers: {
-          'Content-Type':
+          "Content-Type":
             item instanceof FormData
-              ? 'multipart/form-data'
-              : 'application/json',
+              ? "multipart/form-data"
+              : "application/json"
         },
-        ...config,
-      },
+        ...config
+      }
     );
     return data;
   }
@@ -96,7 +92,7 @@ class CRLUDService<C, R, L, U, D> {
   async delete(id: number, config?: AxiosRequestConfig): Promise<D> {
     const { data } = await axiosInstance.delete(
       `/${this.baseUrl}/${id}`,
-      config,
+      config
     );
     return data;
   }

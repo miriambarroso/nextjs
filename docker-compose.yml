@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  nextjs:
+    build: .
+    image: devsbaraus/emprega_nextjs:latest
+    container_name: emprega_nextjs
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3333
+  nginx:
+    container_name: emprega_nginx
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      nextjs:
+        condition: service_started
+    environment:
+      VIRTUAL_HOST: ceitec.bcc.ifg.edu.br
+      VIRTUAL_PORT: 8074
+      LETSENCRYPT_HOST: ceitec.bcc.ifg.edu.br
+      LETSENCRYPT_EMAIL: "me@baraus.dev"
+    networks:
+      - nginx-proxy
+      - default
+
+networks:
+  nginx-proxy:
+    external: true

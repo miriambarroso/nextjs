@@ -112,7 +112,7 @@ const Page = ({}: Props) => {
                 )
               ) : (
                 range(3).map((index) => (
-                  <>
+                  <Fragment key={index}>
                     <CardDetailVaga
                       key={index}
                       vaga={null}
@@ -122,7 +122,7 @@ const Page = ({}: Props) => {
                     {index !== vagas?.length - 1 && (
                       <div className="divider m-1"></div>
                     )}
-                  </>
+                  </Fragment>
                 ))
               )}
             </div>

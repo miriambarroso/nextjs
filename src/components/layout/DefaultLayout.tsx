@@ -14,7 +14,7 @@ const DefaultLayout = ({ children, page }: Props) => {
   return (
     <Drawer className={'bg-base-100 drawer-end'}>
       <Head>
-        <title>IARANA - Agente Inteligente de Anápolis</title>
+        <title>Vagas Anápolis - Recrutamento com Inteligência Artificial</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <NavBar />

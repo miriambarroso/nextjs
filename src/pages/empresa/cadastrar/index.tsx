@@ -37,6 +37,33 @@ const CadastroEmpresa = ({}: Props) => {
     trigger,
   } = useForm({
     resolver: yupResolver(schema),
+    // values: {
+    //   estado: 'SP',
+    //   cidade: 'Carapicuíba',
+    //   bairro: 'Jardim Santa Rita',
+    //   complemento: '',
+    //   numero: '',
+    //   logradouro: 'Rua Assis',
+    //   cep: '06397360',
+    //   site: 'https://www.fabioehenryconsultoriafinanceirame.com.br',
+    //   empresa_email: 'seguranca@fabioehenryconsultoriafinanceirame.com.br',
+    //   empresa_telefone: '1128065480',
+    //   descricao: 'Sei lá',
+    //   numero_funcionarios: '100',
+    //   ramo_atividade: 'Consultoria',
+    //   nome_fantasia: 'Fábio e Henry Consultoria Financeira ME',
+    //   razao_social: 'Fábio e Henry Consultoria Financeira ME',
+    //   cnpj: '75945889000189',
+    //   confirm_password: 'Admin1234)',
+    //   password: 'Admin1234)',
+    //   telefone: '62999999999',
+    //   email: 'rg@rh.rh.com',
+    //   cargo: 'Analista',
+    //   atuacao: 'Departamento',
+    //   cpf: '96683870748',
+    //   data_nascimento: '2009-04-04T03:00:00.000Z',
+    //   nome: 'Giovanna Letícia Rebeca Bernardes',
+    // },
   });
 
   const router = useRouter();
@@ -72,9 +99,8 @@ const CadastroEmpresa = ({}: Props) => {
       }
       setStep(0);
       toastError('Erro ao salvar usuário ou empresa, verifique os campos!');
+      recaptchaRef.current.reset();
     }
-
-    recaptchaRef.current.reset();
   };
 
   const changeStep = async (value) => {

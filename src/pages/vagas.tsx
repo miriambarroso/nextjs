@@ -64,6 +64,7 @@ const Page = () => {
     register,
     formState: { errors },
     watch,
+    setValue,
   } = useForm({
     resolver: yupResolver(vagasSchema),
   });

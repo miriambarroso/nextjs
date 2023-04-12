@@ -1,6 +1,6 @@
 import { BiMenuAltRight, BiSearch, BiShocked } from 'react-icons/bi';
 import LogoEmprega from '@/components/layout/LogoEmprega';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/auth';
 import { useRouter } from 'next/router';
 import { NavGuest } from '@/components/layout/NavBar/NavGuest';
@@ -47,6 +47,12 @@ const NavBar = ({}: Props) => {
       query: { termo: term },
     });
   };
+
+  useEffect(() => {
+    if (['/vagas', '/candidatos'].includes(router.pathname)) {
+      setTerm(router.query.termo as string);
+    }
+  }, [router.pathname]);
 
   useEffectTimeout(() => searchTerm(null), 1000, [term]);
 

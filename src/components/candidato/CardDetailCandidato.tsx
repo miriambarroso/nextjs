@@ -43,7 +43,6 @@ const CardDetailCandidato = ({
   candidato,
   selected,
   onClick,
-  onDelete,
   onAction,
   onExpanded,
   isOwner,
@@ -114,23 +113,23 @@ const CardDetailCandidato = ({
   //
   // }, [breakpoint]);
 
-  const btnAction = () =>
-    canCandidate &&
-    !isOwner &&
-    (isGuest() || isCandidato()) && (
-      <button
-        className={classNames(
-          ' btn btn-sm btn-wide lg:w-max',
-          isCandidated && 'btn-error',
-        )}
-        onClick={(e) => {
-          e.stopPropagation();
-          isGuest() ? handleGuestCandidate() : onClick();
-        }}
-      >
-        {isCandidated ? 'Cancelar candidatura' : 'Candidatar-se'}
-      </button>
-    );
+  // const btnAction = () =>
+  //   canCandidate &&
+  //   !isOwner &&
+  //   (isGuest() || isCandidato()) && (
+  //     <button
+  //       className={classNames(
+  //         ' btn btn-sm btn-wide lg:w-max',
+  //         isCandidated && 'btn-error',
+  //       )}
+  //       onClick={(e) => {
+  //         e.stopPropagation();
+  //         isGuest() ? handleGuestCandidate() : onClick();
+  //       }}
+  //     >
+  //       {isCandidated ? 'Cancelar candidatura' : 'Candidatar-se'}
+  //     </button>
+  //   );
 
   const renderItem = (candidato: ICandidatoPerfil, index?: number, ref?) => {
     return (
@@ -153,7 +152,7 @@ const CardDetailCandidato = ({
                   {candidato?.nome}
                 </TextSkeleton>
               </h2>
-              <p className="text-sm text-fade">
+              <p className="text-sm text-fade mt-2">
                 <TextSkeleton as="span">
                   {candidato?.objetivo_profissional.cargo}
                 </TextSkeleton>
@@ -173,27 +172,30 @@ const CardDetailCandidato = ({
                     </p>
                     <p className="text-sm text-fade uppercase">
                       <TextSkeleton as="span">
-                        {formatDateToExtense(
-                          candidato?.experiencia_profissional[0].data_inicio,
-                        )}
-                        {' - '}
-                        {candidato?.experiencia_profissional[0].data_fim
-                          ? formatDateToExtense(
+                        {skeleton
+                          ? null
+                          : formatDateToExtense(
+                              candidato?.experiencia_profissional[0]
+                                .data_inicio,
+                            ) + candidato?.experiencia_profissional[0].data_fim
+                          ? '- ' +
+                            formatDateToExtense(
                               candidato?.experiencia_profissional[0].data_fim,
                             )
-                          : 'Atual'}
+                          : '- Atual'}
                       </TextSkeleton>
                     </p>
                   </li>
                   <li>
                     <p className="">
                       <TextSkeleton as="span">
-                        {
-                          FormacaoNivelChoices.findByIntValue(
-                            candidato?.formacao_academica[0].nivel,
-                          )?.label
-                        }{' '}
-                        - {candidato?.formacao_academica[0].curso}
+                        {skeleton
+                          ? null
+                          : FormacaoNivelChoices.findByIntValue(
+                              candidato?.formacao_academica[0].nivel,
+                            )?.label +
+                            ' - ' +
+                            candidato?.formacao_academica[0].curso}
                       </TextSkeleton>
                     </p>
                     <p className="text-fade">
@@ -203,11 +205,13 @@ const CardDetailCandidato = ({
                     </p>
                     <p className="text-sm text-fade uppercase">
                       <TextSkeleton as="span">
-                        {formatDateToExtense(
-                          candidato?.formacao_academica[0].data_inicio,
-                        )}
-                        {' - '}
-                        {candidato?.formacao_academica[0].data_conclusao
+                        {skeleton
+                          ? null
+                          : formatDateToExtense(
+                              candidato?.formacao_academica[0].data_inicio,
+                            ) +
+                            ' - ' +
+                            candidato?.formacao_academica[0].data_conclusao
                           ? formatDateToExtense(
                               candidato?.formacao_academica[0].data_conclusao,
                             )
@@ -221,7 +225,7 @@ const CardDetailCandidato = ({
           </div>
           <div className="lg:flex flex-wrap items-center justify-between space-y-4 lg:space-y-0 gap-4">
             <BadgeGroup badges={badges} />
-            {!isExpandable && !isFeature && btnAction()}
+            {/*{!isExpandable && !isFeature && btnAction()}*/}
           </div>
 
           {expanded || isDetail ? (

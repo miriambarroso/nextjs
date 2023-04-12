@@ -56,9 +56,10 @@ const Page = () => {
     useState<PaginationService<ICandidatoPerfil>>();
   const [recommendedCandidatosPagination, setRecommendedCandidatosPagination] =
     useState<PaginationService<ICandidatoPerfil>>();
-  const [recommendedCandidatos, setRecommendedCandidatos] =
-    useState<ICandidatoPerfil[]>();
-  const [candidatos, setCandidatos] = useState<ICandidatoPerfil[]>();
+  const [recommendedCandidatos, setRecommendedCandidatos] = useState<
+    ICandidatoPerfil[]
+  >([]);
+  const [candidatos, setCandidatos] = useState<ICandidatoPerfil[]>([]);
   const [selectedCandidato, setSelectedCandidato] =
     useState<ICandidatoPerfil>();
   const scrollDetail = useRef<HTMLDivElement>(null);
@@ -160,16 +161,30 @@ const Page = () => {
 
   useEffectTimeout(
     () => {
-      handleSearch({
-        salario: salario && currencyMask.unmask(salario),
-        modelo_trabalho,
-        regime_contratual,
-        jornada_trabalho,
-        termo: termo as string,
-        selecionado: selecionado as unknown as number,
-      });
-      if (user) {
-        fetchVagas();
+      if (!user) return;
+      else if (!vagas) fetchVagas();
+
+      if (selectedVaga) {
+        handleSearch({
+          salario: salario && currencyMask.unmask(salario),
+          modelo_trabalho,
+          regime_contratual,
+          jornada_trabalho,
+          termo: termo as string,
+          selecionado: selecionado as unknown as number,
+          vaga: selectedVaga?.id,
+        });
+
+        handleRecommendedSearch({
+          salario: salario && currencyMask.unmask(salario),
+          modelo_trabalho,
+          regime_contratual,
+          jornada_trabalho,
+          termo: termo as string,
+          selecionado: selecionado as unknown as number,
+          recomendacao: true,
+          vaga: selectedVaga?.id,
+        });
       }
     },
     300,
@@ -181,22 +196,9 @@ const Page = () => {
       termo,
       selecionado,
       user,
+      selectedVaga,
     ],
   );
-  useEffect(() => {
-    if (selectedVaga) {
-      handleRecommendedSearch({
-        salario: salario && currencyMask.unmask(salario),
-        modelo_trabalho,
-        regime_contratual,
-        jornada_trabalho,
-        termo: termo as string,
-        selecionado: selecionado as unknown as number,
-        recomendacao: true,
-        // vaga: selectedVaga?.id,
-      });
-    }
-  }, [selectedVaga]);
 
   const modeloTrabalhoChoices = [
     {
@@ -294,7 +296,7 @@ const Page = () => {
                       />
                     ))
                   ) : (
-                    <div>Não há vagas recomendadas para você</div>
+                    <div>Não há vagas cadastradas por você</div>
                   )
                 ) : (
                   range(3).map((_, index) => (
@@ -315,7 +317,8 @@ const Page = () => {
           <div className={classNames(user ? 'lg:w-3/12' : 'lg:w-4/12')}>
             <div className="label">
               <span className="label-text">
-                Resultado a partir da busca ({candidatoPagination?.count} vagas)
+                Resultado a partir da busca ({candidatoPagination?.count}{' '}
+                candidatos)
               </span>
             </div>
             <div className="w-full ">
@@ -341,7 +344,9 @@ const Page = () => {
                     ))
                   ) : (
                     <div className="py-8">
-                      <p className="text-center">Não foram encontradas vagas</p>
+                      <p className="text-center">
+                        Não há candidatos para esta vaga
+                      </p>
                     </div>
                   )
                 ) : (
@@ -368,7 +373,9 @@ const Page = () => {
             )}
           >
             <div className="label">
-              <span className="label-text">Detalhes da vaga selecionada</span>
+              <span className="label-text">
+                Detalhes do candidato selecionado
+              </span>
             </div>
             <div
               className="sticky top-0 lg:max-h-screen lg:overflow-y-auto flex w-full bg-white rounded"
@@ -388,7 +395,7 @@ const Page = () => {
                 <div className="card rounded w-full bg-white shadow h-48">
                   <div className="card-body items-center justify-center">
                     <h2 className="text-center font-noto-sans">
-                      Selecione uma vaga para detalhar
+                      Selecione um candidato para detalhar
                     </h2>
                   </div>
                 </div>
@@ -428,7 +435,9 @@ const Page = () => {
                     ))
                   ) : (
                     <div className="py-8">
-                      <p className="text-center">Não foram encontradas vagas</p>
+                      <p className="text-center">
+                        Não há recomendações de candidatos para esta vaga
+                      </p>
                     </div>
                   )
                 ) : (

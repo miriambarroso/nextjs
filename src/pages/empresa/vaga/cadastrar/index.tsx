@@ -13,10 +13,8 @@ import { toastError, toastSuccess } from '@/utils/toasts';
 import BeneficioService from '@/services/BeneficioService';
 import Router from 'next/router';
 import ReCAPTCHA from 'react-google-recaptcha';
-import CadastroVagaCurriculos from '@/components/vaga/cadastro/CadastroVagaCurriculos';
 import { omitBy } from 'lodash';
 import VagaService from '@/services/VagaService';
-import { IVagaCreate } from '@/interfaces/vaga';
 
 type Props = {};
 
@@ -51,8 +49,8 @@ const CadastroVaga = ({}: Props) => {
 
       await VagaService.create(requestData as FormData, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       });
       toastSuccess('Vaga criada!');
       Router.back();

@@ -23,7 +23,7 @@ const BannerEmpresas = ({}: Props) => {
         list={listItems}
         action={{
           label: 'Encontre Candidatos',
-          href: '/',
+          href: '/candidatos',
         }}
         layout={'right'}
       />

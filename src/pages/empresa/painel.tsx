@@ -63,8 +63,9 @@ const Page = ({}: Props) => {
           </div>
           <div className="w-full">
             <div className="overflow-x-auto flex lg:grid lg:grid-cols-1 snap-x snap-mandatory bg-white p-4 rounded">
-              {vagas
-                ? vagas?.map((vaga, index) => (
+              {vagas ? (
+                vagas.length > 0 ? (
+                  vagas?.map((vaga, index) => (
                     <Fragment key={index}>
                       <CardDetailVaga
                         vaga={vaga}
@@ -80,22 +81,29 @@ const Page = ({}: Props) => {
                       )}
                     </Fragment>
                   ))
-                : range(3).map((index) => (
-                    <>
-                      <CardDetailVaga
-                        key={index}
-                        vaga={null}
-                        isOwner={true}
-                        selected={false}
-                        isFeature={true}
-                        skeleton={1}
-                        className="snap-center"
-                      />
-                      {index !== vagas?.length - 1 && (
-                        <div className="divider m-1"></div>
-                      )}
-                    </>
-                  ))}
+                ) : (
+                  <div className="py-8">
+                    <p className="text-center">Não foram encontradas vagas</p>
+                  </div>
+                )
+              ) : (
+                range(3).map((index) => (
+                  <>
+                    <CardDetailVaga
+                      key={index}
+                      vaga={null}
+                      isOwner={true}
+                      selected={false}
+                      isFeature={true}
+                      skeleton={1}
+                      className="snap-center"
+                    />
+                    {index !== vagas?.length - 1 && (
+                      <div className="divider m-1"></div>
+                    )}
+                  </>
+                ))
+              )}
             </div>
           </div>
         </div>

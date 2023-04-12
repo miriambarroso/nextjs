@@ -33,8 +33,8 @@ const TopicosSection = ({}: Props) => {
         'Acesse os indicadores, que comprovam a efetividade do nosso projeto. Políticas públicas que fomentam a economia e o desenvolvimento de Anápolis, por meio da inteligência artificial que promove conexões.',
       url: {
         label: 'Acessar agora',
-        href: 'https://google.com',
-        target: '_blank',
+        href: '#',
+        // target: '_blank',
       },
     },
   ];

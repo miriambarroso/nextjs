@@ -1,21 +1,21 @@
-import { useForm } from "react-hook-form";
-import Link from "next/link";
-import { clamp, classNames, objectFormData } from "@/utils";
-import { useRef, useState } from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from "@/components/candidato/cadastro/schema";
-import CadastroCandidatoDadosPessoais from "@/components/candidato/cadastro/CadastroCandidatoDadosPessoais";
-import Stepper from "@/components/atoms/Stepper";
-import CadastroCandidatoDadosContato from "@/components/candidato/cadastro/CadastroCandidatoDadosContato";
-import CadastroCandidatoCandidatura from "@/components/candidato/cadastro/CadastroCandidatoCandidatura";
-import CardFormWrapper from "@/components/atoms/CardFormWrapper";
-import { GUEST, useAuthStore } from "@/store/auth";
-import { toastError, toastSuccess } from "@/utils/toasts";
-import CandidatoService from "@/services/CandidatoService";
-import { format } from "date-fns";
-import Router, { useRouter } from "next/router";
-import ReCAPTCHA from "react-google-recaptcha";
-import { omitBy } from "lodash";
+import { useForm } from 'react-hook-form';
+import Link from 'next/link';
+import { clamp, classNames, objectFormData } from '@/utils';
+import { useEffect, useRef, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from '@/components/candidato/cadastro/schema';
+import CadastroCandidatoDadosPessoais from '@/components/candidato/cadastro/CadastroCandidatoDadosPessoais';
+import Stepper from '@/components/atoms/Stepper';
+import CadastroCandidatoDadosContato from '@/components/candidato/cadastro/CadastroCandidatoDadosContato';
+import CadastroCandidatoCandidatura from '@/components/candidato/cadastro/CadastroCandidatoCandidatura';
+import CardFormWrapper from '@/components/atoms/CardFormWrapper';
+import { GUEST, useAuthStore } from '@/store/auth';
+import { toastError, toastSuccess } from '@/utils/toasts';
+import CandidatoService from '@/services/CandidatoService';
+import { format } from 'date-fns';
+import Router, { useRouter } from 'next/router';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { omitBy } from 'lodash';
 
 type Props = {};
 
@@ -41,7 +41,7 @@ const Index = ({}: Props) => {
   const [step, setStep] = useState(0);
   const login = useAuthStore((state) => state.login);
   const startForm = useRef(null);
-  const steps = ["Dados Pessoais", "Dados de Contato", "Candidatura"];
+  const steps = ['Dados Pessoais', 'Dados de Contato', 'Candidatura'];
   const router = useRouter();
   const recaptchaRef = useRef(null);
 
@@ -52,9 +52,26 @@ const Index = ({}: Props) => {
     trigger,
     watch,
     getValues,
-    reset
+    reset,
   } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    // values: {
+    //   jornada_trabalho: 1,
+    //   regime_contratual: 2,
+    //   modelo_trabalho: 1,
+    //   salario: 2000,
+    //   cargo: 'Analista',
+    //   confirm_password: 'Admin1234)',
+    //   password: 'Admin1234)',
+    //   telefone: '98988751446',
+    //   email: 'raquel_carvalho@uninet.com.br',
+    //   possui_deficiencia: false,
+    //   estado_civil: 1,
+    //   sexo: 1,
+    //   cpf: '64751788450',
+    //   data_nascimento: '1952-05-01',
+    //   nome: 'Raquel Marcela Carvalho',
+    // }
   });
 
   const loginAction = async (data: FormProps) => {
@@ -62,10 +79,10 @@ const Index = ({}: Props) => {
 
     try {
       await login(cpf, password);
-      toastSuccess("Login realizado!");
-      await router.push({ pathname: "/" });
+      toastSuccess('Login realizado!');
+      await router.push({ pathname: '/' });
     } catch (e) {
-      toastError("Erro ao realizar login!");
+      toastError('Erro ao realizar login!');
     }
   };
   const onSubmit = async (data) => {
@@ -74,30 +91,29 @@ const Index = ({}: Props) => {
     try {
       let requestData = {
         ...data,
-        data_nascimento: format(data.data_nascimento, "yyyy-MM-dd"),
+        data_nascimento: format(data.data_nascimento, 'yyyy-MM-dd'),
         salario: parseFloat(data.salario),
         recaptcha: recaptchaValue,
-        curriculo: data.curriculo ? data.curriculo[0] : null
+        curriculo: data.curriculo ? data.curriculo[0] : null,
       };
 
-      requestData = omitBy(requestData, (value) => value === null);
+      requestData = omitBy(requestData, (value) => !Boolean(value));
 
       requestData = objectFormData(requestData);
 
       await CandidatoService.create(requestData, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
-      toastSuccess("Cadastro realizado!");
+      toastSuccess('Cadastro realizado!');
       await loginAction(data);
     } catch (error) {
       console.log(error);
-      toastError("Erro ao realizar cadastro!");
+      toastError('Erro ao realizar cadastro!');
+      recaptchaRef.current.reset();
     }
-
-    recaptchaRef.current.reset();
   };
 
   const changeStep = async (value) => {
@@ -105,66 +121,45 @@ const Index = ({}: Props) => {
       const validateForm = {
         0: async () =>
           await trigger([
-            "nome",
-            "data_nascimento",
-            "cpf",
-            "sexo",
-            "estado_civil",
-            "possui_deficiencia",
-            "tipo_deficiencia"
+            'nome',
+            'data_nascimento',
+            'cpf',
+            'sexo',
+            'estado_civil',
+            'possui_deficiencia',
+            'tipo_deficiencia',
           ]),
         1: async () =>
-          await trigger(["email", "telefone", "password", "confirm_password"]),
+          await trigger(['email', 'telefone', 'password', 'confirm_password']),
         2: async () =>
           await trigger([
-            "cargo",
-            "salario",
-            "modelo_trabalho",
-            "regime_contratual",
-            "jornada_trabalho"
-          ])
+            'cargo',
+            'salario',
+            'modelo_trabalho',
+            'regime_contratual',
+            'jornada_trabalho',
+          ]),
       };
 
       const result = await validateForm[step]();
 
-      startForm.current.scrollIntoView({ behavior: "smooth" });
+      startForm.current.scrollIntoView({ behavior: 'smooth' });
 
       if (!result) return;
     }
 
-    startForm.current.scrollIntoView({ behavior: "smooth" });
+    startForm.current.scrollIntoView({ behavior: 'smooth' });
     setStep(clamp(value, 0, 2));
   };
-
-  // useEffect(() => {
-  //   const mock = {
-  //     jornada_trabalho: 1,
-  //     regime_contratual: 2,
-  //     modelo_trabalho: 1,
-  //     salario: 2000,
-  //     cargo: 'Analista',
-  //     confirm_password: 'Admin1234)',
-  //     password: 'Admin1234)',
-  //     telefone: '98988751446',
-  //     email: 'raquel_carvalho@uninet.com.br',
-  //     possui_deficiencia: false,
-  //     estado_civil: 1,
-  //     sexo: 1,
-  //     cpf: '64751788450',
-  //     data_nascimento: '1952-05-01',
-  //     nome: 'Raquel Marcela Carvalho',
-  //   };
-  //   reset(mock);
-  // }, []);
 
   const subTitle = (
     <p
       ref={startForm}
-      className={classNames(step == 0 ? "lg:ml-auto" : "hidden")}
+      className={classNames(step == 0 ? 'lg:ml-auto' : 'hidden')}
     >
-      Cadastre-se como{" "}
+      Cadastre-se como{' '}
       <Link
-        href={"/empresa/cadastrar"}
+        href={'/empresa/cadastrar'}
         className="link link-hover text-primary"
       >
         Empresa
@@ -202,7 +197,7 @@ const Index = ({}: Props) => {
           <div className="space-x-4 ml-auto">
             <button
               type="button"
-              className={classNames(step != 0 && "hidden", "btn btn-base mt-4")}
+              className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
               onClick={Router.back}
             >
               cancelar
@@ -210,7 +205,7 @@ const Index = ({}: Props) => {
             <button
               onClick={() => changeStep(step - 1)}
               type="button"
-              className={classNames(step == 0 && "hidden", "btn btn-base mt-4")}
+              className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
             >
               voltar
             </button>
@@ -219,8 +214,8 @@ const Index = ({}: Props) => {
               onClick={() => changeStep(step + 1)}
               type="button"
               className={classNames(
-                step == steps.length - 1 && "hidden",
-                "btn btn-primary mt-4 text-white"
+                step == steps.length - 1 && 'hidden',
+                'btn btn-primary mt-4 text-white',
               )}
             >
               continuar
@@ -228,8 +223,8 @@ const Index = ({}: Props) => {
             <button
               type="submit"
               className={classNames(
-                step < steps.length - 1 && "hidden",
-                "btn btn-primary mt-4 text-white"
+                step < steps.length - 1 && 'hidden',
+                'btn btn-primary mt-4 text-white',
               )}
             >
               cadastrar

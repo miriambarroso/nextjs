@@ -190,9 +190,7 @@ const useAuthStore = create<IAuthStore>((set, get) => ({
     try {
       // await axiosInstance.post('/logout');
       get().clear();
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   },
 }));
 

@@ -6,12 +6,6 @@ type Props = { register: any; errors: any; watch: any };
 const CadastroVagaCurriculos = ({ register, errors, watch }: Props) => {
   const { curriculos } = watch();
 
-  useEffect(() => {
-    if (curriculos && curriculos.length > 0) {
-      console.log(curriculos);
-    }
-  }, [curriculos]);
-
   return (
     <>
       <div className="overflow-x-auto">

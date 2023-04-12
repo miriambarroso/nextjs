@@ -110,7 +110,6 @@ const Index = ({}: Props) => {
       toastSuccess('Cadastro realizado!');
       await loginAction(data);
     } catch (error) {
-      console.log(error);
       toastError('Erro ao realizar cadastro!');
       recaptchaRef.current.reset();
     }

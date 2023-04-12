@@ -64,7 +64,6 @@ const Edit = ({}: Props) => {
       toastSuccess('Dados cadastrais atualizado!');
       Router.back();
     } catch (e) {
-      console.log(e);
       toastError('Erro ao atualizar os dados cadastrais!');
     }
   };

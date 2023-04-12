@@ -13,7 +13,8 @@ const withPWA = require('next-pwa')({
 const moduleExports = {
   // Your existing module.exports
   images: {
-    domains: ['placeimg.com', 'localhost'],
+    domains: ['placeimg.com', 'localhost', 'api.vagas.bcc.ifg.edu.br'],
+    unoptimized: true,
   },
 
   sentry: {

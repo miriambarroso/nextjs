@@ -21,9 +21,9 @@ services:
       nextjs:
         condition: service_started
     environment:
-      VIRTUAL_HOST: ceitec.bcc.ifg.edu.br
+      VIRTUAL_HOST: vagas.bcc.ifg.edu.br
       VIRTUAL_PORT: 8074
-      LETSENCRYPT_HOST: ceitec.bcc.ifg.edu.br
+      LETSENCRYPT_HOST: vagas.bcc.ifg.edu.br
       LETSENCRYPT_EMAIL: "me@baraus.dev"
     networks:
       - nginx-proxy

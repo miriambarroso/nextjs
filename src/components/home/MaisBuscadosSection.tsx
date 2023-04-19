@@ -21,14 +21,14 @@ const MaisBuscadosSection = ({}: Props) => {
   ];
 
   const salaries = [
-    'R$ 1.000,00',
-    'R$ 2.000,00',
-    'R$ 3.000,00',
-    'R$ 4.000,00',
-    'R$ 5.000,00',
-    'R$ 6.000,00',
-    'R$ 7.000,00',
-    'R$ 8.000,00',
+    ['R$ 1.000,00', 1000],
+    ['R$ 2.000,00', 2000],
+    ['R$ 3.000,00', 3000],
+    ['R$ 4.000,00', 4000],
+    ['R$ 5.000,00', 5000],
+    ['R$ 6.000,00', 6000],
+    ['R$ 7.000,00', 7000],
+    ['R$ 8.000,00', 8000],
   ];
 
   const companies = [
@@ -46,9 +46,9 @@ const MaisBuscadosSection = ({}: Props) => {
   ];
 
   const tabs = [
-    { label: 'Cargo', items: jobs },
-    { label: 'Salários', items: salaries },
-    { label: 'Empresas', items: companies },
+    { label: 'Cargo', items: jobs, query: 'termo' },
+    { label: 'Salários', items: salaries, query: 'salario' },
+    { label: 'Empresas', items: companies, query: 'empresa' },
   ];
 
   return (
@@ -71,11 +71,16 @@ const MaisBuscadosSection = ({}: Props) => {
         <div className="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2 bg-white px-4 py-4">
           {tabs[tab].items.map((item, index) => (
             <Link
-              href={`/vagas/?termo=${item}`}
+              href={{
+                pathname: '/vagas',
+                query: {
+                  [tabs[tab].query]: typeof item == 'string' ? item : item[1],
+                },
+              }}
               key={index}
               className="link link-hover"
             >
-              {item}
+              {typeof item == 'string' ? item : item[0]}
             </Link>
           ))}
         </div>

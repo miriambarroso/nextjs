@@ -14,7 +14,7 @@ import ConfirmModal from '@/components/atoms/ConfirmModal';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
 import { useAuthStore } from '@/store/auth';
 import { classNames } from '@/utils';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { toastWarning } from '@/utils/toasts';
 import { formatDateToLocale } from '@/utils/date';
 import { currencyMask } from '@/utils/masks';
@@ -63,6 +63,7 @@ const CardDetailVaga = ({
   ]);
   const [expanded, setExpanded] = useState<boolean>(isExpanded);
   const { isBreakpoint } = useBreakpoint();
+  const router = useRouter();
 
   const badges = [
     {
@@ -100,7 +101,11 @@ const CardDetailVaga = ({
       onExpanded && onExpanded();
       topRef.current.scrollIntoView({ behavior: 'smooth' });
     } else {
-      onAction && onAction();
+      if (onAction) {
+        onAction();
+      } else {
+        router.push(`/vagas?selecionado=${vaga?.id}`);
+      }
     }
   };
 

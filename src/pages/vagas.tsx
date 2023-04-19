@@ -16,16 +16,17 @@ import { useAuthStore } from '@/store/auth';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import { omitBy, range } from 'lodash';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
-import useEffectTimeout from '@/hooks/useEffectTimeout';
 import {
   JornadaTrabalhoChoices,
   ModeloTrabalhoChoices,
   RegimeContratualChoices,
 } from '@/utils/choices';
-import { currencyMask } from '@/utils/masks';
 import PaginationService from '@/services/PaginationService';
 import InfiniteScroller from '@/components/InfiniteScroller';
 import { BiLoaderCircle } from 'react-icons/bi';
+import { currencyMask } from '@/utils/masks';
+import useEffectTimeout from '@/hooks/useEffectTimeout';
+import useOnMounted from '@/hooks/useOnMouted';
 
 type QueueProps = {
   termo?: string;
@@ -55,6 +56,7 @@ const Page = () => {
   const [recomendedVagas, setRecomendedVagas] = useState<IVaga[]>();
   const [selectedVaga, setSelectedVaga] = useState<IVaga>(null);
   const scrollDetail = useRef<HTMLDivElement>(null);
+  const mounted = useRef(false);
 
   useEffect(() => {
     scrollDetail.current.scrollTo(0, 0);
@@ -65,6 +67,7 @@ const Page = () => {
     formState: { errors },
     watch,
     setValue,
+    reset,
   } = useForm({
     resolver: yupResolver(vagasSchema),
   });
@@ -77,7 +80,9 @@ const Page = () => {
     jornada_trabalho,
   } = watch();
 
-  const { termo, selecionado } = useRouter().query;
+  const router = useRouter();
+  const query = router.query;
+  const { termo, selecionado } = query;
 
   const handleSearch = async (query: QueueProps) => {
     try {
@@ -85,6 +90,10 @@ const Page = () => {
       const data = await VagaService.getAll(clearQuery);
       setVagasPagination(new PaginationService(data));
       setVagas(data.results);
+
+      if (data.results.length > 0) {
+        setSelectedVaga(data.results[0]);
+      }
     } catch (error) {
       toastError('Erro ao buscar vagas');
     }
@@ -103,13 +112,13 @@ const Page = () => {
 
   const handleVagasNextPage = async () => {
     try {
-      if (!vagasPagination.hasNext()) return;
+      if (!vagasPagination?.hasNext()) return;
 
       const paginationData = await vagasPagination.fetchNext();
       setVagasPagination(paginationData);
       setVagas((v) => [...v, ...paginationData.results]);
     } catch (error) {
-      toastError('Erro ao buscar vagas');
+      toastError('Erro ao buscar próxima página');
     }
   };
 
@@ -119,7 +128,7 @@ const Page = () => {
       setRecomendedVagasPagination(paginationData);
       setRecomendedVagas((v) => [...v, ...paginationData.results]);
     } catch (error) {
-      toastError('Erro ao buscar vagas');
+      toastError('Erro ao buscar próxima página');
     }
   };
 
@@ -148,6 +157,8 @@ const Page = () => {
 
   useEffectTimeout(
     () => {
+      if (!mounted.current) return;
+
       handleSearch({
         empresa,
         salario: salario && currencyMask.unmask(salario),
@@ -170,6 +181,20 @@ const Page = () => {
           recommendation: 'tfidf',
         });
       }
+
+      router.replace({
+        query: omitBy(
+          {
+            empresa,
+            salario: salario && currencyMask.unmask(salario),
+            modelo_trabalho,
+            regime_contratual,
+            jornada_trabalho,
+            termo: termo as string,
+          },
+          (v) => !v,
+        ),
+      });
     },
     300,
     [
@@ -181,8 +206,19 @@ const Page = () => {
       termo,
       selecionado,
       user,
+      mounted.current,
     ],
   );
+
+  useOnMounted(() => {
+    if (query && !mounted.current) {
+      reset({
+        ...query,
+        salario: query.salario && currencyMask.mask(query.salario),
+      });
+      mounted.current = true;
+    }
+  }, [query]);
 
   const modeloTrabalhoChoices = [
     {
@@ -253,7 +289,7 @@ const Page = () => {
           </div>
         </form>
       </div>
-      <div className="mb-8 mt-4 space-y-2 container ">
+      <div className="mb-8 mt-4 space-y-2 container">
         {isCandidato() && (
           <div>
             <div className="w-full">

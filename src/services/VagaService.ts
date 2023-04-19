@@ -1,6 +1,7 @@
 import CRLUDService from '@/services/CRLUDService';
 import { IVaga, IVagaCreate } from '@/interfaces/vaga';
 import axiosInstance from '@/utils/axios';
+import { IPagination } from '@/interfaces/pagination';
 
 class VagaService extends CRLUDService<
   IVagaCreate,
@@ -31,7 +32,7 @@ class VagaService extends CRLUDService<
     return data;
   }
 
-  async getVagasEmpresa(id: number) {
+  async getVagasEmpresa(id: number): Promise<IPagination<IVaga>> {
     let { data } = await axiosInstance.get(`${this.baseUrl}/empresa/${id}`);
 
     data.results.forEach((vaga: IVaga) => {

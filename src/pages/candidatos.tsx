@@ -30,6 +30,7 @@ import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import PaginationService from '@/services/PaginationService';
 import { BiLoaderCircle } from 'react-icons/bi';
 import InfiniteScroller from '@/components/InfiniteScroller';
+import useOnMounted from '@/hooks/useOnMouted';
 
 type QueueProps = {
   termo?: string;
@@ -66,6 +67,7 @@ const Page = () => {
   const [vagaPagination, setVagaPagination] = useState<IPagination<IVaga>>();
   const [vagas, setVagas] = useState<IVaga[]>();
   const [selectedVaga, setSelectedVaga] = useState<IVaga>();
+  const mounted = useRef(false);
 
   useEffect(() => {
     scrollDetail.current.scrollTo(0, 0);
@@ -75,14 +77,18 @@ const Page = () => {
     register,
     formState: { errors },
     watch,
+    reset,
   } = useForm({
     resolver: yupResolver(vagasSchema),
   });
 
+  const router = useRouter();
+  const query = router.query;
+
   const { salario, modelo_trabalho, regime_contratual, jornada_trabalho } =
     watch();
 
-  const { termo, selecionado } = useRouter().query;
+  const { termo, selecionado } = query;
 
   const fetchVagas = async () => {
     try {
@@ -161,6 +167,7 @@ const Page = () => {
 
   useEffectTimeout(
     () => {
+      if (!mounted.current) return;
       if (!user) return;
       else if (!vagas) fetchVagas();
 
@@ -186,6 +193,20 @@ const Page = () => {
           vaga: selectedVaga?.id,
         });
       }
+
+      router.replace({
+        query: omitBy(
+          {
+            modelo_trabalho,
+            regime_contratual,
+            jornada_trabalho,
+            termo,
+            selecionado,
+            salario: salario && currencyMask.unmask(salario),
+          },
+          (v) => !v,
+        ),
+      });
     },
     300,
     [
@@ -197,8 +218,19 @@ const Page = () => {
       selecionado,
       user,
       selectedVaga,
+      mounted.current,
     ],
   );
+
+  useOnMounted(() => {
+    if (query && !mounted.current) {
+      reset({
+        ...query,
+        salario: query.salario && currencyMask.mask(query.salario),
+      });
+      mounted.current = true;
+    }
+  }, [query]);
 
   const modeloTrabalhoChoices = [
     {

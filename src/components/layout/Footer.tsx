@@ -7,7 +7,7 @@ type Props = {};
 const Footer = ({}: Props) => {
   const footerLinks = {
     Institucional: [
-      { label: 'Quem somos', href: '#' },
+      { label: 'Sobre', href: '/sobre' },
       { label: 'Política de Cookies', href: '#' },
     ],
     Empresas: [

@@ -45,6 +45,9 @@ const NavGuest = ({}: Props) => {
       {/*  <DropdownNav content={'Candidatos'} items={dropdownCandidatos} />*/}
       {/*</li>*/}
       <li>
+        <Link href="/sobre">Sobre</Link>
+      </li>
+      <li>
         <Link href="/login">Login</Link>
       </li>
       <li className="items-center">
@@ -72,8 +75,12 @@ const NavMobileGuest = ({ close }: { close: () => void }) => {
         name={'Empresas'}
         onClick={close}
       />
+
       <DrawerLink href="/login" onClick={close} className="border-none">
         Login
+      </DrawerLink>
+      <DrawerLink onClick={close} href="/sobre">
+        Sobre
       </DrawerLink>
       <DrawerLink
         className="bg-primary rounded border-none"

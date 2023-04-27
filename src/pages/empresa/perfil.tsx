@@ -6,6 +6,7 @@ import CardPerfilDados from '@/components/empresa/perfil/CardPerfilDados';
 import CardPerfilEmpresa from '@/components/empresa/perfil/CardPerfilEmpresa';
 import { IEmpregadorPerfil } from '@/interfaces/empregador';
 import CardPerfilEndereco from '@/components/empresa/perfil/CardPerfilEndereco';
+import useOnUser from '@/hooks/useOnUser';
 
 type Props = {};
 
@@ -23,7 +24,7 @@ const Page = ({}: Props) => {
     }
   };
 
-  useEffect(() => {
+  useOnUser(() => {
     fetchUser();
   }, []);
 

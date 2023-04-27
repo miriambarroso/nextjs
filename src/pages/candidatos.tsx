@@ -31,6 +31,7 @@ import PaginationService from '@/services/PaginationService';
 import { BiLoaderCircle } from 'react-icons/bi';
 import InfiniteScroller from '@/components/InfiniteScroller';
 import useOnMounted from '@/hooks/useOnMouted';
+import useOnUser from '@/hooks/useOnUser';
 
 type QueueProps = {
   termo?: string;
@@ -65,7 +66,7 @@ const Page = () => {
     useState<ICandidatoPerfil>();
   const scrollDetail = useRef<HTMLDivElement>(null);
   const [vagaPagination, setVagaPagination] = useState<IPagination<IVaga>>();
-  const [vagas, setVagas] = useState<IVaga[]>();
+  const [vagas, setVagas] = useState<IVaga[]>([]);
   const [selectedVaga, setSelectedVaga] = useState<IVaga>();
   const mounted = useRef(false);
 
@@ -169,7 +170,6 @@ const Page = () => {
     () => {
       if (!mounted.current) return;
       if (!user) return;
-      else if (!vagas) fetchVagas();
 
       if (selectedVaga) {
         handleSearch({
@@ -221,6 +221,10 @@ const Page = () => {
       mounted.current,
     ],
   );
+
+  useOnUser(() => {
+    fetchVagas();
+  }, []);
 
   useOnMounted(() => {
     if (query && !mounted.current) {
@@ -328,7 +332,11 @@ const Page = () => {
                       />
                     ))
                   ) : (
-                    <div>Não há vagas cadastradas por você</div>
+                    <div className="py-8 w-full">
+                      <p className="text-center">
+                        Não há vagas cadastradas por você.
+                      </p>
+                    </div>
                   )
                 ) : (
                   range(3).map((_, index) => (
@@ -349,7 +357,10 @@ const Page = () => {
           <div className={classNames(user ? 'lg:w-3/12' : 'lg:w-4/12')}>
             <div className="label">
               <span className="label-text">
-                Resultado a partir da busca ({candidatoPagination?.count}{' '}
+                Resultado a partir da busca (
+                <TextSkeleton as={'span'} className="h-4 w-8 bg-base-200 mr-2">
+                  {candidatoPagination?.count}
+                </TextSkeleton>{' '}
                 candidatos)
               </span>
             </div>
@@ -377,7 +388,7 @@ const Page = () => {
                   ) : (
                     <div className="py-8">
                       <p className="text-center">
-                        Não há candidatos para esta vaga
+                        Não há candidatos nesta vaga
                       </p>
                     </div>
                   )

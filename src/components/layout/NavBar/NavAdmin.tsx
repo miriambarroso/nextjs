@@ -50,7 +50,7 @@ const NavAdmin = ({ user, logout }: Props) => {
   return (
     <ul className="list hidden lg:flex items-center space-x-4 px-1 text-neutral ">
       <li>
-        <Link href="/dashboard">Painel</Link>
+        <Link href="/painel">Painel</Link>
       </li>
       <li className="items-center inline-flex space-x-2">
         <DropdownNav

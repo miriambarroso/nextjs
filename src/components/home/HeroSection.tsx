@@ -38,10 +38,10 @@ const HeroSection = ({}: Props) => {
           <div className="w-full relative">
             <div className="absolute right-[-3rem] bottom-[-3rem] w-64 aspect-square">
               <Image
-                src={'/img/empresa.jpg'}
+                src={'/img/c938f279-e506-47b6-a6c5-f81384f06bd9.jpeg'}
                 alt={'Hero Empresa'}
                 fill
-                className="rounded-full"
+                className="rounded-full object-cover"
                 loading={'eager'}
               />
             </div>
@@ -50,7 +50,7 @@ const HeroSection = ({}: Props) => {
                 src={'/img/pessoa_carteira_trabalho.jpeg'}
                 alt={'Pessoa com cateira de trabalho'}
                 fill
-                className="rounded-full"
+                className="rounded-full object-cover"
                 loading={'eager'}
               />
             </div>

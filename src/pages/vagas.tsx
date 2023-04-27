@@ -58,6 +58,8 @@ const Page = () => {
   const scrollDetail = useRef<HTMLDivElement>(null);
   const mounted = useRef(false);
 
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
   useEffect(() => {
     scrollDetail.current.scrollTo(0, 0);
   }, [selectedVaga]);
@@ -157,8 +159,6 @@ const Page = () => {
 
   useEffectTimeout(
     () => {
-      if (!mounted.current) return;
-
       handleSearch({
         empresa,
         salario: salario && currencyMask.unmask(salario),
@@ -181,20 +181,6 @@ const Page = () => {
           recommendation: 'tfidf',
         });
       }
-
-      router.replace({
-        query: omitBy(
-          {
-            empresa,
-            salario: salario && currencyMask.unmask(salario),
-            modelo_trabalho,
-            regime_contratual,
-            jornada_trabalho,
-            termo: termo as string,
-          },
-          (v) => !v,
-        ),
-      });
     },
     300,
     [
@@ -206,19 +192,8 @@ const Page = () => {
       termo,
       selecionado,
       user,
-      mounted.current,
     ],
   );
-
-  useOnMounted(() => {
-    if (query && !mounted.current) {
-      reset({
-        ...query,
-        salario: query.salario && currencyMask.mask(query.salario),
-      });
-      mounted.current = true;
-    }
-  }, [query]);
 
   const modeloTrabalhoChoices = [
     {
@@ -306,7 +281,10 @@ const Page = () => {
                 </span>
               </div>
               <div className="w-full">
-                <div className="overflow-x-auto flex snap-x snap-mandatory bg-white p-0 lg:p-4 rounded">
+                <div
+                  className="overflow-x-auto flex snap-x snap-mandatory bg-white p-0 lg:p-4 rounded"
+                  onScroll={() => setIsExpanded(false)}
+                >
                   {recomendedVagas ? (
                     recomendedVagas?.length > 0 ? (
                       recomendedVagas?.map((vaga, index) => (
@@ -321,7 +299,10 @@ const Page = () => {
                           selected={vaga.id === selectedVaga?.id}
                           className="snap-center flex-none lg:w-4/12"
                           canCandidate={true}
-                          isFeature={true}
+                          isExpandable={true}
+                          isExpanded={isExpanded}
+                          onExpanded={() => setIsExpanded((prev) => !prev)}
+                          isFeature={false}
                           isCandidated={candidaturas?.some(
                             (i) => i.vaga == vaga.id,
                           )}

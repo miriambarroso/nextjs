@@ -46,6 +46,9 @@ const NavEmpregador = ({ user, logout }: Props) => {
   return (
     <ul className="list hidden lg:flex items-center space-x-4 px-1 text-neutral ">
       <li>
+        <Link href="/sobre">Sobre</Link>
+      </li>
+      <li>
         <Link href="/empresa/painel">Painel</Link>
       </li>
       {/*<li>*/}
@@ -91,8 +94,8 @@ const NavMobileEmpregador = ({
       <DrawerLink onClick={close} href="/empresa/painel">
         Painel
       </DrawerLink>
-      <DrawerLink onClick={close} href="/empresa/painel">
-        Sobre nós
+      <DrawerLink onClick={close} href="/sobre">
+        Sobre
       </DrawerLink>
 
       {accordion.map((item, index) =>

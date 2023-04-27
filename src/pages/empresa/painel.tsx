@@ -6,6 +6,7 @@ import { IVaga } from '@/interfaces/vaga';
 import { range } from 'lodash';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
+import useOnUser from '@/hooks/useOnUser';
 
 type Props = {};
 
@@ -28,7 +29,7 @@ const Page = ({}: Props) => {
     }
   };
 
-  useEffect(() => {
+  useOnUser(() => {
     if (empresa) {
       fetchVagas();
     }

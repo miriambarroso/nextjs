@@ -17,6 +17,7 @@ const TopicosSection = ({}: Props) => {
       title: 'Recrutamento & Seleção',
       description:
         'Contrate com agilidade e otimize a gestão de seus processos seletivos. Desde a atração de talentos até a seleção final, nossa plataforma centraliza todo o recrutamento em um único lugar, com análise de dados e relatórios relevantes para a sua tomada de decisão certa para cada vaga',
+      disabled: !isGuest(),
       url: {
         label: 'Cadastrar Vaga',
         href: () =>
@@ -32,6 +33,7 @@ const TopicosSection = ({}: Props) => {
       title: 'Cadastre seu currículo',
       description:
         'Você que está a procura de emprego ou uma melhor recolocação no mercado de trabalho, cadastre seus dados. É rápido, fácil e simples. Os recrutadores vão analisar seus dados e entrar em contato com você.',
+      disabled: !isGuest(),
       url: {
         label: 'Cadastrar currículo',
         href: () => (isGuest() ? '/candidato/cadastrar' : ''),
@@ -58,36 +60,40 @@ const TopicosSection = ({}: Props) => {
 
   return (
     <>
-      <div
-        className={classNames(
-          'grid grid-cols-1',
-          cols[cards.length],
-          'lg:divide-x divide-base-200',
-        )}
-      >
-        {cards.map((card, index) => (
-          <div key={index} className="card rounded-none ">
-            <div className="card-body py-8 px-0 lg:px-8">
-              <h2 className="card-title justify-center lg:justify-start">
-                {card.title}
-              </h2>
-              <p>{card.description}</p>
-              <div className="card-actions justify-center lg:justify-start">
-                <Link
-                  href={
-                    typeof card.url?.href == 'function'
-                      ? card.url?.href()
-                      : card.url?.href
-                  }
-                  className="btn btn-neutral btn-wide lg:w-max lg:btn-medium"
-                >
-                  {card.url?.label}
-                </Link>
+      {cards.filter((card) => !card.disabled).length > 0 ? (
+        <div
+          className={classNames(
+            'grid grid-cols-1',
+            cols[cards.filter((card) => !card.disabled).length],
+            'lg:divide-x divide-base-200',
+          )}
+        >
+          {cards
+            .filter((card) => !card.disabled)
+            .map((card, index) => (
+              <div key={index} className="card rounded-none ">
+                <div className="card-body py-8 px-0 lg:px-8">
+                  <h2 className="card-title justify-center lg:justify-start">
+                    {card.title}
+                  </h2>
+                  <p>{card.description}</p>
+                  <div className="card-actions justify-center lg:justify-start">
+                    <Link
+                      href={
+                        typeof card.url?.href == 'function'
+                          ? card.url?.href()
+                          : card.url?.href
+                      }
+                      className="btn btn-neutral btn-wide lg:w-max lg:btn-medium"
+                    >
+                      {card.url?.label}
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            ))}
+        </div>
+      ) : null}
     </>
   );
 };

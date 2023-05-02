@@ -8,21 +8,21 @@ const Footer = ({}: Props) => {
   const footerLinks = {
     Institucional: [
       { label: 'Sobre', href: '/sobre' },
-      { label: 'Política de Cookies', href: '#' },
+      // { label: 'Política de Cookies', href: '#' },
     ],
-    Empresas: [
-      { label: 'Como funciona', href: '#' },
-      { label: 'Anunciar Vagas', href: '#' },
-      { label: 'Buscar Candidatos', href: '#' },
-      { label: 'Aviso Legal', href: '#' },
-      { label: 'Política de Privacidade', href: '#' },
-    ],
-    Candidatos: [
-      { label: 'Como funciona', href: '#' },
-      { label: 'Buscar Vagas', href: '#' },
-      { label: 'Aviso Legal', href: '#' },
-      { label: 'Política de Privacidade', href: '#' },
-    ],
+    // Empresas: [
+    //   { label: 'Como funciona', href: '#' },
+    //   { label: 'Anunciar Vagas', href: '#' },
+    //   { label: 'Buscar Candidatos', href: '#' },
+    //   { label: 'Aviso Legal', href: '#' },
+    //   { label: 'Política de Privacidade', href: '#' },
+    // ],
+    // Candidatos: [
+    //   { label: 'Como funciona', href: '#' },
+    //   { label: 'Buscar Vagas', href: '#' },
+    //   { label: 'Aviso Legal', href: '#' },
+    //   { label: 'Política de Privacidade', href: '#' },
+    // ],
   };
 
   return (

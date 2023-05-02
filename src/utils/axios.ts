@@ -16,9 +16,10 @@ axiosInstance.interceptors.request.use((config) => {
     config.url += '/';
   }
 
+  const user = useAuthStore.getState().user;
   const token = useAuthStore.getState().token;
 
-  if (token) {
+  if (user && token) {
     config.headers.Authorization = `Token ${token}`;
   }
 
@@ -28,15 +29,19 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response.status === 401) {
-      useAuthStore.getState().logout();
+    if (error.response) {
+      if (error.response.status === 401) {
+        useAuthStore.getState().logout();
+      }
+
+      if (error.response.status === 403) {
+        toastWarning('Você não tem permissão para acessar essa informação.');
+      }
+    } else {
+      toastWarning('Ocorreu um erro ao tentar acessar o servidor.');
     }
 
-    if (error.response.status === 403) {
-      toastWarning('Você não tem permissão para acessar essa informação.');
-    }
-
-    return Promise.reject(error);
+    return Promise.reject();
   },
 );
 

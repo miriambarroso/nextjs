@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 
-const useOnMounted = (callback: () => void, deps) => {
+const useOnMounted = (effect: () => void, deps) => {
   const mounted = useRef(false);
 
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
     } else {
-      callback();
+      effect();
     }
   }, deps);
 };

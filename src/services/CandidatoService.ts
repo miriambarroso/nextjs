@@ -6,6 +6,7 @@ import {
   ICandidatoPerfil,
 } from '@/interfaces/candidato';
 import CRLUDService from '@/services/CRLUDService';
+import { IPagination } from '@/interfaces/pagination';
 
 class CandidatoService extends CRLUDService<
   ICandidatoCreate,
@@ -29,6 +30,21 @@ class CandidatoService extends CRLUDService<
           .replace('.', ','),
       };
     }
+
+    return data;
+  }
+
+  async getByVaga(
+    id: number,
+    page = 1,
+    recomendacao = false,
+  ): Promise<IPagination<ICandidatoPerfil>> {
+    const { data } = await axiosInstance.get(`${this.baseUrl}/vaga/${id}`, {
+      params: {
+        page,
+        recomendacao,
+      },
+    });
 
     return data;
   }

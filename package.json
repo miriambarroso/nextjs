@@ -30,6 +30,7 @@
     "react-hook-form": "^7.41.0",
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.7.1",
+    "react-pdf": "^6.2.2",
     "react-use": "^17.4.0",
     "sass": "^1.57.1",
     "yup": "^0.32.11",

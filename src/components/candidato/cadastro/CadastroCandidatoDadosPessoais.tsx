@@ -14,6 +14,10 @@ import InputTelefone from '@/components/atoms/inputs/InputTelefone';
 import InputFileField from '@/components/atoms/InputFileField';
 import { ICandidato } from '@/interfaces/candidato';
 import InputUploadImage from '@/components/atoms/InputUploadImage';
+import { isInstanceOf } from '@sentry/utils';
+import { useEffect } from 'react';
+import PDFViewer from '@/components/PDFViewer';
+import InputUploadPDF from '@/components/atoms/InputUploadPDF';
 
 type Props = {
   register: any;
@@ -122,15 +126,28 @@ const CadastroCandidatoDadosPessoais = ({
         />
       )}
       {editMode && (
-        <InputFileField
-          label="Currículo"
-          name="curriculo"
-          register={register}
-          inputProps={{
-            accept: '.pdf',
-          }}
-          error={errors.curriculo?.message}
-        />
+        <>
+          <InputUploadPDF
+            onSubmit={(e) =>
+              handlers
+                .onPartialSubmit({ curriculo: e.target.files[0] })
+                .then((data) => {
+                  setValue('curriculo', data?.curriculo);
+                })
+            }
+            onDelete={() => {
+              handlers
+                .onPartialSubmit({ curriculo: new File([], '') })
+                .then(() => {
+                  setValue('curriculo', null);
+                });
+            }}
+            register={register('curriculo')}
+            error={errors.curriculo?.message}
+            watch={watch}
+            watchField={'curriculo'}
+          />
+        </>
       )}
     </>
   );

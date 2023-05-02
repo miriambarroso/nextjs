@@ -5,16 +5,21 @@ import { IVaga } from '@/interfaces/vaga';
 import VagaService from '@/services/VagaService';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import { useAuthStore } from '@/store/auth';
+import useOnUser from '@/hooks/useOnUser';
+import useOnMounted from '@/hooks/useOnMouted';
 
 type Props = {};
 
 const OportunidadesDestaqueSection = ({}: Props) => {
   const [empresa] = useAuthStore((state) => [state.empresa]);
   const [vagas, setVagas] = useState<IVaga[]>(null);
+
   useEffect(() => {
-    VagaService.getAll({ page_size: 3 }).then(({ results }) => {
+    VagaService.getAll().then(({ results }) => {
       setVagas(results);
     });
+
+    console.log('here');
   }, []);
 
   return (

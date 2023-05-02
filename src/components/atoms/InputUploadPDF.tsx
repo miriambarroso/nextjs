@@ -61,6 +61,7 @@ const InputUploadPDF = ({
               <a
                 href={watch(watchField)}
                 target="_blank"
+                rel="noreferrer"
                 className={classNames(
                   watch(watchField) ? 'btn-primary' : 'btn-disabled',
                   'btn space-x-2 flex-1',

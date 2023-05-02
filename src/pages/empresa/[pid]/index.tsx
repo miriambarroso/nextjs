@@ -6,7 +6,7 @@ import CardEmpresa from '@/components/empresa/CardEmpresa';
 import VagaService from '@/services/VagaService';
 import { IVaga } from '@/interfaces/vaga';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
-import { useAuthStore } from '@/store/auth';
+import { EMPREGADOR, useAuthStore } from '@/store/auth';
 import PaginationService from '@/services/PaginationService';
 import { toastError, toastSuccess } from '@/utils/toasts';
 import CandidaturaService from '@/services/CandidaturaService';
@@ -193,3 +193,5 @@ export default function Page() {
     </div>
   );
 }
+
+Page.permissions = [EMPREGADOR];

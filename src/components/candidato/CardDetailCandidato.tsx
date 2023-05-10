@@ -176,11 +176,11 @@ const CardDetailCandidato = ({
                           ? null
                           : formatDateToExtense(
                               candidato?.experiencia_profissional[0]
-                                .data_inicio,
-                            ) + candidato?.experiencia_profissional[0].data_fim
+                                ?.data_inicio,
+                            ) + candidato?.experiencia_profissional[0]?.data_fim
                           ? '- ' +
                             formatDateToExtense(
-                              candidato?.experiencia_profissional[0].data_fim,
+                              candidato?.experiencia_profissional[0]?.data_fim,
                             )
                           : '- Atual'}
                       </TextSkeleton>
@@ -192,15 +192,15 @@ const CardDetailCandidato = ({
                         {skeleton
                           ? null
                           : FormacaoNivelChoices.findByIntValue(
-                              candidato?.formacao_academica[0].nivel,
+                              candidato?.formacao_academica[0]?.nivel,
                             )?.label +
                             ' - ' +
-                            candidato?.formacao_academica[0].curso}
+                            candidato?.formacao_academica[0]?.curso}
                       </TextSkeleton>
                     </p>
                     <p className="text-fade">
                       <TextSkeleton as="span">
-                        {candidato?.formacao_academica[0].instituicao}
+                        {candidato?.formacao_academica[0]?.instituicao}
                       </TextSkeleton>
                     </p>
                     <p className="text-sm text-fade uppercase">
@@ -208,12 +208,12 @@ const CardDetailCandidato = ({
                         {skeleton
                           ? null
                           : formatDateToExtense(
-                              candidato?.formacao_academica[0].data_inicio,
+                              candidato?.formacao_academica[0]?.data_inicio,
                             ) +
                             ' - ' +
-                            candidato?.formacao_academica[0].data_conclusao
+                            candidato?.formacao_academica[0]?.data_conclusao
                           ? formatDateToExtense(
-                              candidato?.formacao_academica[0].data_conclusao,
+                              candidato?.formacao_academica[0]?.data_conclusao,
                             )
                           : 'Atual'}
                       </TextSkeleton>

@@ -1,9 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { useAuthStore } from '@/store/auth';
 
 type Props = {};
 
 const HeroSection = ({}: Props) => {
+  const [isGuest] = useAuthStore((state) => [state.isGuest]);
+
   return (
     <>
       <div className="hero grid-cols-1 lg:grid-cols-2 py-16 lg:py-48">
@@ -26,12 +29,14 @@ const HeroSection = ({}: Props) => {
               <p>Seja bem vindo!</p>
             </div>
 
-            <Link
-              href={'/candidato/cadastrar'}
-              className="btn btn-primary text-white"
-            >
-              Comece agora
-            </Link>
+            {isGuest() ? (
+              <Link
+                href={'/candidato/cadastrar'}
+                className="btn btn-primary text-white"
+              >
+                Comece agora
+              </Link>
+            ) : null}
           </div>
         </div>
         <div className="hero-content hidden lg:block col-start-2 max-w-2xl text-left text-neutral">

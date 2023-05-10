@@ -23,7 +23,6 @@ const InputUploadPDF = ({
   error,
   watchField,
 }: Props) => {
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   return (
     <>
       <div className="form-control">

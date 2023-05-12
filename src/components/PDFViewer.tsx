@@ -10,7 +10,7 @@ export default function PDFViewer({ pdf, iframeProps }: Props) {
   return (
     <>
       <iframe
-        src={`${pdf}#toolbar=0&navpanes=0&scrollbar=0`}
+        src={`${pdf.replace('http', 'https')}#toolbar=0&navpanes=0&scrollbar=0`}
         {...iframeProps}
         allowFullScreen={true}
         sandbox={true}

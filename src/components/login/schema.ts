@@ -2,13 +2,10 @@ import { isValidCPF } from '@brazilian-utils/brazilian-utils';
 import * as yup from 'yup';
 
 import { cpfMask } from '@/utils/masks';
+import schemas from '@/utils/schemas';
 
 export const schema = yup.object().shape({
-  cpf: yup
-    .string()
-    .transform(cpfMask.transform)
-    .required('CPF é obrigatório')
-    .test('validateCPF', 'CPF Inválido', isValidCPF),
+  cpf: schemas.cpf(true, true),
   password: yup
     .string()
     .required('Senha é obrigatória')

@@ -15,7 +15,7 @@ const NavProfileAvatar = ({ user }: Props) => {
         <div className="avatar">
           <div className="w-10 rounded-full relative">
             <Image
-              src={user?.foto ?? 'https://placeimg.com/400/225/arch'}
+              src={user?.foto ?? '/img/person-placeholder.jpg'}
               fill
               alt="Retrato do Usuário"
             />

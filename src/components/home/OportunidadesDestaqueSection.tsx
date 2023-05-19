@@ -18,8 +18,6 @@ const OportunidadesDestaqueSection = ({}: Props) => {
     VagaService.getAll().then(({ results }) => {
       setVagas(results);
     });
-
-    console.log('here');
   }, []);
 
   return (

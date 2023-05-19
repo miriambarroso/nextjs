@@ -8,7 +8,7 @@ const useOnUser = (effect, deps) => {
     if (user) {
       effect();
     }
-  }, [user, effect, ...deps]);
+  }, [user, ...deps]);
 };
 
 export default useOnUser;

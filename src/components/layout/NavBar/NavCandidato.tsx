@@ -96,7 +96,7 @@ const NavMobileCandidato = ({
         <div className="avatar">
           <div className="w-20 rounded-full relative">
             <Image
-              src="https://placeimg.com/400/225/arch"
+              src="https://shackmanlab.org/wp-content/uploads/2013/07/person-placeholder.jpg"
               fill
               alt="Retrato do Usuário"
             />

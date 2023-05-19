@@ -218,7 +218,6 @@ const Page = () => {
       selecionado,
       user,
       selectedVaga,
-      mounted.current,
     ],
   );
 

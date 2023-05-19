@@ -9,7 +9,7 @@ const useOnMounted = (effect: () => void, deps) => {
     } else {
       effect();
     }
-  }, [effect, ...deps]);
+  }, [...deps]);
 };
 
 export default useOnMounted;

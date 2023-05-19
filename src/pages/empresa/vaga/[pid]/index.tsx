@@ -83,8 +83,6 @@ export default function Page() {
   const fetchVagas = async (vagaID: number) => {
     const data = await CandidatoService.getByVaga(vagaID);
 
-    console.log(data);
-
     setCandidatosPagination(new PaginationService<ICandidatoPerfil>(data));
     setCandidatos(data.results);
   };

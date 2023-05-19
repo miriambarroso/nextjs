@@ -11,9 +11,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  if (process.env.NODE_ENV !== 'development') {
-    config.url = config.url.replace('http://', 'https://');
-  }
+  config.url = config.url.replace('http://', 'https://');
 
   // if url do not end with / adds / to the end
   if (!config.url.endsWith('/') && !config.url.includes('?')) {

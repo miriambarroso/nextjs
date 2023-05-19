@@ -255,7 +255,7 @@ const CardDetailVaga = ({
                 <div className="avatar">
                   <div className="w-10 rounded-full relative">
                     <Image
-                      src="https://placeimg.com/400/225/arch"
+                      src="/img/person-placeholder.jpg"
                       fill
                       alt="Logo da empresa"
                     />

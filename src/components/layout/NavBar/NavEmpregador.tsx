@@ -81,7 +81,7 @@ const NavMobileEmpregador = ({
         <div className="avatar">
           <div className="w-20 rounded-full relative">
             <Image
-              src="https://placeimg.com/400/225/arch"
+              src="/img/person-placeholder.jpg"
               fill
               alt="Retrato do Usuário"
             />

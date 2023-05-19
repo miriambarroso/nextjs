@@ -39,7 +39,9 @@ const InputUploadImage = ({
               <div className="w-40 rounded-full relative">
                 <Image
                   src={
-                    foto?.length ? foto : 'https://placeimg.com/400/225/arch'
+                    foto?.length
+                      ? foto
+                      : 'https://shackmanlab.org/wp-content/uploads/2013/07/person-placeholder.jpg'
                   }
                   fill
                   className="object-cover"

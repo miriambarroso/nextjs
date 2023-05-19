@@ -26,7 +26,6 @@ import InfiniteScroller from '@/components/InfiniteScroller';
 import { BiLoaderCircle } from 'react-icons/bi';
 import { currencyMask } from '@/utils/masks';
 import useEffectTimeout from '@/hooks/useEffectTimeout';
-import useOnMounted from '@/hooks/useOnMouted';
 
 type QueueProps = {
   termo?: string;
@@ -103,7 +102,7 @@ const Page = () => {
 
   const handleRecomendedSearch = async (query: QueueProps) => {
     try {
-      const clearQuery = omitBy(query, (v) => !v);
+      const clearQuery = omitBy({ ...query, recomendacao: true }, (v) => !v);
       const data = await VagaService.getAll(clearQuery);
       setRecomendedVagasPagination(new PaginationService(data));
       setRecomendedVagas(data.results);
@@ -178,7 +177,6 @@ const Page = () => {
           jornada_trabalho,
           termo: termo as string,
           selecionado: selecionado as unknown as number,
-          recommendation: 'tfidf',
         });
       }
     },

@@ -3,6 +3,7 @@ import SelectField from '@/components/atoms/SelectField';
 import SelectJornadaTrabalho from '@/components/atoms/inputs/SelectJornadaTrabalho';
 import SelectModeloTrabalho from '@/components/atoms/inputs/SelectModeloTrabalho';
 import { SexoChoicesBoth } from '@/utils/choices';
+import ToggleField from "@/components/atoms/ToggleField";
 
 type Props = {
   register: any;
@@ -68,6 +69,19 @@ const CadastroVagaInformacoes = ({ register, errors }: Props) => {
           required: true,
         }}
       />
+      <div className="form-control">
+        <label className="label">
+          <span className="label-text">Vaga está ativa?</span>
+        </label>
+        <ToggleField
+          label={'Está ativa?'}
+          name={'esta_ativo'}
+          register={register}
+          options={{
+            default: true,
+          }}
+        />
+      </div>
     </>
   );
 };

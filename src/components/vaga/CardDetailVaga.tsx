@@ -20,6 +20,7 @@ import { formatDateToLocale } from '@/utils/date';
 import { currencyMask } from '@/utils/masks';
 import { range } from 'lodash';
 import useBreakpoint from '@/hooks/useBreakpoint';
+import axios from '@/utils/axios';
 
 type Props = {
   vaga: IVaga;
@@ -93,6 +94,17 @@ const CardDetailVaga = ({
   const handleGuestCandidate = () => {
     toastWarning('Você precisa estar logado para se candidatar');
     return Router.push('/login');
+  };
+
+  const atualizarAtivoVaga = async (vagaId) => {
+    let response;
+    try {
+      response = await axios.put(`/vaga/${vagaId}/arquivar/`);
+      console.log(response);
+    } catch (error) {
+      console.error(["ERROR: "+ error]);
+      console.error(["RESPONSE: " + response]);
+    }
   };
 
   const handleAction = () => {
@@ -185,7 +197,10 @@ const CardDetailVaga = ({
                   }}
                   className={'link link-hover link-error text-sm '}
                 >
-                  Excluir
+                  { vaga && vaga.esta_ativo?
+                    'Arquivar':
+                    'Desarquivar'
+                  }
                 </button>
               </div>
             )}
@@ -298,9 +313,9 @@ const CardDetailVaga = ({
         <ConfirmModal
           open={open}
           close={toggle}
-          confirm={() => onDelete(itemId)}
-          title={'Excluir vaga'}
-          message={'Deseja realmente excluir esta vaga?'}
+          confirm={() => atualizarAtivoVaga(itemId)}
+          title={'Arquivar vaga'}
+          message={'Deseja realmente arquivar esta vaga?'}
         />
       )}
     </>

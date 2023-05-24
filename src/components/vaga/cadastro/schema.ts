@@ -5,6 +5,7 @@ import { SexoChoicesBoth } from '@/utils/choices';
 export const schema = yup.object().shape({
   regime_contratual: schemas.regime_contratual(true, true),
   cargo: schemas.cargo(true, true),
+  esta_ativo: yup.boolean().nullable(),
   atividades: schemas.atividades(true, true),
   requisitos: schemas.requisitos(true, true),
   salario: schemas.salario(true, true),

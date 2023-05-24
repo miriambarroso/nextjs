@@ -7,6 +7,7 @@ import { range } from 'lodash';
 import CardDetailVaga from '@/components/vaga/CardDetailVaga';
 import TextSkeleton from '@/components/skeleton/TextSkeleton';
 import useOnUser from '@/hooks/useOnUser';
+import axios from "axios";
 
 type Props = {};
 
@@ -26,6 +27,29 @@ const Page = ({}: Props) => {
       setCountVagas(count);
     } catch (error) {
       toastError('Erro ao buscar vagas');
+    }
+  };
+
+  const modifyVaga = async () => {
+    const modifiedVaga = {
+      ...selectedVaga,
+      esta_ativo: !selectedVaga.esta_ativo,
+    };
+
+    try {
+      // Envia a requisição PUT para atualizar o objeto no servidor
+      const response = await axios.put(`/api/vaga/${selectedVaga.id}`, modifiedVaga);
+
+      if (response.status === 200) {
+        // Atualize o estado com o objeto modificado somente se a requisição for bem-sucedida
+        setSelectedVaga(modifiedVaga);
+      } else {
+        // Lida com outras respostas de código de status, se necessário
+        console.error('A requisição não foi bem-sucedida:', response);
+      }
+    } catch (error) {
+      // Lida com erros de requisição, se ocorrerem
+      console.error(error);
     }
   };
 
@@ -120,7 +144,7 @@ const Page = ({}: Props) => {
               <CardDetailVaga
                 vaga={selectedVaga}
                 isOwner={true}
-                onDelete={() => deleteItem(selectedVaga.id)}
+                onDelete={modifyVaga}
               />
             ) : (
               <div className="card rounded w-full bg-white h-48">

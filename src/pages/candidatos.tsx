@@ -168,7 +168,6 @@ const Page = () => {
 
   useEffectTimeout(
     () => {
-      if (!mounted.current) return;
       if (!user) return;
 
       if (selectedVaga) {

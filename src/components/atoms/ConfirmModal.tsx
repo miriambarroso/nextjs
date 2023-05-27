@@ -67,7 +67,7 @@ const ConfirmModal = ({ open, close, confirm, title, message }: Props) =>
                           className="btn btn-error btn-sm"
                           onClick={confirm}
                         >
-                          Excluir
+                          Confirmar
                         </button>
                       </div>
                     </Dialog.Panel>

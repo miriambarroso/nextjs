@@ -4,6 +4,7 @@ import { IEmpresaVaga } from '@/interfaces/empresa';
 export interface IVaga {
   id?: number;
   cargo: string;
+  esta_ativo?: boolean;
   atividades: string;
   requisitos: string;
   pessoa_deficiencia: boolean;

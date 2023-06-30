@@ -171,89 +171,101 @@ const Index = ({}: Props) => {
 
   return (
     <div>
-        <CardNotification title="Atenção"
-                          subtitle={'Ferramenta aguardando liberação de uso. '}>
-          <div>
+      <CardNotification title="Atenção"
+                        subtitle={'Ferramenta aguardando liberação de uso. '}>
+        <div>
+          <p>
             Ferramenta aguardando liberação de uso.
             Quando liberada, daremos início à divulgação das redes sociais do IFG
-            e da Prefeitura de Anápolis. Contudo, é possível testar a mesma com um login de testes:
-            <div className={"alert mx-1 flex flex-row ml-auto"}
-                 // @ts-ignore
-                 style={{ justifyContent:"space-around !important" }}>
-              <div className={""}>
-                Empresa<br/>login: 828.736.230-04<br/>senha:Senha@123
-              </div>
-              <div className="flex bg-black border" style={{ height: "200px" }} >
-                <div className="vr bg-black border"></div>
-              </div>
-             <div className={""}> Candidato<br/>login: 073.190.591-18<br/>senha:Senha@123</div>
+            e da Prefeitura de Anápolis. Contudo, é possível testar a feramenta com os seguintes usuários testes:
+          </p>
+          <div className={"alert my-1 mx-1 flex flex-row"}
+            // @ts-ignore
+               style={{ justifyContent:"space-around !important" }}>
+            <div className={""}>
+              Empresa<br/>login: 828.736.230-04<br/>senha:Senha@123
             </div>
-          </div>
-        </CardNotification>
-        <CardFormWrapper title="Cadastro de Candidato" subtitle={subTitle}>
-        <Stepper steps={steps} changeStep={changeStep} currentStep={step} />
-        <div className="divider divider-horizontal my-4"></div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {step == 0 && (
-            <CadastroCandidatoDadosPessoais
-              register={register}
-              errors={errors}
-              watch={watch} />
-          )}
-          {step == 1 && (
-            <CadastroCandidatoDadosContato register={register} errors={errors} />
-          )}
-          {step == 2 && (
-            <CadastroCandidatoCandidatura register={register} errors={errors} />
-          )}
-
-          <div className="flex flex-wrap justify-between mt-4">
-            <ReCAPTCHA
-              badge="inline"
-              size="invisible"
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}
-              ref={recaptchaRef} />
-
-            <div className="space-x-4 ml-auto">
-              <button
-                type="button"
-                className={classNames(step != 0 && "hidden", "btn btn-base mt-4")}
-                onClick={Router.back}
-              >
-                cancelar
-              </button>
-              <button
-                onClick={() => changeStep(step - 1)}
-                type="button"
-                className={classNames(step == 0 && "hidden", "btn btn-base mt-4")}
-              >
-                voltar
-              </button>
-
-              <button
-                onClick={() => changeStep(step + 1)}
-                type="button"
-                disabled={true}
-                className={classNames(
-                  step == steps.length - 1 && "hidden",
-                  "btn btn-primary mt-4 text-white"
-                )}
-              >
-                continuar
-              </button>
-              <button
-                type="submit"
-                className={classNames(
-                  step < steps.length - 1 && "hidden",
-                  "btn btn-primary mt-4 text-white"
-                )}
-              >
-                cadastrar
-              </button>
+            <div className="flex bg-black border" style={{ height: "100px" }} >
+              <div className="vr bg-black border"></div>
             </div>
+            <div className={""}> Candidato<br/>login: 073.190.591-18<br/>senha:Senha@123</div>
           </div>
-        </form>
-      </CardFormWrapper>
+          <div className="space-x-4 ml-auto grid"
+               style={{ alignItems:"center", justifyItems:"center" }}>
+            <button
+              type="button"
+              className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
+              onClick={Router.back}
+            >
+              cancelar
+            </button>
+          </div>
+        </div>
+      </CardNotification>
+      {/*  <CardFormWrapper title="Cadastro de Candidato" subtitle={subTitle}>*/}
+      {/*  <Stepper steps={steps} changeStep={changeStep} currentStep={step} />*/}
+      {/*  <div className="divider divider-horizontal my-4"></div>*/}
+      {/*  <form onSubmit={handleSubmit(onSubmit)}>*/}
+      {/*    {step == 0 && (*/}
+      {/*      <CadastroCandidatoDadosPessoais*/}
+      {/*        register={register}*/}
+      {/*        errors={errors}*/}
+      {/*        watch={watch} />*/}
+      {/*    )}*/}
+      {/*    {step == 1 && (*/}
+      {/*      <CadastroCandidatoDadosContato register={register} errors={errors} />*/}
+      {/*    )}*/}
+      {/*    {step == 2 && (*/}
+      {/*      <CadastroCandidatoCandidatura register={register} errors={errors} />*/}
+      {/*    )}*/}
+
+      {/*    <div className="flex flex-wrap justify-between mt-4">*/}
+      {/*      <ReCAPTCHA*/}
+      {/*        badge="inline"*/}
+      {/*        size="invisible"*/}
+      {/*        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}*/}
+      {/*        ref={recaptchaRef} />*/}
+
+      {/*      <div className="space-x-4 ml-auto">*/}
+      {/*        <button*/}
+      {/*          type="button"*/}
+      {/*          className={classNames(step != 0 && "hidden", "btn btn-base mt-4")}*/}
+      {/*          onClick={Router.back}*/}
+      {/*        >*/}
+      {/*          cancelar*/}
+      {/*        </button>*/}
+      {/*        <button*/}
+      {/*          onClick={() => changeStep(step - 1)}*/}
+      {/*          type="button"*/}
+      {/*          className={classNames(step == 0 && "hidden", "btn btn-base mt-4")}*/}
+      {/*        >*/}
+      {/*          voltar*/}
+      {/*        </button>*/}
+
+      {/*        <button*/}
+      {/*          onClick={() => changeStep(step + 1)}*/}
+      {/*          type="button"*/}
+      {/*          disabled={true}*/}
+      {/*          className={classNames(*/}
+      {/*            step == steps.length - 1 && "hidden",*/}
+      {/*            "btn btn-primary mt-4 text-white"*/}
+      {/*          )}*/}
+      {/*        >*/}
+      {/*          continuar*/}
+      {/*        </button>*/}
+      {/*        <button*/}
+      {/*          type="submit"*/}
+      {/*          className={classNames(*/}
+      {/*            step < steps.length - 1 && "hidden",*/}
+      {/*            "btn btn-primary mt-4 text-white"*/}
+      {/*          )}*/}
+      {/*        >*/}
+      {/*          cadastrar*/}
+      {/*        </button>*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*  </form>*/}
+      {/*</CardFormWrapper>*/}
     </div>
   );
 };

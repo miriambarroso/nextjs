@@ -177,7 +177,7 @@ const CadastroEmpresa = ({}: Props) => {
           <p>
             Ferramenta aguardando liberação de uso.
             Quando liberada, daremos início à divulgação das redes sociais do IFG
-            e da Prefeitura de Anápolis. Contudo, é possível testar a mesma com um login de testes:
+            e da Prefeitura de Anápolis. Contudo, é possível testar a feramenta com os seguintes usuários testes:
           </p>
           <div className={"alert my-1 mx-1 flex flex-row"}
             // @ts-ignore
@@ -190,78 +190,88 @@ const CadastroEmpresa = ({}: Props) => {
             </div>
             <div className={""}> Candidato<br/>login: 073.190.591-18<br/>senha:Senha@123</div>
           </div>
+          <div className="space-x-4 ml-auto grid"
+               style={{ alignItems:"center", justifyItems:"center" }}>
+            <button
+              type="button"
+              className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
+              onClick={Router.back}
+            >
+              cancelar
+            </button>
+          </div>
         </div>
       </CardNotification>
-      <CardFormWrapper title="Cadastro de Empresa" subtitle={subTitle}>
-        <Stepper steps={steps} changeStep={changeStep} currentStep={step} />
-        <div className="divider divider-horizontal my-4"></div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {step == 0 && (
-            <CadastroEmpresaDadosPessoais register={register} errors={errors} />
-          )}
-          {step == 1 && (
-            <CadastroEmpresaDadosEmpresa
-              register={register}
-              errors={errors}
-              watch={watch}
-            />
-          )}
-          {step == 2 && (
-            <CadastroEmpresaEnderecoContatos
-              register={register}
-              errors={errors}
-              setValue={setValue}
-            />
-          )}
+      {/*<CardFormWrapper title="Cadastro de Empresa" subtitle={subTitle}>*/}
+      {/*  <Stepper steps={steps} changeStep={changeStep} currentStep={step} />*/}
+      {/*  <div className="divider divider-horizontal my-4"></div>*/}
+      {/*  <form onSubmit={handleSubmit(onSubmit)}>*/}
+      {/*    {step == 0 && (*/}
+      {/*      <CadastroEmpresaDadosPessoais register={register} errors={errors} />*/}
+      {/*    )}*/}
+      {/*    {step == 1 && (*/}
+      {/*      <CadastroEmpresaDadosEmpresa*/}
+      {/*        register={register}*/}
+      {/*        errors={errors}*/}
+      {/*        watch={watch}*/}
+      {/*      />*/}
+      {/*    )}*/}
+      {/*    {step == 2 && (*/}
+      {/*      <CadastroEmpresaEnderecoContatos*/}
+      {/*        register={register}*/}
+      {/*        errors={errors}*/}
+      {/*        setValue={setValue}*/}
+      {/*      />*/}
+      {/*    )}*/}
 
-          <div className="flex flex-wrap justify-between mt-4">
-            <ReCAPTCHA
-              badge="inline"
-              size="invisible"
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}
-              ref={recaptchaRef}
-            />
+      {/*    <div className="flex flex-wrap justify-between mt-4">*/}
+      {/*      <ReCAPTCHA*/}
+      {/*        badge="inline"*/}
+      {/*        size="invisible"*/}
+      {/*        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}*/}
+      {/*        ref={recaptchaRef}*/}
+      {/*      />*/}
 
-            <div className="space-x-4 ml-auto">
-              <button
-                type="button"
-                className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
-                onClick={Router.back}
-              >
-                cancelar
-              </button>
-              <button
-                onClick={() => changeStep(step - 1)}
-                type="button"
-                className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
-              >
-                voltar
-              </button>
+      {/*      <div className="space-x-4 ml-auto">*/}
+      {/*        <button*/}
+      {/*          type="button"*/}
+      {/*          className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}*/}
+      {/*          onClick={Router.back}*/}
+      {/*        >*/}
+      {/*          cancelar*/}
+      {/*        </button>*/}
+      {/*        <button*/}
+      {/*          onClick={() => changeStep(step - 1)}*/}
+      {/*          type="button"*/}
+      {/*          className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}*/}
+      {/*        >*/}
+      {/*          voltar*/}
+      {/*        </button>*/}
 
-              <button
-                onClick={() => changeStep(step + 1)}
-                type="button"
-                className={classNames(
-                  step == steps.length - 1 && 'hidden',
-                  'btn btn-primary mt-4 text-white',
-                )}
-              >
-                continuar
-              </button>
-              <button
-                type="submit"
-                className={classNames(
-                  step < steps.length - 1 && 'hidden',
-                  'btn btn-primary mt-4 text-white',
-                )}
-              >
-                cadastrar
-              </button>
-            </div>
-          </div>
-        </form>
-      </CardFormWrapper>
-  </div>
+      {/*        <button*/}
+      {/*          onClick={() => changeStep(step + 1)}*/}
+      {/*          type="button"*/}
+      {/*          className={classNames(*/}
+      {/*            step == steps.length - 1 ,*/}
+      {/*            'btn btn-primary mt-4 text-white',*/}
+      {/*          )}*/}
+      {/*        >*/}
+      {/*          continuar*/}
+      {/*        </button>*/}
+      {/*        <button*/}
+      {/*          type="submit"*/}
+      {/*          className={classNames(*/}
+      {/*            step < steps.length - 1 && 'hidden',*/}
+      {/*            'btn btn-primary mt-4 text-white',*/}
+      {/*          )}*/}
+      {/*        >*/}
+      {/*          cadastrar*/}
+      {/*        </button>*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*  </form>*/}
+      {/*</CardFormWrapper>*/}
+    </div>
   );
 };
 

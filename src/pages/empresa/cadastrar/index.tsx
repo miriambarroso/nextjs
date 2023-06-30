@@ -17,6 +17,7 @@ import { IEmpregadorCreate } from '@/interfaces/empregador';
 import Router, { useRouter } from 'next/router';
 import { formatDateToAPI } from '@/utils/date';
 import ReCAPTCHA from 'react-google-recaptcha';
+import CardNotification from "@/components/atoms/CardNotification";
 
 type Props = {};
 
@@ -169,75 +170,98 @@ const CadastroEmpresa = ({}: Props) => {
   );
 
   return (
-    <CardFormWrapper title="Cadastro de Empresa" subtitle={subTitle}>
-      <Stepper steps={steps} changeStep={changeStep} currentStep={step} />
-      <div className="divider divider-horizontal my-4"></div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {step == 0 && (
-          <CadastroEmpresaDadosPessoais register={register} errors={errors} />
-        )}
-        {step == 1 && (
-          <CadastroEmpresaDadosEmpresa
-            register={register}
-            errors={errors}
-            watch={watch}
-          />
-        )}
-        {step == 2 && (
-          <CadastroEmpresaEnderecoContatos
-            register={register}
-            errors={errors}
-            setValue={setValue}
-          />
-        )}
-
-        <div className="flex flex-wrap justify-between mt-4">
-          <ReCAPTCHA
-            badge="inline"
-            size="invisible"
-            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}
-            ref={recaptchaRef}
-          />
-
-          <div className="space-x-4 ml-auto">
-            <button
-              type="button"
-              className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
-              onClick={Router.back}
-            >
-              cancelar
-            </button>
-            <button
-              onClick={() => changeStep(step - 1)}
-              type="button"
-              className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
-            >
-              voltar
-            </button>
-
-            <button
-              onClick={() => changeStep(step + 1)}
-              type="button"
-              className={classNames(
-                step == steps.length - 1 && 'hidden',
-                'btn btn-primary mt-4 text-white',
-              )}
-            >
-              continuar
-            </button>
-            <button
-              type="submit"
-              className={classNames(
-                step < steps.length - 1 && 'hidden',
-                'btn btn-primary mt-4 text-white',
-              )}
-            >
-              cadastrar
-            </button>
+    <div>
+      <CardNotification title="Atenção"
+                        subtitle={'Ferramenta aguardando liberação de uso. '}>
+        <div>
+          <p>
+            Ferramenta aguardando liberação de uso.
+            Quando liberada, daremos início à divulgação das redes sociais do IFG
+            e da Prefeitura de Anápolis. Contudo, é possível testar a mesma com um login de testes:
+          </p>
+          <div className={"alert my-1 mx-1 flex flex-row"}
+            // @ts-ignore
+               style={{ justifyContent:"space-around !important" }}>
+            <div className={""}>
+              Empresa<br/>login: 828.736.230-04<br/>senha:Senha@123
+            </div>
+            <div className="flex bg-black border" style={{ height: "100px" }} >
+              <div className="vr bg-black border"></div>
+            </div>
+            <div className={""}> Candidato<br/>login: 073.190.591-18<br/>senha:Senha@123</div>
           </div>
         </div>
-      </form>
-    </CardFormWrapper>
+      </CardNotification>
+      <CardFormWrapper title="Cadastro de Empresa" subtitle={subTitle}>
+        <Stepper steps={steps} changeStep={changeStep} currentStep={step} />
+        <div className="divider divider-horizontal my-4"></div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {step == 0 && (
+            <CadastroEmpresaDadosPessoais register={register} errors={errors} />
+          )}
+          {step == 1 && (
+            <CadastroEmpresaDadosEmpresa
+              register={register}
+              errors={errors}
+              watch={watch}
+            />
+          )}
+          {step == 2 && (
+            <CadastroEmpresaEnderecoContatos
+              register={register}
+              errors={errors}
+              setValue={setValue}
+            />
+          )}
+
+          <div className="flex flex-wrap justify-between mt-4">
+            <ReCAPTCHA
+              badge="inline"
+              size="invisible"
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}
+              ref={recaptchaRef}
+            />
+
+            <div className="space-x-4 ml-auto">
+              <button
+                type="button"
+                className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
+                onClick={Router.back}
+              >
+                cancelar
+              </button>
+              <button
+                onClick={() => changeStep(step - 1)}
+                type="button"
+                className={classNames(step == 0 && 'hidden', 'btn btn-base mt-4')}
+              >
+                voltar
+              </button>
+
+              <button
+                onClick={() => changeStep(step + 1)}
+                type="button"
+                className={classNames(
+                  step == steps.length - 1 && 'hidden',
+                  'btn btn-primary mt-4 text-white',
+                )}
+              >
+                continuar
+              </button>
+              <button
+                type="submit"
+                className={classNames(
+                  step < steps.length - 1 && 'hidden',
+                  'btn btn-primary mt-4 text-white',
+                )}
+              >
+                cadastrar
+              </button>
+            </div>
+          </div>
+        </form>
+      </CardFormWrapper>
+  </div>
   );
 };
 

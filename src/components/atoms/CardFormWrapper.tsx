@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { BiError } from "react-icons/bi";
 
 type Props = {
   children: ReactNode;

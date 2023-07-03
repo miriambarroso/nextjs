@@ -197,7 +197,7 @@ const Index = ({}: Props) => {
               className={classNames(step != 0 && 'hidden', 'btn btn-base mt-4')}
               onClick={Router.back}
             >
-              cancelar
+              ok
             </button>
           </div>
         </div>

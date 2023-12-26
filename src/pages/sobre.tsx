@@ -13,6 +13,18 @@ const Page = ({}: Props) => {
       url: 'https://baraus.dev',
     },
     {
+      nome: 'Miriam Barroso Martins',
+      url: 'https://github.com/miriambarroso',
+    },
+    {
+      nome: 'Gabriel Henrique do Nascimento',
+      url: 'https://www.linkedin.com/in/gabrielxdf',
+    },
+    {
+      nome: ' Jose Roberto Mendonca Inacio',
+      url: 'https://www.linkedin.com/in/jose-roberto-mendonca-inacio-b41581245',
+    },
+    {
       nome: 'Daniel Xavier de Sousa (Professor Orientador)',
       url: 'http://lattes.cnpq.br/4603724338719739',
     },
